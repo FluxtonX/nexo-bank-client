@@ -18,8 +18,8 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Canadian National Trust Bank — Banking Meets Crypto Intelligence",
-  description: "A regulated Canadian digital bank with a built-in crypto engine.",
+  title: "Nexo Bank — Banking Meets Crypto Intelligence",
+  description: "A regulated Nexo Bank with a built-in crypto engine.",
 };
 
 export default function RootLayout({

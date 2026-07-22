@@ -37,7 +37,7 @@ export default function ContactPage() {
           <div className="rounded-3xl border border-banking-border bg-white p-10 shadow-2xl">
             <h2 className="text-2xl font-bold text-banking-text">Submit a Support Ticket</h2>
             <p className="mt-3 text-sm leading-7 text-banking-muted">
-              For account-specific issues, please use the email address associated with your CDNT account.
+              For account-specific issues, please use the email address associated with your Nexo Bank account.
             </p>
 
             <form className="mt-8 grid gap-5" onSubmit={(e) => e.preventDefault()}>

@@ -89,11 +89,10 @@ function DepositMockup() {
           <button
             key={a}
             onClick={() => setActive(a)}
-            className={`flex-1 flex items-center justify-center gap-2 rounded-lg border py-2 text-xs font-bold transition-all ${
-              active === a
-                ? "border-banking-gold bg-banking-gold/10 text-banking-gold"
-                : "border-white/10 text-white/40 hover:border-white/20"
-            }`}
+            className={`flex-1 flex items-center justify-center gap-2 rounded-lg border py-2 text-xs font-bold transition-all ${active === a
+              ? "border-banking-gold bg-banking-gold/10 text-banking-gold"
+              : "border-white/10 text-white/40 hover:border-white/20"
+              }`}
           >
             <img src={coinImages[a]} alt={a} className="h-3 w-3 object-contain" />
             {a}
@@ -209,7 +208,7 @@ function WithdrawMockup() {
           </div>
           <div>
             <div className="flex justify-between text-[10px] mb-1"><span className="text-white/40">Daily Limit Used</span><span className="text-white/60">$46,200 / $50,000</span></div>
-            <div className="h-1.5 rounded-full bg-white/10"><div className="h-1.5 rounded-full bg-banking-gold" style={{width: "92%"}} /></div>
+            <div className="h-1.5 rounded-full bg-white/10"><div className="h-1.5 rounded-full bg-banking-gold" style={{ width: "92%" }} /></div>
           </div>
           <button onClick={() => setStep(5)} className="w-full rounded-xl bg-banking-gold py-2.5 text-xs font-bold text-banking-ink">Review →</button>
         </div>
@@ -316,7 +315,7 @@ export function CryptoShowcase() {
             <span className="text-banking-gold">All in One Platform.</span>
           </h2>
           <p className="mt-5 max-w-2xl mx-auto text-base text-white/50 leading-relaxed">
-            Institutional-grade crypto transaction tools — the same standard used by Coinbase and Binance, now inside your CDNT account.
+            Institutional-grade crypto transaction tools — the same standard used by Coinbase and Binance, now inside your Nexo Bank account.
           </p>
         </div>
 
@@ -326,11 +325,10 @@ export function CryptoShowcase() {
             <button
               key={s.id}
               onClick={() => setCurrent(i)}
-              className={`rounded-full px-5 py-2 text-xs font-bold uppercase tracking-widest transition-all ${
-                i === current
-                  ? "bg-banking-gold text-banking-ink shadow-lg"
-                  : "border border-white/10 text-white/40 hover:text-white hover:border-white/20"
-              }`}
+              className={`rounded-full px-5 py-2 text-xs font-bold uppercase tracking-widest transition-all ${i === current
+                ? "bg-banking-gold text-banking-ink shadow-lg"
+                : "border border-white/10 text-white/40 hover:text-white hover:border-white/20"
+                }`}
             >
               {s.label}
             </button>

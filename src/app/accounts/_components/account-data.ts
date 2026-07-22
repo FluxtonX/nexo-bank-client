@@ -85,7 +85,7 @@ export const accountPages: Record<string, AccountDetail> = {
         bullets: ["Internal transfers", "Mobile approvals", "Advisor review support"],
       },
     ],
-    fees: [["Monthly fee", "$0"], ["Minimum balance", "$0"], ["Transfers to CDNT accounts", "Included"], ["External transfer timing", "Varies by network"]],
+    fees: [["Monthly fee", "$0"], ["Minimum balance", "$0"], ["Transfers to Nexo Bank", "Included"], ["External transfer timing", "Varies by network"]],
     eligibility: ["Verified CDNT profile.", "Linked chequing account recommended.", "Subject to account review and platform limits."],
     bestFor: ["Emergency funds.", "Short-term goals.", "Clients who want cash discipline before investing."],
   },
@@ -251,7 +251,7 @@ export const accountPages: Record<string, AccountDetail> = {
     eyebrow: "Current Rates",
     title: "Current account rates and common service pricing.",
     description:
-      "Review sample rates, account fees, and service charges before choosing or changing your CDNT account.",
+      "Review sample rates, account fees, and service charges before choosing or changing your Nexo Bank.",
     image: "https://images.unsplash.com/photo-1554224154-26032ffc0d07?auto=format&fit=crop&q=80&w=2200",
     icon: CircleDollarSign,
     highlights: [
@@ -288,7 +288,7 @@ export const accountPages: Record<string, AccountDetail> = {
   },
   apply: {
     eyebrow: "Apply Online",
-    title: "Open a CDNT account with guided onboarding.",
+    title: "Open a Nexo Bank with guided onboarding.",
     description:
       "Start your application, verify identity, set up security, choose account preferences, and prepare for deposits or transfers.",
     image: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&q=80&w=2200",

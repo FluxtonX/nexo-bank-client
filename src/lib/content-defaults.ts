@@ -102,7 +102,7 @@ export const DEFAULT_LANDING_CONTENT: LandingContent = {
   hero: {
     trustBadge: "FINTRAC registered · CDIC-style insured deposits",
     headline: "Banking Meets\nCrypto\nIntelligence",
-    body: "A regulated Canadian digital bank with a built-in crypto engine. Move money, save smarter, and invest in digital assets — all from one elegant, insured account.",
+    body: "A regulated Nexo Bank with a built-in crypto engine. Move money, save smarter, and invest in digital assets — all from one elegant, insured account.",
     btn1: "Open Account",
     btn2: "Explore Platform",
     stats: [
@@ -116,13 +116,13 @@ export const DEFAULT_LANDING_CONTENT: LandingContent = {
     sub: "We've rebuilt banking from the ground up to support both your traditional financial needs and your digital asset investments.",
     btn: "Explore all features",
     list: [
-      { title: "Crypto + Fiat Wallet",    description: "Hold CAD and digital assets side by side in one unified interface." },
-      { title: "Instant e-Transfer",       description: "Send and receive Interac e-Transfers in seconds, free of charge." },
-      { title: "Crypto Investing",         description: "Buy and sell 50+ cryptocurrencies with low, transparent fees." },
-      { title: "Global Transfers",         description: "Send money internationally at mid-market rates with zero hidden markups." },
-      { title: "Smart Savings",            description: "Earn high-yield interest on your Canadian Dollar deposits automatically." },
-      { title: "AI Financial Insights",    description: "Get personalized alerts and insights to optimize your spending and saving." },
-      { title: "Portfolio Tracking",       description: "Monitor your entire net worth with beautiful, real-time exotic curves." },
+      { title: "Crypto + Fiat Wallet", description: "Hold CAD and digital assets side by side in one unified interface." },
+      { title: "Instant e-Transfer", description: "Send and receive Interac e-Transfers in seconds, free of charge." },
+      { title: "Crypto Investing", description: "Buy and sell 50+ cryptocurrencies with low, transparent fees." },
+      { title: "Global Transfers", description: "Send money internationally at mid-market rates with zero hidden markups." },
+      { title: "Smart Savings", description: "Earn high-yield interest on your Canadian Dollar deposits automatically." },
+      { title: "AI Financial Insights", description: "Get personalized alerts and insights to optimize your spending and saving." },
+      { title: "Portfolio Tracking", description: "Monitor your entire net worth with beautiful, real-time exotic curves." },
     ],
     ctaCardTitle: "And much more",
     ctaCardDesc: "Discover the full power of CDNT.",
@@ -136,8 +136,8 @@ export const DEFAULT_LANDING_CONTENT: LandingContent = {
     overline: "Getting Started",
     heading: "From signup to first trade in minutes.",
     steps: [
-      { title: "Create your account",       description: "Sign up online. ID documents and social insurance number required." },
-      { title: "Verify your Identity",      description: "Government-issued ID, powered by Interac. Approved in minutes." },
+      { title: "Create your account", description: "Sign up online. ID documents and social insurance number required." },
+      { title: "Verify your Identity", description: "Government-issued ID, powered by Interac. Approved in minutes." },
       { title: "Start banking & investing", description: "Load your account, buy crypto, save smarter, and earn through the app." },
     ],
   },
@@ -159,13 +159,13 @@ export const DEFAULT_LANDING_CONTENT: LandingContent = {
     btn2: "Talk to our Team",
   },
   footer: {
-    tagline: "A modern Canadian digital bank uniting traditional finance with regulated digital assets.",
-    regulatory: "Canadian National Trust Bank is a federally regulated Canadian financial institution. FINTRAC #M24-0042001.",
-    copyright: "© 2026 Canadian National Trust Bank, Inc. All rights reserved.",
+    tagline: "A modern Nexo Bank uniting traditional finance with regulated digital assets.",
+    regulatory: "Nexo Bank is a federally regulated Canadian financial institution. FINTRAC #M24-0042001.",
+    copyright: "© 2026 Nexo Bank, Inc. All rights reserved.",
     links: [
-      { title: "Company",  description: "About, Careers, Press, Blog" },
+      { title: "Company", description: "About, Careers, Press, Blog" },
       { title: "Products", description: "Banking, Crypto, Savings, Cards" },
-      { title: "Legal",    description: "Terms, Privacy, Cookies, Disclosures" },
+      { title: "Legal", description: "Terms, Privacy, Cookies, Disclosures" },
       { title: "Security", description: "Trust center, Vulnerability, Status, Audits" },
     ],
   },
@@ -214,7 +214,7 @@ export interface AboutContent {
 
 export const DEFAULT_ABOUT_CONTENT: AboutContent = {
   hero: {
-    heading: "About Canadian National Trust Bank",
+    heading: "About Nexo Bank",
     body: "We're building the future of banking in Canada—where traditional finance meets cryptocurrency innovation, creating a secure and accessible platform for everyone.",
   },
   mission: {
@@ -226,7 +226,7 @@ export const DEFAULT_ABOUT_CONTENT: AboutContent = {
     body: "To become Canada's most trusted digital banking and cryptocurrency platform. We envision a future where managing your finances—whether traditional currency or crypto—is as simple as sending a text message, backed by institutional-grade security and full regulatory compliance.",
   },
   why: {
-    heading: "Why Choose Canadian National Trust Bank",
+    heading: "Why Choose Nexo Bank",
     subheading: "Built with trust, security, and simplicity at the core",
     features: [
       {
@@ -256,7 +256,7 @@ export const DEFAULT_ABOUT_CONTENT: AboutContent = {
   },
   cta: {
     heading: "Ready to Get Started?",
-    body: "Join thousands of Canadians who trust Canadian National Trust Bank for their crypto banking needs",
+    body: "Join thousands of Canadians who trust Nexo Bank for their crypto banking needs",
     btn: "Open Your Account Today",
   },
 };
@@ -346,11 +346,11 @@ export const DEFAULT_PRICING_CONTENT: PricingContent = {
     list: [
       {
         question: "Are there any monthly or annual fees?",
-        answer: "Canadian National Trust Bank does not charge any monthly, annual, or account maintenance fees. You only pay transaction fees when you move funds.",
+        answer: "Nexo Bank account does not charge any monthly, annual, or account maintenance fees. You only pay transaction fees when you move funds.",
       },
       {
         question: "What are network fees?",
-        answer: "Canadian National Trust Bank does not charge any monthly, annual, or account maintenance fees. You only pay transaction fees when you move funds.",
+        answer: "Nexo Bank account does not charge any monthly, annual, or account maintenance fees. You only pay transaction fees when you move funds.",
       },
       {
         question: "Can I withdraw to my bank account for free?",

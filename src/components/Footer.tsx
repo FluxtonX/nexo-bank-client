@@ -7,7 +7,7 @@ import { DEFAULT_LANDING_CONTENT } from "@/lib/content-defaults";
 export default function Footer({ content = DEFAULT_LANDING_CONTENT.footer }: { content?: LandingFooterContent }) {
   // Convert list of complex objects to key-value record to map dynamically
   const footerLinksMap: Record<string, { name: string; href: string }[]> = {};
-  
+
   content.links.forEach((linkCol) => {
     footerLinksMap[linkCol.title.toUpperCase()] = linkCol.description.split(", ").map((item) => ({
       name: item,
@@ -18,15 +18,15 @@ export default function Footer({ content = DEFAULT_LANDING_CONTENT.footer }: { c
   return (
     <footer className="bg-white pt-20 pb-10 border-t border-gray-100">
       <div className="max-w-7xl mx-auto px-6">
-        
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-12 lg:gap-8 mb-16">
-          
+
           {/* Logo and Tagline */}
           <div className="lg:col-span-2">
             <Link href="/" className="inline-flex items-center gap-4 mb-6 group ">
               <Image
                 src="/bluelogo.png"
-                alt="Canadian National Trust Bank Logo"
+                alt="Nexo Bank Logo"
                 width={120}
                 height={40}
                 quality={100}
@@ -72,7 +72,7 @@ export default function Footer({ content = DEFAULT_LANDING_CONTENT.footer }: { c
               <ul className="space-y-4">
                 {links.map((link) => (
                   <li key={link.name}>
-                    <Link 
+                    <Link
                       href={link.href}
                       className="text-[#64748b] hover:text-[#0f172a] transition-colors text-[15px]"
                     >

@@ -41,7 +41,7 @@ export async function POST(req: Request) {
       console.error('Missing BREVO_API_KEY');
       return NextResponse.json({ error: 'Server configuration error: missing BREVO_API_KEY' }, { status: 500 });
     }
-    
+
     const apiInstance = new TransactionalEmailsApi();
     apiInstance.setApiKey(TransactionalEmailsApiApiKeys.apiKey, process.env.BREVO_API_KEY);
 

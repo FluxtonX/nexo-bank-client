@@ -114,7 +114,7 @@ export function AccountDetailPage({ account }: { account: AccountDetail }) {
                 Designed for real banking habits.
               </h2>
               <p className="mt-5 text-sm font-medium leading-7 text-banking-muted">
-                Every CDNT account is built around secure digital access,
+                Every Nexo bank account is built around secure digital access,
                 transparent fees, advisor support, and smooth movement between
                 everyday money, savings, and supported digital asset workflows.
               </p>
