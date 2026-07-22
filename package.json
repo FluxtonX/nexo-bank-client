@@ -1,0 +1,52 @@
+{
+  "name": "north-union",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --turbo -H 0.0.0.0",
+    "clean": "powershell -NoProfile -Command \"if (Test-Path .next-build) { Remove-Item -Recurse -Force .next-build }\"",
+    "build:clean": "npm run clean && npm run build",
+    "build": "next build",
+    "start": "next dev --turbo -H 0.0.0.0",
+    "start:prod": "next start",
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "@getbrevo/brevo": "^2.2.0",
+    "@hookform/resolvers": "^5.2.2",
+    "@supabase/ssr": "^0.10.3",
+    "@supabase/supabase-js": "^2.106.2",
+    "@tanstack/react-query": "^5.101.1",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "framer-motion": "^12.23.12",
+    "lightweight-charts": "^5.2.0",
+    "lucide-react": "^0.468.0",
+    "next": "^15.1.0",
+    "next-themes": "^0.4.4",
+    "nextjs-toploader": "^3.9.17",
+    "nprogress": "^0.2.0",
+    "qrcode.react": "^4.2.0",
+    "react": "^19.0.0",
+    "react-datepicker": "^9.1.0",
+    "react-dom": "^19.0.0",
+    "react-hook-form": "^7.75.0",
+    "react-qr-code": "^2.0.21",
+    "recharts": "^3.8.1",
+    "tailwind-merge": "^2.6.0",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "@types/nprogress": "^0.2.3",
+    "@types/react": "^19.0.2",
+    "@types/react-datepicker": "^6.2.0",
+    "@types/react-dom": "^19.0.2",
+    "autoprefixer": "^10.4.20",
+    "eslint": "^9.17.0",
+    "eslint-config-next": "^15.1.0",
+    "postcss": "^8.4.49",
+    "tailwindcss": "^3.4.17",
+    "typescript": "^5.7.2"
+  }
+}

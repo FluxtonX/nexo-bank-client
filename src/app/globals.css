@@ -1,0 +1,71 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #F4F6FA;
+  --foreground: #0A0F2C;
+}
+
+.dark {
+  --background: #0A0F2C;
+  --foreground: #F4F6FA;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-inter), sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-plus-jakarta-sans), sans-serif;
+  letter-spacing: -0.025em;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+@keyframes ticker {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.ticker-track {
+  display: flex;
+  width: max-content;
+  animation: ticker 30s linear infinite;
+  will-change: transform;
+}
+
+.ticker-track:hover {
+  animation-play-state: paused;
+}
+
+.ticker-fade-left {
+  background: linear-gradient(to right, white 0%, transparent 100%);
+  width: 80px;
+  position: absolute;
+  left: 60px;
+  top: 0;
+  bottom: 0;
+  z-index: 5;
+  pointer-events: none;
+}
+
+.ticker-fade-right {
+  background: linear-gradient(to left, white 0%, transparent 100%);
+  width: 80px;
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 5;
+  pointer-events: none;
+}
+
+#nprogress .bar { background: #2563eb; height: 3px; }
+#nprogress .peg { box-shadow: 0 0 10px #2563eb, 0 0 5px #2563eb; }
