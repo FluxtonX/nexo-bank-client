@@ -25,6 +25,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { AnnouncementBanner } from "@/components/AnnouncementBanner";
+import NexoBankLogoDarkGreen from "@/components/ui/NexoBankLogoDarkGreen";
 
 const FREEZE_SUPPORT_PATH = "/help-support";
 
@@ -333,15 +334,7 @@ export function UserShell({ children }: { children: React.ReactNode }) {
               onClick={(e) => handleFrozenNav("/", e)}
               className={cn("flex items-center justify-center w-full", frozenNavClass("/"))}
             >
-              <Image 
-                src="/bluelogo.png" 
-                alt="Nexo Bank" 
-                width={100}
-                height={40}
-                className=" h-auto "
-                priority
-                unoptimized
-              />
+              <NexoBankLogoDarkGreen className="h-10 w-auto" />
             </Link>
           </div>
           

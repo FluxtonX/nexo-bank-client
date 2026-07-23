@@ -7,6 +7,7 @@ import { ArrowLeft, Check, CheckCircle2, Circle, Eye, EyeOff } from "lucide-reac
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { validatePasswordRules } from "@/lib/utils";
+import { NexoBankLogoWhite } from "@/components/ui/NexoBankLogoWhite";
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -106,15 +107,7 @@ export default function RegisterPage() {
       {/* Header */}
       <div className="flex flex-col items-center mb-6">
         <div className="mb-4 flex justify-center">
-          <Image 
-            src="/cdnt-logo.png" 
-            alt="Nexo Bank Logo" 
-            width={450} 
-            height={150} 
-            className="h-20 md:h-24 w-auto object-contain"
-            priority
-            unoptimized={true}
-          />
+          <NexoBankLogoWhite className="h-20 md:h-24 w-auto" />
         </div>
         <h1 className="text-white text-2xl font-bold mb-1">Create Your Account</h1>
         <p className="text-emerald-100 text-[14px]">Join thousands of Canadians banking with crypto</p>

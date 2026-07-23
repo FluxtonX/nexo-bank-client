@@ -5,6 +5,7 @@ import Link from "next/link";
 import { ArrowLeft, MailCheck } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState, useRef, useEffect, Suspense } from "react";
+import { NexoBankLogoWhite } from "@/components/ui/NexoBankLogoWhite";
 
 function VerifyEmailForm() {
   const router = useRouter();
@@ -119,15 +120,7 @@ function VerifyEmailForm() {
       {/* Header */}
       <div className="flex flex-col items-center mb-6">
         <div className="mb-4 flex justify-center">
-          <Image 
-            src="/cdnt-logo.png" 
-            alt="Nexo Bank Logo" 
-            width={450} 
-            height={150} 
-            className="h-20 md:h-24 w-auto object-contain"
-            priority
-            unoptimized={true}
-          />
+          <NexoBankLogoWhite className="h-20 md:h-24 w-auto" />
         </div>
         <h1 className="text-white text-2xl font-bold mb-1">Verify Email</h1>
         <p className="text-emerald-100 text-[14px]">Check your inbox for a verification link or code</p>

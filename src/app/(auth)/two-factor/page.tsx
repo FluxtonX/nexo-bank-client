@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft, Lock } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { NexoBankLogoWhite } from "@/components/ui/NexoBankLogoWhite";
 
 export default function TwoFactorPage() {
   const router = useRouter();
@@ -28,15 +29,7 @@ export default function TwoFactorPage() {
       {/* Header */}
       <div className="flex flex-col items-center mb-6">
         <div className="mb-4 flex justify-center">
-          <Image
-            src="/cdnt-logo.png"
-            alt="Nexo Bank Logo"
-            width={450}
-            height={150}
-            className="h-20 md:h-24 w-auto object-contain"
-            priority
-            unoptimized={true}
-          />
+          <NexoBankLogoWhite className="h-20 md:h-24 w-auto" />
         </div>
         <h1 className="text-white text-2xl font-bold mb-1">Welcome Back</h1>
         <p className="text-emerald-100 text-[14px]">Sign in to your Nexo Bank account</p>

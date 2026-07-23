@@ -6,6 +6,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
+import { NexoBankLogoWhite } from "@/components/ui/NexoBankLogoWhite";
 
 export const CONTAINER = "max-w-7xl w-full mx-auto px-6";
 
@@ -42,12 +43,7 @@ export default function Navbar() {
         {/* Logo */}
         <div className="flex-shrink-0 flex items-center">
           <Link href="/" className="flex items-center gap-2.5 group">
-            <div className="h-9 w-9 rounded-xl bg-gradient-to-tr from-emerald-400 to-emerald-600 flex items-center justify-center text-slate-950 font-black text-lg shadow-lg shadow-emerald-500/20 transition-transform duration-300 group-hover:scale-105">
-              N
-            </div>
-            <span className="text-xl font-extrabold tracking-tight text-white transition-transform duration-300 group-hover:scale-105">
-              Nexo <span className="text-emerald-400">Bank</span>
-            </span>
+            <NexoBankLogoWhite className="h-9 w-auto transition-transform duration-300 group-hover:scale-105" />
           </Link>
         </div>
 

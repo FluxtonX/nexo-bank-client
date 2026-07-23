@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Twitter, Linkedin, Instagram, GitBranch } from "lucide-react";
 import type { LandingFooterContent } from "@/lib/content-defaults";
 import { DEFAULT_LANDING_CONTENT } from "@/lib/content-defaults";
+import NexoBankLogoDarkGreen from "@/components/ui/NexoBankLogoDarkGreen";
 
 export default function Footer({ content = DEFAULT_LANDING_CONTENT.footer }: { content?: LandingFooterContent }) {
   // Convert list of complex objects to key-value record to map dynamically
@@ -24,16 +25,7 @@ export default function Footer({ content = DEFAULT_LANDING_CONTENT.footer }: { c
           {/* Logo and Tagline */}
           <div className="lg:col-span-2">
             <Link href="/" className="inline-flex items-center gap-4 mb-6 group ">
-              <Image
-                src="/bluelogo.png"
-                alt="Nexo Bank Logo"
-                width={120}
-                height={40}
-                quality={100}
-                priority
-                unoptimized={true}
-                className="h-12 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
-              />
+              <NexoBankLogoDarkGreen className="h-12 w-auto transition-transform duration-300 group-hover:scale-105" />
             </Link>
             <p className="text-[#64748b] leading-relaxed max-w-sm mb-8 text-[15px]">
               {content.tagline.split("\n").map((part, i) => (

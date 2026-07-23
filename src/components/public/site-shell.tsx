@@ -16,6 +16,7 @@ import {
 import { motion, AnimatePresence } from "framer-motion";
 import { MegaMenu, MenuSection } from "./mega-menu";
 import { cn } from "@/lib/utils";
+import { NexoBankLogoWhite } from "@/components/ui/NexoBankLogoWhite";
 
 
 import { usePathname } from "next/navigation";
@@ -135,17 +136,7 @@ export function SiteHeader() {
             {/* Logo */}
             <Link href="/" className="flex items-center gap-3 group">
               <div className="relative h-12 w-auto">
-                <img 
-                  src="/logo.png" 
-                  alt="Nexo Bank" 
-                  className="h-full w-auto object-contain" 
-                  onError={(e) => {
-                    // Fallback to text if image fails
-                    e.currentTarget.style.display = 'none';
-                    e.currentTarget.parentElement?.classList.add('flex', 'items-center', 'font-bold', 'text-white', 'text-2xl');
-                    if(e.currentTarget.parentElement) e.currentTarget.parentElement.innerText = 'CDNT';
-                  }}
-                />
+                <NexoBankLogoWhite className="h-10 w-auto" />
               </div>
             </Link>
 
@@ -353,10 +344,7 @@ export function SiteFooter() {
         <div className="grid gap-12 lg:grid-cols-6">
           <div className="lg:col-span-2">
             <Link href="/" className="inline-flex items-center gap-2 group">
-              <div className="h-10 w-auto flex items-center font-bold text-white text-2xl tracking-tight">
-                <span className="inline-block h-6 w-6 rounded-full bg-gradient-to-tr from-[#047857] to-sky-400 mr-2 shadow-lg shadow-emerald-500/30" />
-                CDNT
-              </div>
+                <NexoBankLogoWhite className="h-8 w-auto" />
             </Link>
 
             <p className="mt-6 max-w-sm text-sm font-medium leading-7 text-white/50">

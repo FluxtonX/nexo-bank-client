@@ -6,6 +6,7 @@ import { ArrowLeft, Eye, EyeOff } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState, useEffect, Suspense } from "react";
 import { createClient } from "@/lib/supabase/client";
+import { NexoBankLogoWhite } from "@/components/ui/NexoBankLogoWhite";
 
 function LoginForm() {
   const router = useRouter();
@@ -102,15 +103,7 @@ function LoginForm() {
       {/* Header */}
       <div className="flex flex-col items-center mb-6">
         <div className="mb-4 flex justify-center">
-          <Image
-            src="/cdnt-logo.png"
-            alt="Nexo Bank Logo"
-            width={450}
-            height={150}
-            className="h-20 md:h-24 w-auto object-contain"
-            priority
-            unoptimized={true}
-          />
+          <NexoBankLogoWhite className="h-20 md:h-24 w-auto" />
         </div>
         <h1 className="text-white text-2xl font-bold mb-1">Welcome Back</h1>
         <p className="text-emerald-100 text-[14px]">Sign in to your Nexo Bank account</p>
