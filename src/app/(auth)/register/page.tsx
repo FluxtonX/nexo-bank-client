@@ -60,7 +60,7 @@ export default function RegisterPage() {
       return;
     }
     
-    const { error: signUpError } = await supabase.auth.signUp({
+    const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
       email: normalizedEmail,
       password,
       options: {
@@ -81,7 +81,13 @@ export default function RegisterPage() {
         await fetch("/api/auth/send-otp", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email: normalizedEmail, purpose: "email-verification" }),
+          body: JSON.stringify({ 
+            email: normalizedEmail, 
+            purpose: "email-verification",
+            userId: signUpData?.user?.id,
+            fullName: fullName,
+            phone: phone
+          }),
         });
       } catch (err) {
         console.error("Failed to send initial OTP", err);

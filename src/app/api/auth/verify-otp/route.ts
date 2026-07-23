@@ -71,6 +71,12 @@ export async function POST(req: Request) {
         .eq("email", email)
         .single();
 
+      if (profile?.id) {
+        await supabaseAdmin.auth.admin.updateUserById(profile.id, {
+          email_confirm: true,
+        });
+      }
+
       await supabaseAdmin.from("security_logs").insert({
         action: "User Login",
         category: "Auth",

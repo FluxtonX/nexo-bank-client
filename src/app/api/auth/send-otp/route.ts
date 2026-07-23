@@ -3,7 +3,7 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { TransactionalEmailsApi, TransactionalEmailsApiApiKeys, SendSmtpEmail } from '@getbrevo/brevo';
 export async function POST(req: Request) {
   try {
-    const { email, purpose = "sign-in" } = await req.json();
+    const { email, purpose = "sign-in", userId, fullName, phone } = await req.json();
 
     if (!email) {
       return NextResponse.json({ error: "Email is required" }, { status: 400 });
@@ -21,6 +21,20 @@ export async function POST(req: Request) {
       .from("email_otps")
       .delete()
       .eq("email", email);
+
+    if (userId) {
+      const { error: profileError } = await supabaseAdmin.from("profiles").upsert({
+        id: userId,
+        email: email,
+        full_name: fullName || email,
+        phone: phone || null,
+        role: "user",
+        email_verified: false,
+        created_at: new Date().toISOString()
+      }, { onConflict: "id" });
+      
+      if (profileError) console.error("Error upserting profile in send-otp:", profileError);
+    }
 
     const { error: dbError } = await supabaseAdmin
       .from("email_otps")

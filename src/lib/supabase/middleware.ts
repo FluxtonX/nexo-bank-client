@@ -89,11 +89,22 @@ export async function updateSession(request: NextRequest) {
       }).eq('id', user.id);
     }
 
-    if (!profile?.email_verified) {
+    // Trust EITHER our custom profiles.email_verified flag OR Supabase Auth's own email_confirmed_at.
+    // This prevents a race condition where Supabase Auth confirmed the email but our profiles
+    // table hasn't been updated yet (or vice versa).
+    const isVerifiedInAuth = !!user.email_confirmed_at;
+    const isVerifiedInProfile = !!profile?.email_verified;
+
+    if (!isVerifiedInAuth && !isVerifiedInProfile) {
       const url = request.nextUrl.clone()
       url.pathname = '/verify-email'
       url.searchParams.set('email', user.email || '')
       return NextResponse.redirect(url)
+    }
+
+    // If Auth says verified but profile doesn't reflect it yet, sync the profile
+    if (isVerifiedInAuth && !isVerifiedInProfile && profile) {
+      await supabase.from('profiles').update({ email_verified: true }).eq('id', user.id);
     }
   }
 

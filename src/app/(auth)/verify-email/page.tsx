@@ -68,7 +68,7 @@ function VerifyEmailForm() {
 
       setSuccess("Email verified successfully! Redirecting...");
       setTimeout(() => {
-        router.push("/dashboard");
+        window.location.href = "/login";
       }, 1500);
     } catch (err: any) {
       setError(err.message);
