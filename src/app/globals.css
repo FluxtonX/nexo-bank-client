@@ -67,5 +67,5 @@ h1, h2, h3, h4, h5, h6 {
   pointer-events: none;
 }
 
-#nprogress .bar { background: #2563eb; height: 3px; }
-#nprogress .peg { box-shadow: 0 0 10px #2563eb, 0 0 5px #2563eb; }
+#nprogress .bar { background: #059669; height: 3px; }
+#nprogress .peg { box-shadow: 0 0 10px #059669, 0 0 5px #059669; }

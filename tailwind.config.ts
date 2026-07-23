@@ -15,7 +15,7 @@ const config: Config = {
       },
       colors: {
         banking: {
-          blue: "#0A3D91",
+          blue: "#064e3b",
           navy: "#0A0F2C",
           gold: "#E8A020",
           green: "#22C55E",
@@ -24,10 +24,12 @@ const config: Config = {
           border: "#E2E8F0",
           text: "#0A0F2C",
           muted: "#9CA3AF",
+          ink: "#0A0F2C",
         },
         primary: {
           navy: "#0A0F2C",
-          blue: "#1A3FBB",
+          blue: "#047857",
+          green: "#064e3b",
         },
         accent: {
           gold: "#E8A020",
