@@ -179,7 +179,7 @@ export default function BusinessBankingPage() {
                     { icon: TrendingUp, title: "Yield Management", desc: "Earn up to 4.5% APY on idle business cash balances." },
                   ].map((feat, i) => (
                     <div key={i} className="flex gap-4">
-                      <div className="grid h-10 w-10 shrink-0 place-items-center rounded-lg bg-blue-50 text-banking-blue">
+                      <div className="grid h-10 w-10 shrink-0 place-items-center rounded-lg bg-emerald-50 text-banking-blue">
                         <feat.icon className="h-5 w-5" />
                       </div>
                       <div>

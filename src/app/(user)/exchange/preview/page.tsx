@@ -68,7 +68,7 @@ export default function ExchangePreviewPage() {
         <div className="flex items-start gap-4">
           <Link
             href="/exchange"
-            className="mt-1 grid h-10 w-10 place-items-center rounded-xl border border-slate-200 bg-white text-[#113285] transition-colors hover:bg-blue-50"
+            className="mt-1 grid h-10 w-10 place-items-center rounded-xl border border-slate-200 bg-white text-[#047857] transition-colors hover:bg-emerald-50"
             aria-label="Back to Buy / Sell"
           >
             <ArrowLeft className="h-5 w-5" />
@@ -102,7 +102,7 @@ export default function ExchangePreviewPage() {
               }}
               className={cn(
                 "rounded-lg px-3 py-2 text-xs font-black transition-colors",
-                selectedCoin.symbol === coin.symbol ? "bg-[#113285] text-white" : "bg-white text-slate-600 hover:bg-slate-100",
+                selectedCoin.symbol === coin.symbol ? "bg-[#047857] text-white" : "bg-white text-slate-600 hover:bg-slate-100",
               )}
             >
               <CoinLogo src={coin.logoUrl} symbol={coin.baseAsset} className="h-5 w-5 p-0.5" />

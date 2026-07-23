@@ -118,7 +118,7 @@ export default function InstitutionalPage() {
                   key={item.title}
                   className="rounded-[2rem] border border-banking-border bg-white p-7 shadow-sm transition-all hover:border-banking-blue hover:shadow-xl"
                 >
-                  <div className="mb-6 grid h-14 w-14 place-items-center rounded-xl bg-blue-50 text-banking-blue">
+                  <div className="mb-6 grid h-14 w-14 place-items-center rounded-xl bg-emerald-50 text-banking-blue">
                     <item.icon className="h-7 w-7" />
                   </div>
                   <h3 className="text-xl font-bold text-banking-ink">{item.title}</h3>

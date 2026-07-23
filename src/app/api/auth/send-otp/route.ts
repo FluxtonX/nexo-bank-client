@@ -79,7 +79,7 @@ export async function POST(req: Request) {
       sendSmtpEmail.subject = purposeConfig.subject;
       sendSmtpEmail.htmlContent = `
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; text-align: center; border: 1px solid #E2E8F0; border-radius: 10px;">
-            <h1 style="color: #113285;">Canadian National Trust Bank</h1>
+            <h1 style="color: #047857;">Canadian National Trust Bank</h1>
             <p style="color: #4A5568; font-size: 16px;">${purposeConfig.message}</p>
             <div style="background-color: #F8F9FA; padding: 20px; border-radius: 8px; margin: 20px 0;">
               <h2 style="font-size: 32px; letter-spacing: 4px; color: #0A0F2C; margin: 0;">${code}</h2>

@@ -78,7 +78,7 @@ export default function TransactionsPage() {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search by transaction ID, crypto, or hash..."
-              className="h-[44px] w-full rounded-[14px] border border-gray-200 bg-white pl-11 pr-4 text-[14px] text-[#0A0F2C] placeholder-[#A0AEC0] outline-none transition-all focus:border-[#113285] focus:ring-1 focus:ring-[#113285]"
+              className="h-[44px] w-full rounded-[14px] border border-gray-200 bg-white pl-11 pr-4 text-[14px] text-[#0A0F2C] placeholder-[#A0AEC0] outline-none transition-all focus:border-[#047857] focus:ring-1 focus:ring-[#047857]"
             />
           </div>
 
@@ -92,7 +92,7 @@ export default function TransactionsPage() {
                   className={cn(
                     "h-[44px] shrink-0 rounded-[14px] px-5 text-[14px] font-bold transition-all whitespace-nowrap",
                     isActive
-                      ? "bg-[#113285] text-white"
+                      ? "bg-[#047857] text-white"
                       : "border border-gray-200 bg-white text-[#4A5568] hover:bg-gray-50"
                   )}
                 >
@@ -107,7 +107,7 @@ export default function TransactionsPage() {
       <div className="rounded-[20px] border border-gray-100 bg-white p-6 shadow-[0_2px_10px_rgba(0,0,0,0.02)]">
         {isLoading ? (
           <div className="flex py-12 justify-center items-center">
-            <Loader2 className="h-8 w-8 animate-spin text-[#113285]" />
+            <Loader2 className="h-8 w-8 animate-spin text-[#047857]" />
           </div>
         ) : filteredTransactions.length > 0 ? (
           <TransactionTable

@@ -39,7 +39,7 @@ export default async function HelpPage() {
         {/* Header Section */}
         <section className="pt-16 pb-16 px-6">
           <div className="mx-auto max-w-7xl text-center">
-            <h1 className="text-4xl md:text-5xl font-bold text-[#1A3FBB] mb-4 tracking-tight">
+            <h1 className="text-4xl md:text-5xl font-bold text-[#064e3b] mb-4 tracking-tight">
               {content.hero.heading}
             </h1>
             <p className="text-lg text-[#6B7280] mb-10">
@@ -52,7 +52,7 @@ export default async function HelpPage() {
               </div>
               <input 
                 type="text" 
-                className="block w-full pl-12 pr-4 py-4 rounded-full border border-gray-200 shadow-sm focus:ring-2 focus:ring-[#1A3FBB] focus:border-transparent outline-none text-[#0A0F2C] placeholder-gray-400 transition-all" 
+                className="block w-full pl-12 pr-4 py-4 rounded-full border border-gray-200 shadow-sm focus:ring-2 focus:ring-[#064e3b] focus:border-transparent outline-none text-[#0A0F2C] placeholder-gray-400 transition-all" 
                 placeholder={content.hero.placeholder}
               />
             </div>
@@ -66,14 +66,14 @@ export default async function HelpPage() {
               const IconComponent = IconMap[cat.icon] || Smartphone;
               return (
                 <div key={i} className="bg-white rounded-3xl p-8 shadow-[0_4px_20px_rgb(0,0,0,0.02)] border border-gray-100 flex flex-col h-full hover:shadow-lg transition-shadow duration-300 cursor-pointer group">
-                  <div className="h-14 w-14 rounded-2xl bg-[#1A3FBB] flex items-center justify-center mb-6 shadow-md shadow-blue-500/20 group-hover:scale-105 transition-transform">
+                  <div className="h-14 w-14 rounded-2xl bg-[#064e3b] flex items-center justify-center mb-6 shadow-md shadow-emerald-500/20 group-hover:scale-105 transition-transform">
                     <IconComponent className="h-7 w-7 text-white" strokeWidth={2} />
                   </div>
                   <h3 className="text-xl font-bold text-[#0A0F2C] mb-6 whitespace-pre-wrap">{cat.title}</h3>
                   <ul className="space-y-4 flex-grow">
                     {cat.links.map((link, idx) => (
                       <li key={idx}>
-                        <Link href="#" className="text-sm text-[#6B7280] hover:text-[#1A3FBB] transition-colors inline-block leading-relaxed">
+                        <Link href="#" className="text-sm text-[#6B7280] hover:text-[#064e3b] transition-colors inline-block leading-relaxed">
                           {link}
                         </Link>
                       </li>
@@ -117,7 +117,7 @@ export default async function HelpPage() {
                 const IconComponent = IconMap[channel.icon] || MessageSquare;
                 return (
                   <div key={i} className={`bg-white rounded-3xl p-10 text-center shadow-[0_4px_20px_rgb(0,0,0,0.02)] border border-gray-100 ${channel.premiumOnly ? 'opacity-60' : ''}`}>
-                    <div className={`h-16 w-16 rounded-full flex items-center justify-center mx-auto mb-6 shadow-md ${channel.premiumOnly ? 'bg-gray-400' : (i === 1 ? 'bg-[#F5B01E] shadow-yellow-500/20' : 'bg-[#1A3FBB] shadow-blue-500/20')}`}>
+                    <div className={`h-16 w-16 rounded-full flex items-center justify-center mx-auto mb-6 shadow-md ${channel.premiumOnly ? 'bg-gray-400' : (i === 1 ? 'bg-[#F5B01E] shadow-yellow-500/20' : 'bg-[#064e3b] shadow-emerald-500/20')}`}>
                       <IconComponent className="h-7 w-7 text-white" strokeWidth={2} />
                     </div>
                     <h3 className="text-xl font-bold text-[#0A0F2C] mb-3">{channel.title}</h3>
@@ -130,7 +130,7 @@ export default async function HelpPage() {
                           ? 'bg-gray-100 text-gray-400 cursor-not-allowed' 
                           : (i === 1 
                               ? 'bg-white hover:bg-gray-50 text-[#0A0F2C] border border-gray-200' 
-                              : 'bg-[#1A3FBB] hover:bg-[#153299] text-white')
+                              : 'bg-[#064e3b] hover:bg-[#153299] text-white')
                       }`} 
                       disabled={channel.premiumOnly}
                     >

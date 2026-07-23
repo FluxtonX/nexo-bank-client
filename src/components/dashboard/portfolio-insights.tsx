@@ -11,7 +11,7 @@ export function AllocationDonut() {
   // Asset colors for highlighting
   const assetColors: Record<string, { stroke: string; bg: string }> = {
     BTC: { stroke: "#F5A623", bg: "bg-[#F5A623]" },
-    ETH: { stroke: "#3B82F6", bg: "bg-[#3B82F6]" },
+    ETH: { stroke: "#064e3b", bg: "bg-[#064e3b]" },
     USDT: { stroke: "#10B981", bg: "bg-[#10B981]" },
     BNB: { stroke: "#F0B90B", bg: "bg-[#F0B90B]" },
     SOL: { stroke: "#14F195", bg: "bg-[#14F195]" },

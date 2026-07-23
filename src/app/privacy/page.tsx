@@ -13,11 +13,11 @@ export default function PrivacyPage() {
 
       <main className="mx-auto max-w-4xl px-5 py-20">
         <div className="prose prose-blue max-w-none">
-          <div className="mb-12 rounded-2xl border border-blue-100 bg-blue-50 p-8 flex gap-6 items-start">
+          <div className="mb-12 rounded-2xl border border-emerald-100 bg-emerald-50 p-8 flex gap-6 items-start">
             <Shield className="h-8 w-8 text-banking-blue shrink-0" />
             <div>
               <h2 className="text-lg font-bold text-banking-blue mb-2">Our Commitment to Privacy</h2>
-              <p className="text-sm leading-relaxed text-blue-900/70">
+              <p className="text-sm leading-relaxed text-emerald-900/70">
                 At CDNT, we understand that your financial privacy is paramount. This policy outlines how we collect, protect, and use your personal information and digital asset data.
               </p>
             </div>
@@ -93,7 +93,7 @@ export default function PrivacyPage() {
               </p>
               <div className="rounded-2xl border border-banking-border bg-white p-8">
                 <p className="font-bold text-banking-text">Privacy & Data Protection Office</p>
-                <p className="text-sm text-banking-muted mt-1">CDNT Financial Services Inc.</p>
+                <p className="text-sm text-banking-muted mt-1">Nexo Bank Financial Services Inc.</p>
                 <p className="text-sm text-banking-muted">privacy@cdnt.io</p>
                 <p className="text-sm text-banking-muted mt-4">1200 Bay St, Toronto, ON M5R 2A5, Canada</p>
               </div>

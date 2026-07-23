@@ -242,7 +242,7 @@ export default function AdvicePage() {
             <div className="mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
               {lifeMoments.map((item) => (
                 <article key={item.title} className="rounded-2xl border border-banking-border bg-white p-7 shadow-sm transition hover:-translate-y-1 hover:shadow-xl">
-                  <div className="grid h-12 w-12 place-items-center rounded-xl bg-blue-50 text-banking-blue">
+                  <div className="grid h-12 w-12 place-items-center rounded-xl bg-emerald-50 text-banking-blue">
                     <item.icon className="h-6 w-6" />
                   </div>
                   <h3 className="mt-6 text-xl font-semibold text-banking-ink">{item.title}</h3>

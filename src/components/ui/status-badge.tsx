@@ -4,7 +4,7 @@ const tones: Record<string, string> = {
   credited: "bg-emerald-50 text-emerald-700 ring-emerald-200",
   approved: "bg-emerald-50 text-emerald-700 ring-emerald-200",
   active: "bg-emerald-50 text-emerald-700 ring-emerald-200",
-  reviewed: "bg-blue-50 text-banking-blue ring-blue-200",
+  reviewed: "bg-emerald-50 text-banking-blue ring-emerald-200",
   pending_review: "bg-amber-50 text-amber-700 ring-amber-200",
   waiting_admin: "bg-amber-50 text-amber-700 ring-amber-200",
   resolved: "bg-emerald-50 text-emerald-700 ring-emerald-200",

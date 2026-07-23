@@ -224,7 +224,7 @@ export function DepositWorkspace({ initialAsset }: { initialAsset?: string }) {
                 key={label}
                 className={cn(
                   "flex flex-col sm:flex-row items-center gap-2 sm:gap-3 rounded-xl sm:rounded-2xl border bg-white p-2.5 sm:px-4 sm:py-3 shadow-sm text-center sm:text-left",
-                  index <= step ? "border-[#113285]/20" : "border-gray-100",
+                  index <= step ? "border-[#047857]/20" : "border-gray-100",
                 )}
               >
                 <span
@@ -233,7 +233,7 @@ export function DepositWorkspace({ initialAsset }: { initialAsset?: string }) {
                     index < step
                       ? "bg-emerald-100 text-emerald-700"
                       : index === step
-                        ? "bg-[#113285] text-white"
+                        ? "bg-[#047857] text-white"
                         : "bg-gray-100 text-gray-500",
                   )}
                 >
@@ -264,7 +264,7 @@ export function DepositWorkspace({ initialAsset }: { initialAsset?: string }) {
                       className={cn(
                         "flex min-w-[170px] items-center gap-3 rounded-2xl border p-4 text-left transition-all lg:min-w-0",
                         isActive
-                          ? "border-[#113285] bg-[#EEF4FF] shadow-sm"
+                          ? "border-[#047857] bg-[#EEF4FF] shadow-sm"
                           : "border-gray-100 bg-[#F8FAFC] hover:border-gray-200 hover:bg-white",
                       )}
                     >
@@ -289,7 +289,7 @@ export function DepositWorkspace({ initialAsset }: { initialAsset?: string }) {
                   className={cn(
                     "flex min-w-[170px] items-center gap-3 rounded-2xl border p-4 text-left transition-all lg:min-w-0",
                     (asset as DepositAsset | "fiat") === "fiat"
-                      ? "border-[#113285] bg-[#EEF4FF] shadow-sm"
+                      ? "border-[#047857] bg-[#EEF4FF] shadow-sm"
                       : "border-gray-100 bg-[#F8FAFC] hover:border-gray-200 hover:bg-white",
                   )}
                 >
@@ -336,7 +336,7 @@ export function DepositWorkspace({ initialAsset }: { initialAsset?: string }) {
                                   className={cn(
                                     "rounded-2xl border px-4 py-3 text-left transition-colors",
                                     network === item.network
-                                      ? "border-[#113285] bg-[#EEF4FF]"
+                                      ? "border-[#047857] bg-[#EEF4FF]"
                                       : "border-gray-200 bg-white hover:bg-gray-50",
                                   )}
                                 >
@@ -356,7 +356,7 @@ export function DepositWorkspace({ initialAsset }: { initialAsset?: string }) {
                           <span className="mb-2 block text-sm font-bold text-[#0A0F2C]">
                             Expected deposit amount
                           </span>
-                          <div className="flex overflow-hidden rounded-2xl border border-gray-200 bg-white focus-within:border-[#113285] focus-within:ring-4 focus-within:ring-[#113285]/10">
+                          <div className="flex overflow-hidden rounded-2xl border border-gray-200 bg-white focus-within:border-[#047857] focus-within:ring-4 focus-within:ring-[#047857]/10">
                             <input
                               inputMode="decimal"
                               value={amount}
@@ -364,7 +364,7 @@ export function DepositWorkspace({ initialAsset }: { initialAsset?: string }) {
                               placeholder="0.00"
                               className="min-w-0 flex-1 px-4 py-4 text-lg font-bold text-[#0A0F2C] outline-none"
                             />
-                            <span className="grid min-w-20 place-items-center border-l border-gray-100 bg-[#F8FAFC] px-4 text-sm font-bold text-[#113285]">
+                            <span className="grid min-w-20 place-items-center border-l border-gray-100 bg-[#F8FAFC] px-4 text-sm font-bold text-[#047857]">
                               {config.asset}
                             </span>
                           </div>
@@ -373,9 +373,9 @@ export function DepositWorkspace({ initialAsset }: { initialAsset?: string }) {
                           </span>
                         </label>
 
-                        <div className="rounded-2xl border border-blue-100 bg-blue-50/70 p-4">
+                        <div className="rounded-2xl border border-emerald-100 bg-emerald-50/70 p-4">
                           <div className="flex gap-3">
-                            <Info className="mt-0.5 h-5 w-5 shrink-0 text-[#113285]" />
+                            <Info className="mt-0.5 h-5 w-5 shrink-0 text-[#047857]" />
                             <p className="text-sm leading-6 text-[#4A5568]">
                               {infoBox}
                             </p>
@@ -385,7 +385,7 @@ export function DepositWorkspace({ initialAsset }: { initialAsset?: string }) {
                         <button
                           disabled={!amountIsValid}
                           onClick={handleGoToTransfer}
-                          className="inline-flex w-full items-center justify-center rounded-2xl bg-[#113285] px-5 py-4 text-sm font-bold text-white transition-colors hover:bg-[#0D2768] disabled:cursor-not-allowed disabled:bg-gray-300 sm:w-auto"
+                          className="inline-flex w-full items-center justify-center rounded-2xl bg-[#047857] px-5 py-4 text-sm font-bold text-white transition-colors hover:bg-[#0D2768] disabled:cursor-not-allowed disabled:bg-gray-300 sm:w-auto"
                         >
                           Generate QR
                         </button>

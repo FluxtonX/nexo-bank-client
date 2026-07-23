@@ -35,23 +35,19 @@ export default function Navbar() {
       <header
         className={`w-full max-w-7xl rounded-full border px-6 py-2 flex items-center justify-between transition-all duration-500 ease-in-out ${
           isScrolled
-            ? "bg-gradient-to-r from-[#022B5B]/95 to-[#0054A6]/95 backdrop-blur shadow-[0_8px_30px_rgb(0,0,0,0.12)] border-white/10"
-            : "bg-gradient-to-r from-[#022B5B] to-[#0054A6] shadow-lg border-white/5"
+            ? "bg-gradient-to-r from-[#022c22]/95 to-[#064e3b]/95 backdrop-blur shadow-[0_8px_30px_rgb(0,0,0,0.12)] border-white/10"
+            : "bg-gradient-to-r from-[#022c22] to-[#064e3b] shadow-lg border-white/5"
         }`}
       >
         {/* Logo */}
         <div className="flex-shrink-0 flex items-center">
-          <Link href="/" className="flex items-center group">
-            <Image
-              src="/cdnt-logo.png"
-              alt="CDNT Bank Logo"
-              width={300}
-              height={100}
-              quality={100}
-              priority
-              unoptimized={true}
-              className="h-10 md:h-12 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
-            />
+          <Link href="/" className="flex items-center gap-2.5 group">
+            <div className="h-9 w-9 rounded-xl bg-gradient-to-tr from-emerald-400 to-emerald-600 flex items-center justify-center text-slate-950 font-black text-lg shadow-lg shadow-emerald-500/20 transition-transform duration-300 group-hover:scale-105">
+              N
+            </div>
+            <span className="text-xl font-extrabold tracking-tight text-white transition-transform duration-300 group-hover:scale-105">
+              Nexo <span className="text-emerald-400">Bank</span>
+            </span>
           </Link>
         </div>
 
@@ -63,7 +59,7 @@ export default function Navbar() {
               href={link.href}
               className={`text-[15px] transition-all duration-300 tracking-wide ${
                 pathname === link.href || (pathname === '/' && link.href === '/') || (pathname !== '/' && link.href !== '/' && pathname.startsWith(link.href))
-                  ? "text-[#60A5FA] font-semibold"
+                  ? "text-[#34d399] font-semibold"
                   : "font-medium text-white/80 hover:text-white"
               }`}
             >
@@ -106,7 +102,7 @@ export default function Navbar() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -20, scale: 0.95 }}
             transition={{ duration: 0.2, ease: "easeOut" }}
-            className="md:hidden absolute top-[76px] left-4 right-4 bg-gradient-to-b from-[#022B5B] to-[#004285] rounded-3xl border border-white/10 shadow-2xl overflow-hidden backdrop-blur-xl z-40"
+            className="md:hidden absolute top-[76px] left-4 right-4 bg-gradient-to-b from-[#022c22] to-[#047857] rounded-3xl border border-white/10 shadow-2xl overflow-hidden backdrop-blur-xl z-40"
           >
             <div className="px-5 pt-5 pb-7 space-y-4">
               <nav className="flex flex-col space-y-2">
@@ -116,7 +112,7 @@ export default function Navbar() {
                     href={link.href}
                     className={`block px-4 py-3 text-base font-medium rounded-xl transition-all duration-200 ${
                       pathname === link.href || (pathname === '/' && link.href === '/') || (pathname !== '/' && link.href !== '/' && pathname.startsWith(link.href))
-                        ? "text-[#60A5FA] bg-white/10 border border-white/5"
+                        ? "text-[#34d399] bg-white/10 border border-white/5"
                         : "text-white/80 hover:bg-white/5 hover:text-white"
                     }`}
                     onClick={() => setIsMobileMenuOpen(false)}

@@ -356,7 +356,7 @@ export default function ExchangePage() {
           </div>
 
           <div className="mt-4 grid grid-cols-2 rounded-lg bg-slate-100 p-1 text-xs font-bold text-slate-500">
-            <button type="button" className="rounded-md bg-white py-2 text-[#113285] shadow-sm">Crypto</button>
+            <button type="button" className="rounded-md bg-white py-2 text-[#047857] shadow-sm">Crypto</button>
             <button type="button" className="py-2">Stablecoins</button>
           </div>
 
@@ -375,7 +375,7 @@ export default function ExchangePage() {
                   }}
                   className={cn(
                     "flex w-full items-center gap-2 rounded-xl border px-2.5 py-3 text-left transition-all",
-                    active ? "border-[#113285] bg-blue-50" : "border-transparent hover:bg-slate-50",
+                    active ? "border-[#047857] bg-emerald-50" : "border-transparent hover:bg-slate-50",
                   )}
                 >
                   <CoinLogo src={coin.logoUrl} symbol={coin.baseAsset} className="h-7 w-7 p-1" />
@@ -442,7 +442,7 @@ export default function ExchangePage() {
               ["Market Status", "Open"],
               ["Network", selectedCoin.label],
             ].map(([label, value]) => (
-              <div key={label} className="rounded-lg bg-blue-50 px-4 py-3">
+              <div key={label} className="rounded-lg bg-emerald-50 px-4 py-3">
                 <p className="text-xs font-semibold text-[#718096]">{label}</p>
                 <p className="mt-1 text-sm font-black text-[#0A0F2C]">{value}</p>
               </div>
@@ -457,7 +457,7 @@ export default function ExchangePage() {
             aria-label={orderPanelOpen ? "Hide order panel" : "Show order panel"}
             onClick={() => setOrderPanelOpen((value) => !value)}
             className={cn(
-              "grid h-9 w-9 place-items-center rounded-lg border border-slate-200 bg-white text-[#113285] shadow-sm transition-colors hover:bg-blue-50",
+              "grid h-9 w-9 place-items-center rounded-lg border border-slate-200 bg-white text-[#047857] shadow-sm transition-colors hover:bg-emerald-50",
               orderPanelOpen ? "absolute -left-3 top-3 z-20" : "mx-auto",
             )}
           >
@@ -466,10 +466,10 @@ export default function ExchangePage() {
 
           {!orderPanelOpen && (
             <div className="mt-4 flex h-[520px] flex-col items-center justify-center gap-4">
-              <span className="grid h-9 w-9 place-items-center rounded-full bg-[#113285] text-white">
+              <span className="grid h-9 w-9 place-items-center rounded-full bg-[#047857] text-white">
                 <Wallet className="h-4 w-4" />
               </span>
-              <span className="[writing-mode:vertical-rl] rotate-180 text-xs font-black uppercase tracking-widest text-[#113285]">
+              <span className="[writing-mode:vertical-rl] rotate-180 text-xs font-black uppercase tracking-widest text-[#047857]">
                 Buy / Sell
               </span>
             </div>
@@ -488,7 +488,7 @@ export default function ExchangePage() {
                 <button
                   type="button"
                   onClick={() => switchSide("sell")}
-                  className={cn("rounded-lg py-3 text-sm font-black transition-colors", side === "sell" ? "bg-[#113285] text-white shadow-sm" : "text-slate-500")}
+                  className={cn("rounded-lg py-3 text-sm font-black transition-colors", side === "sell" ? "bg-[#047857] text-white shadow-sm" : "text-slate-500")}
                 >
                   Sell
                 </button>
@@ -503,7 +503,7 @@ export default function ExchangePage() {
                     className={cn(
                       "rounded-lg border-2 py-2 text-xs font-black transition-colors",
                       baseCurrency === currency
-                        ? "border-[#113285] bg-white text-[#113285] shadow-sm"
+                        ? "border-[#047857] bg-white text-[#047857] shadow-sm"
                         : "border-transparent text-slate-500 hover:text-slate-700"
                     )}
                   >
@@ -521,12 +521,12 @@ export default function ExchangePage() {
                 </h3>
               </div>
 
-              <div className={cn("mt-4 rounded-xl border p-4", side === "buy" ? "border-blue-200 bg-blue-50" : "border-emerald-200 bg-emerald-50")}>
-                <div className="flex items-center gap-2 text-xs font-bold text-[#113285]">
+              <div className={cn("mt-4 rounded-xl border p-4", side === "buy" ? "border-emerald-200 bg-emerald-50" : "border-emerald-200 bg-emerald-50")}>
+                <div className="flex items-center gap-2 text-xs font-bold text-[#047857]">
                   <Wallet className="h-4 w-4" />
                   Available Balance
                 </div>
-                <p className="mt-2 text-lg font-black text-[#113285]">
+                <p className="mt-2 text-lg font-black text-[#047857]">
                   {side === "buy"
                     ? loadingBalances ? "--" : `${(
                         baseCurrency === "CAD"
@@ -551,7 +551,7 @@ export default function ExchangePage() {
                 placeholder={priceLoading ? "Loading price..." : side === "buy" ? "0.00" : "0.00000000"}
                 disabled={priceLoading}
                 className={cn(
-                  "mt-2 h-14 w-full rounded-xl border border-slate-200 px-4 text-lg font-black text-[#0A0F2C] outline-none transition focus:border-[#113285] focus:ring-4 focus:ring-blue-100",
+                  "mt-2 h-14 w-full rounded-xl border border-slate-200 px-4 text-lg font-black text-[#0A0F2C] outline-none transition focus:border-[#047857] focus:ring-4 focus:ring-emerald-100",
                   priceLoading && "cursor-not-allowed bg-slate-100 text-slate-400",
                 )}
               />
@@ -581,7 +581,7 @@ export default function ExchangePage() {
                         setAmount(((assetBalance * value) / 100).toFixed(selectedCoin.baseAsset === "BTC" ? 8 : 4));
                       }
                     }}
-                    className="rounded-lg border border-slate-200 px-2 py-2 text-xs font-bold text-[#0A0F2C] hover:border-[#113285]"
+                    className="rounded-lg border border-slate-200 px-2 py-2 text-xs font-bold text-[#0A0F2C] hover:border-[#047857]"
                   >
                     {side === "buy" ? `${value}` : `${value}%`}
                   </button>
@@ -597,7 +597,7 @@ export default function ExchangePage() {
                       setAmount(assetBalance.toFixed(selectedCoin.baseAsset === "BTC" ? 8 : 4));
                     }
                   }}
-                  className="rounded-lg border border-slate-200 px-2 py-2 text-xs font-bold text-[#0A0F2C] hover:border-[#113285]"
+                  className="rounded-lg border border-slate-200 px-2 py-2 text-xs font-bold text-[#0A0F2C] hover:border-[#047857]"
                 >
                   Max
                 </button>
@@ -645,7 +645,7 @@ export default function ExchangePage() {
                 disabled={tradeLoading || priceLoading || !priceReady || !amount || Number(amount) <= 0}
                 className={cn(
                   "mt-5 flex h-12 w-full items-center justify-center gap-2 rounded-xl text-sm font-black text-white transition-colors disabled:opacity-50",
-                  side === "buy" ? "bg-emerald-500 hover:bg-emerald-600" : "bg-[#113285] hover:bg-[#0D266A]",
+                  side === "buy" ? "bg-emerald-500 hover:bg-emerald-600" : "bg-[#047857] hover:bg-[#064e3b]",
                 )}
               >
                 {tradeLoading ? (

@@ -32,7 +32,7 @@ export default function StepsSection() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
-            className="text-xs font-bold uppercase tracking-widest text-[#3061EF] mb-3"
+            className="text-xs font-bold uppercase tracking-widest text-[#047857] mb-3"
           >
             Getting Started
           </motion.p>
@@ -56,13 +56,13 @@ export default function StepsSection() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="group relative z-10 flex flex-col items-start bg-white p-8 rounded-[1.5rem] border border-slate-200/80 shadow-[0_8px_30px_rgba(0,0,0,0.02)] hover:border-[#3061EF]/40 hover:shadow-md hover:shadow-blue-500/5 transition-all duration-300"
+              className="group relative z-10 flex flex-col items-start bg-white p-8 rounded-[1.5rem] border border-slate-200/80 shadow-[0_8px_30px_rgba(0,0,0,0.02)] hover:border-[#047857]/40 hover:shadow-md hover:shadow-emerald-500/5 transition-all duration-300"
             >
               {/* Number Circle Badge */}
-              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#3061EF]/10 text-[#3061EF] font-black text-sm tracking-wide mb-6 group-hover:bg-[#3061EF] group-hover:text-white transition-colors duration-300">
+              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#047857]/10 text-[#047857] font-black text-sm tracking-wide mb-6 group-hover:bg-[#047857] group-hover:text-white transition-colors duration-300">
                 {step.number}
               </div>
-              <h3 className="text-lg font-bold text-[#0B1220] tracking-tight group-hover:text-[#3061EF] transition-colors duration-300 font-heading">
+              <h3 className="text-lg font-bold text-[#0B1220] tracking-tight group-hover:text-[#047857] transition-colors duration-300 font-heading">
                 {step.title}
               </h3>
               <p className="mt-3.5 text-sm leading-relaxed text-slate-500">

@@ -198,7 +198,7 @@ export default function ProfileSettingsPage() {
               type="text"
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
-              className="w-full rounded-xl border border-gray-200 px-4 py-3.5 text-[15px] text-[#0A0F2C] outline-none transition-colors focus:border-[#113285] focus:ring-1 focus:ring-[#113285] disabled:opacity-60 disabled:bg-gray-50"
+              className="w-full rounded-xl border border-gray-200 px-4 py-3.5 text-[15px] text-[#0A0F2C] outline-none transition-colors focus:border-[#047857] focus:ring-1 focus:ring-[#047857] disabled:opacity-60 disabled:bg-gray-50"
               disabled={isSaving}
               required
             />
@@ -210,7 +210,7 @@ export default function ProfileSettingsPage() {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full rounded-xl border border-gray-200 px-4 py-3.5 text-[15px] text-[#0A0F2C] outline-none transition-colors focus:border-[#113285] focus:ring-1 focus:ring-[#113285] disabled:opacity-60 disabled:bg-gray-50"
+              className="w-full rounded-xl border border-gray-200 px-4 py-3.5 text-[15px] text-[#0A0F2C] outline-none transition-colors focus:border-[#047857] focus:ring-1 focus:ring-[#047857] disabled:opacity-60 disabled:bg-gray-50"
               disabled={isSaving}
               required
             />
@@ -222,7 +222,7 @@ export default function ProfileSettingsPage() {
               type="tel"
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
-              className="w-full rounded-xl border border-gray-200 px-4 py-3.5 text-[15px] text-[#0A0F2C] outline-none transition-colors focus:border-[#113285] focus:ring-1 focus:ring-[#113285] disabled:opacity-60 disabled:bg-gray-50"
+              className="w-full rounded-xl border border-gray-200 px-4 py-3.5 text-[15px] text-[#0A0F2C] outline-none transition-colors focus:border-[#047857] focus:ring-1 focus:ring-[#047857] disabled:opacity-60 disabled:bg-gray-50"
               disabled={isSaving}
               required
             />
@@ -232,7 +232,7 @@ export default function ProfileSettingsPage() {
             <button
               type="submit"
               disabled={isSaving}
-              className="flex items-center justify-center min-w-[140px] rounded-xl bg-[#113285] px-6 py-3 text-[14px] font-bold text-white shadow-sm transition-colors hover:bg-blue-900 focus:outline-none focus:ring-2 focus:ring-[#113285] focus:ring-offset-2 disabled:opacity-70"
+              className="flex items-center justify-center min-w-[140px] rounded-xl bg-[#047857] px-6 py-3 text-[14px] font-bold text-white shadow-sm transition-colors hover:bg-emerald-900 focus:outline-none focus:ring-2 focus:ring-[#047857] focus:ring-offset-2 disabled:opacity-70"
             >
               {isSaving ? (
                 <span className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>

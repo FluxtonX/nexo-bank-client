@@ -92,7 +92,7 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#1855C0] bg-gradient-to-br from-[#1C5BD0] to-[#123E95] flex flex-col items-center justify-center p-6 relative">
+    <div className="min-h-screen bg-gradient-to-br from-emerald-950 via-slate-900 to-emerald-900 flex flex-col items-center justify-center p-6 relative">
       
       {/* Back to home arrow */}
       <Link 
@@ -108,7 +108,7 @@ export default function RegisterPage() {
         <div className="mb-4 flex justify-center">
           <Image 
             src="/cdnt-logo.png" 
-            alt="CDNT Bank Logo" 
+            alt="Nexo Bank Logo" 
             width={450} 
             height={150} 
             className="h-20 md:h-24 w-auto object-contain"
@@ -117,7 +117,7 @@ export default function RegisterPage() {
           />
         </div>
         <h1 className="text-white text-2xl font-bold mb-1">Create Your Account</h1>
-        <p className="text-blue-100 text-[14px]">Join thousands of Canadians banking with crypto</p>
+        <p className="text-emerald-100 text-[14px]">Join thousands of Canadians banking with crypto</p>
       </div>
 
       {/* Progress Indicator */}
@@ -156,7 +156,7 @@ export default function RegisterPage() {
                   placeholder="John Smith" 
                   value={fullName}
                   onChange={(e) => setFullName(e.target.value)}
-                  className="w-full px-4 py-3 rounded-xl border border-gray-200 text-[15px] focus:outline-none focus:ring-2 focus:ring-[#1A3FBB] focus:border-transparent transition-all placeholder:text-gray-400"
+                  className="w-full px-4 py-3 rounded-xl border border-gray-200 text-[15px] focus:outline-none focus:ring-2 focus:ring-[#064e3b] focus:border-transparent transition-all placeholder:text-gray-400"
                   required
                 />
               </div>
@@ -168,7 +168,7 @@ export default function RegisterPage() {
                   placeholder="your@email.com" 
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full px-4 py-3 rounded-xl border border-gray-200 text-[15px] focus:outline-none focus:ring-2 focus:ring-[#1A3FBB] focus:border-transparent transition-all placeholder:text-gray-400"
+                  className="w-full px-4 py-3 rounded-xl border border-gray-200 text-[15px] focus:outline-none focus:ring-2 focus:ring-[#064e3b] focus:border-transparent transition-all placeholder:text-gray-400"
                   required
                 />
               </div>
@@ -180,14 +180,14 @@ export default function RegisterPage() {
                   placeholder="+1 (555) 000-0000" 
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
-                  className="w-full px-4 py-3 rounded-xl border border-gray-200 text-[15px] focus:outline-none focus:ring-2 focus:ring-[#1A3FBB] focus:border-transparent transition-all placeholder:text-gray-400"
+                  className="w-full px-4 py-3 rounded-xl border border-gray-200 text-[15px] focus:outline-none focus:ring-2 focus:ring-[#064e3b] focus:border-transparent transition-all placeholder:text-gray-400"
                   required
                 />
               </div>
 
               <button 
                 type="submit"
-                className="w-full bg-[#113285] hover:bg-[#0D266A] text-white font-bold text-[15px] py-3.5 rounded-xl transition-colors shadow-md mt-2"
+                className="w-full bg-[#047857] hover:bg-[#064e3b] text-white font-bold text-[15px] py-3.5 rounded-xl transition-colors shadow-md mt-2"
               >
                 Continue
               </button>
@@ -209,7 +209,7 @@ export default function RegisterPage() {
                     placeholder="Enter a strong password" 
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="w-full px-4 py-3 rounded-xl border border-gray-200 text-[15px] focus:outline-none focus:ring-2 focus:ring-[#1A3FBB] focus:border-transparent transition-all placeholder:text-gray-400 pr-12"
+                    className="w-full px-4 py-3 rounded-xl border border-gray-200 text-[15px] focus:outline-none focus:ring-2 focus:ring-[#064e3b] focus:border-transparent transition-all placeholder:text-gray-400 pr-12"
                     required
                   />
                   <button 
@@ -230,7 +230,7 @@ export default function RegisterPage() {
                     placeholder="Re-enter your password" 
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
-                    className="w-full px-4 py-3 rounded-xl border border-gray-200 text-[15px] focus:outline-none focus:ring-2 focus:ring-[#1A3FBB] focus:border-transparent transition-all placeholder:text-gray-400 pr-12"
+                    className="w-full px-4 py-3 rounded-xl border border-gray-200 text-[15px] focus:outline-none focus:ring-2 focus:ring-[#064e3b] focus:border-transparent transition-all placeholder:text-gray-400 pr-12"
                     required
                   />
                   <button 
@@ -273,7 +273,7 @@ export default function RegisterPage() {
                 <button 
                   type="submit"
                   disabled={!canProceedStep2}
-                  className="w-1/2 bg-[#113285] hover:bg-[#0D266A] disabled:opacity-60 disabled:hover:bg-[#113285] text-white font-bold text-[15px] py-3.5 rounded-xl transition-colors shadow-md"
+                  className="w-1/2 bg-[#047857] hover:bg-[#064e3b] disabled:opacity-60 disabled:hover:bg-[#047857] text-white font-bold text-[15px] py-3.5 rounded-xl transition-colors shadow-md"
                 >
                   Continue
                 </button>
@@ -313,7 +313,7 @@ export default function RegisterPage() {
                   type="checkbox" 
                   checked={agreeTos}
                   onChange={(e) => setAgreeTos(e.target.checked)}
-                  className="mt-0.5 w-4 h-4 rounded border-gray-300 text-[#1A3FBB] focus:ring-[#1A3FBB]" 
+                  className="mt-0.5 w-4 h-4 rounded border-gray-300 text-[#064e3b] focus:ring-[#064e3b]" 
                   required
                 />
                 <span className="text-[12px] text-[#0A0F2C] font-medium leading-snug">
@@ -332,7 +332,7 @@ export default function RegisterPage() {
                 <button 
                   type="submit"
                   disabled={!agreeTos || isLoading}
-                  className="w-1/2 bg-[#113285] hover:bg-[#0D266A] disabled:opacity-60 disabled:hover:bg-[#113285] text-white font-bold text-[15px] py-3.5 rounded-xl transition-colors shadow-md flex items-center justify-center"
+                  className="w-1/2 bg-[#047857] hover:bg-[#064e3b] disabled:opacity-60 disabled:hover:bg-[#047857] text-white font-bold text-[15px] py-3.5 rounded-xl transition-colors shadow-md flex items-center justify-center"
                 >
                   {isLoading ? (
                     <span className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
@@ -347,13 +347,13 @@ export default function RegisterPage() {
 
         <div className="mt-6 pt-5 border-t border-gray-100 text-center">
           <p className="text-[13px] text-gray-500">
-            Already have an account? <Link href="/login" className="text-[#113285] font-bold hover:underline">Sign in</Link>
+            Already have an account? <Link href="/login" className="text-[#047857] font-bold hover:underline">Sign in</Link>
           </p>
         </div>
       </div>
 
       {/* Footer text */}
-      <p className="text-blue-200/70 text-xs mt-6">
+      <p className="text-emerald-200/70 text-xs mt-6">
         Protected by bank-grade encryption and security
       </p>
 

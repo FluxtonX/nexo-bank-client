@@ -34,7 +34,7 @@ export function ThemeToggle() {
             onClick={() => setTheme(mode.value)}
             title={`${mode.label} mode`}
             className={`grid h-8 w-11 place-items-center rounded text-banking-muted transition ${
-              active ? "bg-banking-blue text-white" : "hover:bg-blue-50"
+              active ? "bg-banking-blue text-white" : "hover:bg-emerald-50"
             }`}
           >
             <Icon className="h-4 w-4" />

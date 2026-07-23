@@ -76,7 +76,7 @@ export function FixedDepositQR({ config, liveAddress, addressError }: FixedDepos
 
       <button
         onClick={handleCopy}
-        className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-white px-4 py-3 text-sm font-bold text-[#0A0F2C] transition-colors hover:bg-blue-50"
+        className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-white px-4 py-3 text-sm font-bold text-[#0A0F2C] transition-colors hover:bg-emerald-50"
       >
         {copied ? <ClipboardCheck className="h-4 w-4 shrink-0 text-emerald-600" /> : <Copy className="h-4 w-4 shrink-0" />}
         <span className="truncate">{displayAddress}</span>

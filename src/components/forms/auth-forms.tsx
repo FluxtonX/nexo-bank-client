@@ -45,7 +45,7 @@ export function LoginForm() {
     console.log("Login ready", values);
     notify({
       title: "Verifying credentials...",
-      description: "Establishing an encrypted session with the CDNT server.",
+      description: "Establishing an encrypted session with the Nexo Bank server.",
     });
 
     // Mock login delay
@@ -117,7 +117,7 @@ export function LoginForm() {
         >
           <span className="relative z-10 flex items-center gap-2">
             <Lock className="h-4 w-4" />
-            Sign in to CDNT
+            Sign in to Nexo Bank
             <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
           </span>
           <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
@@ -129,7 +129,7 @@ export function LoginForm() {
       <p className="text-center text-sm text-banking-muted font-medium">
         Don&apos;t have an account?{" "}
         <Link href="/register" className="font-bold text-banking-blue hover:underline">
-          Join CDNT today
+          Join Nexo Bank today
         </Link>
       </p>
     </div>
@@ -167,7 +167,7 @@ export function RegisterForm() {
     
     notify({
       title: "Account Created",
-      description: "Welcome to CDNT. Let's verify your identity.",
+      description: "Welcome to Nexo Bank. Let's verify your identity.",
     });
 
     router.push("/kyc");

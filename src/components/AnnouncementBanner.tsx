@@ -7,7 +7,7 @@ import { createClient } from "@/lib/supabase/client";
 const STORAGE_KEY = "banner_dismissed";
 
 const COLOR_MAP: Record<string, string> = {
-  blue:   "#1650AB",
+  blue:   "#047857",
   amber:  "#D97706",
   green:  "#059669",
   red:    "#DC2626",

@@ -18,7 +18,7 @@ export function ReportCard({
   return (
     <article className="rounded-lg border border-banking-border bg-white p-5 shadow-sm">
       <div className="flex items-start justify-between gap-4">
-        <div className="grid h-11 w-11 place-items-center rounded-md bg-blue-50 text-banking-blue">
+        <div className="grid h-11 w-11 place-items-center rounded-md bg-emerald-50 text-banking-blue">
           <FileText className="h-5 w-5" />
         </div>
         <span className="rounded-full bg-banking-offWhite px-2.5 py-1 text-xs font-semibold text-banking-muted">

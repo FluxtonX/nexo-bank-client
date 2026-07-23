@@ -61,9 +61,9 @@ export default function DevicesSettingsPage() {
 
   const getDeviceIcon = (os: string) => {
     if (os.includes("iOS") || os.includes("Android")) {
-      return <Smartphone className="h-6 w-6 text-[#113285]" strokeWidth={2} />;
+      return <Smartphone className="h-6 w-6 text-[#047857]" strokeWidth={2} />;
     }
-    return <Monitor className="h-6 w-6 text-[#113285]" strokeWidth={2} />;
+    return <Monitor className="h-6 w-6 text-[#047857]" strokeWidth={2} />;
   };
 
   const formatTime = (dateString: string) => {
@@ -88,7 +88,7 @@ export default function DevicesSettingsPage() {
         <div className="space-y-4">
           {isLoading ? (
             <div className="flex justify-center p-4">
-              <span className="w-6 h-6 border-2 border-[#113285]/30 border-t-[#113285] rounded-full animate-spin"></span>
+              <span className="w-6 h-6 border-2 border-[#047857]/30 border-t-[#047857] rounded-full animate-spin"></span>
             </div>
           ) : sessions.length === 0 ? (
             <p className="text-[14px] text-gray-500 text-center py-4">No trusted devices found.</p>
@@ -118,7 +118,7 @@ export default function DevicesSettingsPage() {
                     <button 
                       onClick={() => handleRevoke(session.id)}
                       disabled={isOnlyDevice || isCurrent}
-                      className="rounded-xl border border-gray-200 bg-white px-5 py-2.5 text-[13px] font-bold text-[#0A0F2C] shadow-sm transition-colors hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#113285] focus:ring-offset-2 ml-auto sm:ml-0 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white"
+                      className="rounded-xl border border-gray-200 bg-white px-5 py-2.5 text-[13px] font-bold text-[#0A0F2C] shadow-sm transition-colors hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#047857] focus:ring-offset-2 ml-auto sm:ml-0 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white"
                     >
                       Remove
                     </button>

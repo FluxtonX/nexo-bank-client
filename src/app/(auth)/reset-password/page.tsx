@@ -51,7 +51,7 @@ export default function ResetPasswordPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#1855C0] bg-gradient-to-br from-[#1C5BD0] to-[#123E95] flex flex-col items-center justify-center p-6 relative">
+    <div className="min-h-screen bg-gradient-to-br from-emerald-950 via-slate-900 to-emerald-900 flex flex-col items-center justify-center p-6 relative">
       
       {/* Back to home arrow */}
       <Link 
@@ -67,7 +67,7 @@ export default function ResetPasswordPage() {
         <div className="mb-4 flex justify-center">
           <Image 
             src="/cdnt-logo.png" 
-            alt="CDNT Bank Logo" 
+            alt="Nexo Bank Logo" 
             width={450} 
             height={150} 
             className="h-20 md:h-24 w-auto object-contain"
@@ -76,7 +76,7 @@ export default function ResetPasswordPage() {
           />
         </div>
         <h1 className="text-white text-2xl font-bold mb-1">Set New Password</h1>
-        <p className="text-blue-100 text-[14px]">Choose a strong password to secure your account</p>
+        <p className="text-emerald-100 text-[14px]">Choose a strong password to secure your account</p>
       </div>
 
       {/* Reset Password Card */}
@@ -86,7 +86,7 @@ export default function ResetPasswordPage() {
           <div className="bg-red-50 text-red-600 p-4 rounded-xl text-[14px] font-medium border border-red-100 text-center mb-5">
             {error}
             <div className="mt-2">
-              <Link href="/forgot-password" className="text-[#113285] font-bold hover:underline">
+              <Link href="/forgot-password" className="text-[#047857] font-bold hover:underline">
                 Request a new code
               </Link>
             </div>
@@ -102,7 +102,7 @@ export default function ResetPasswordPage() {
               placeholder="Enter new password" 
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-3 rounded-xl border border-gray-200 text-[15px] focus:outline-none focus:ring-2 focus:ring-[#1A3FBB] focus:border-transparent transition-all placeholder:text-gray-400"
+              className="w-full px-4 py-3 rounded-xl border border-gray-200 text-[15px] focus:outline-none focus:ring-2 focus:ring-[#064e3b] focus:border-transparent transition-all placeholder:text-gray-400"
               required
             />
           </div>
@@ -114,7 +114,7 @@ export default function ResetPasswordPage() {
               placeholder="Confirm new password" 
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
-              className="w-full px-4 py-3 rounded-xl border border-gray-200 text-[15px] focus:outline-none focus:ring-2 focus:ring-[#1A3FBB] focus:border-transparent transition-all placeholder:text-gray-400"
+              className="w-full px-4 py-3 rounded-xl border border-gray-200 text-[15px] focus:outline-none focus:ring-2 focus:ring-[#064e3b] focus:border-transparent transition-all placeholder:text-gray-400"
               required
             />
           </div>
@@ -141,7 +141,7 @@ export default function ResetPasswordPage() {
           <button 
             type="submit"
             disabled={!canProceed || isLoading}
-            className="w-full bg-[#113285] hover:bg-[#0D266A] disabled:opacity-60 disabled:hover:bg-[#113285] text-white font-bold text-[15px] py-3.5 rounded-xl transition-colors shadow-md mt-2 flex justify-center items-center"
+            className="w-full bg-[#047857] hover:bg-[#064e3b] disabled:opacity-60 disabled:hover:bg-[#047857] text-white font-bold text-[15px] py-3.5 rounded-xl transition-colors shadow-md mt-2 flex justify-center items-center"
           >
             {isLoading ? (
               <span className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
@@ -153,13 +153,13 @@ export default function ResetPasswordPage() {
 
         <div className="mt-6 pt-5 border-t border-gray-100 text-center">
           <p className="text-[13px] text-gray-500">
-            Remembered your password? <Link href="/login" className="text-[#113285] font-bold hover:underline">Sign in</Link>
+            Remembered your password? <Link href="/login" className="text-[#047857] font-bold hover:underline">Sign in</Link>
           </p>
         </div>
       </div>
 
       {/* Footer text */}
-      <p className="text-blue-200/70 text-xs mt-6">
+      <p className="text-emerald-200/70 text-xs mt-6">
         Protected by bank-grade encryption and security
       </p>
 

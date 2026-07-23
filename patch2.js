@@ -58,7 +58,7 @@ const inputSection = `
                 value={amount}
                 onChange={(e) => handleCryptoChange(e.target.value)}
                 step={isCADAsset ? "0.01" : "0.00000001"}
-                className="w-full rounded-[14px] border border-gray-200 bg-white px-5 py-4 text-[16px] font-medium text-[#0A0F2C] placeholder-[#A0AEC0] outline-none transition-all focus:border-[#113285] focus:ring-1 focus:ring-[#113285]"
+                className="w-full rounded-[14px] border border-gray-200 bg-white px-5 py-4 text-[16px] font-medium text-[#0A0F2C] placeholder-[#A0AEC0] outline-none transition-all focus:border-[#047857] focus:ring-1 focus:ring-[#047857]"
               />
               {!isCADAsset && (
                 <div className="mt-4">
@@ -71,7 +71,7 @@ const inputSection = `
                     value={cadAmount}
                     onChange={(e) => handleCadChange(e.target.value)}
                     step="0.01"
-                    className="w-full rounded-[14px] border border-gray-200 bg-white px-5 py-4 text-[16px] font-medium text-[#0A0F2C] placeholder-[#A0AEC0] outline-none transition-all focus:border-[#113285] focus:ring-1 focus:ring-[#113285]"
+                    className="w-full rounded-[14px] border border-gray-200 bg-white px-5 py-4 text-[16px] font-medium text-[#0A0F2C] placeholder-[#A0AEC0] outline-none transition-all focus:border-[#047857] focus:ring-1 focus:ring-[#047857]"
                   />
                 </div>
               )}

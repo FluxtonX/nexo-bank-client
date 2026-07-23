@@ -137,7 +137,7 @@ export function SiteHeader() {
               <div className="relative h-12 w-auto">
                 <img 
                   src="/logo.png" 
-                  alt="CDNT" 
+                  alt="Nexo Bank" 
                   className="h-full w-auto object-contain" 
                   onError={(e) => {
                     // Fallback to text if image fails
@@ -345,7 +345,7 @@ export function SiteHeader() {
 
 export function SiteFooter() {
   return (
-    <footer className="relative bg-[#07111F] pt-24 pb-12 text-white border-t border-white/5">
+    <footer className="relative bg-[#022c22] pt-24 pb-12 text-white border-t border-white/5">
       {/* Background radial highlight */}
       <div className="absolute right-0 bottom-0 h-96 w-96 rounded-full bg-banking-blue/10 blur-[120px] pointer-events-none" />
       
@@ -354,7 +354,7 @@ export function SiteFooter() {
           <div className="lg:col-span-2">
             <Link href="/" className="inline-flex items-center gap-2 group">
               <div className="h-10 w-auto flex items-center font-bold text-white text-2xl tracking-tight">
-                <span className="inline-block h-6 w-6 rounded-full bg-gradient-to-tr from-[#3061EF] to-sky-400 mr-2 shadow-lg shadow-blue-500/30" />
+                <span className="inline-block h-6 w-6 rounded-full bg-gradient-to-tr from-[#047857] to-sky-400 mr-2 shadow-lg shadow-emerald-500/30" />
                 CDNT
               </div>
             </Link>
@@ -374,7 +374,7 @@ export function SiteFooter() {
                 <Link 
                   key={i} 
                   href={social.href}
-                  className="h-9 w-9 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white/40 hover:bg-[#3061EF] hover:text-white hover:border-[#3061EF] transition-all"
+                  className="h-9 w-9 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white/40 hover:bg-[#047857] hover:text-white hover:border-[#047857] transition-all"
                 >
                   <social.icon className="h-4 w-4" />
                 </Link>
@@ -383,7 +383,7 @@ export function SiteFooter() {
           </div>
 
           <div>
-            <h4 className="text-xs font-bold uppercase tracking-widest text-[#3061EF]">Products</h4>
+            <h4 className="text-xs font-bold uppercase tracking-widest text-[#047857]">Products</h4>
             <ul className="mt-6 space-y-3.5">
               <li><Link href="/accounts" className="text-sm text-white/50 hover:text-white transition-colors">Accounts</Link></li>
               <li><Link href="/products/credit-cards" className="text-sm text-white/50 hover:text-white transition-colors">Credit Cards</Link></li>
@@ -393,7 +393,7 @@ export function SiteFooter() {
           </div>
 
           <div>
-            <h4 className="text-xs font-bold uppercase tracking-widest text-[#3061EF]">Wealth</h4>
+            <h4 className="text-xs font-bold uppercase tracking-widest text-[#047857]">Wealth</h4>
             <ul className="mt-6 space-y-3.5">
               <li><Link href="/wealth" className="text-sm text-white/50 hover:text-white transition-colors">Wealth Management</Link></li>
               <li><Link href="#" className="text-sm text-white/50 hover:text-white transition-colors">Managed Portfolios</Link></li>
@@ -403,7 +403,7 @@ export function SiteFooter() {
           </div>
 
           <div>
-            <h4 className="text-xs font-bold uppercase tracking-widest text-[#3061EF]">Pricing</h4>
+            <h4 className="text-xs font-bold uppercase tracking-widest text-[#047857]">Pricing</h4>
             <ul className="mt-6 space-y-3.5">
               <li><Link href="/pricing" className="text-sm text-white/50 hover:text-white transition-colors">Personal Fees</Link></li>
               <li><Link href="#" className="text-sm text-white/50 hover:text-white transition-colors">Business Fees</Link></li>
@@ -413,7 +413,7 @@ export function SiteFooter() {
           </div>
 
           <div>
-            <h4 className="text-xs font-bold uppercase tracking-widest text-[#3061EF]">Company</h4>
+            <h4 className="text-xs font-bold uppercase tracking-widest text-[#047857]">Company</h4>
             <ul className="mt-6 space-y-3.5">
               <li><Link href="/about" className="text-sm text-white/50 hover:text-white transition-colors">About NUB</Link></li>
               <li><Link href="/contact" className="text-sm text-white/50 hover:text-white transition-colors">Contact Support</Link></li>
@@ -431,7 +431,7 @@ export function SiteFooter() {
                 All digital asset representations and transactions are simulated for platform evaluation purposes.
               </p>
               <p>
-                &copy; {new Date().getFullYear()} CDNT Financial Services Inc. All rights reserved. 
+                &copy; {new Date().getFullYear()} Nexo Bank Financial Services Inc. All rights reserved. 
                 Member CDIC (Simulated protection applies to fiat-equivalent deposits).
               </p>
             </div>

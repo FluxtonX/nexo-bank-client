@@ -71,10 +71,10 @@ const ASSET_GRADIENTS: Record<
   string,
   { id: string; light: string; dark: string; dot: string; label: string }
 > = {
-  BTC: { id: "gradBtc", light: "#2563EB", dark: "#1D4ED8", dot: "#2563EB", label: "Bitcoin" },
+  BTC: { id: "gradBtc", light: "#064e3b", dark: "#064e3b", dot: "#064e3b", label: "Bitcoin" },
   ETH: { id: "gradEth", light: "#6366f1", dark: "#4f46e5", dot: "#6366f1", label: "Ethereum" },
   USDT: { id: "gradUsdt", light: "#F59E0B", dark: "#D97706", dot: "#F59E0B", label: "USDT" },
-  USDC: { id: "gradUsdc", light: "#3b82f6", dark: "#2563eb", dot: "#3b82f6", label: "USDC" },
+  USDC: { id: "gradUsdc", light: "#064e3b", dark: "#064e3b", dot: "#064e3b", label: "USDC" },
   CAD: { id: "gradCad", light: "#10b981", dark: "#059669", dot: "#10b981", label: "CAD" },
 };
 
@@ -557,14 +557,14 @@ export default function DashboardPage() {
 
   return (
     <div className="space-y-6">
-      <div className="bg-[#1855C0] rounded-2xl p-8 text-white shadow-lg">
+      <div className="bg-slate-950 rounded-2xl p-8 text-white shadow-lg">
         <div className="flex flex-col md:flex-row justify-between items-start gap-6">
           <div>
             <div className="flex items-center gap-2 mb-1">
-              <span className="text-[13px] text-blue-100/90 font-medium">{portfolioLabel}</span>
+              <span className="text-[13px] text-emerald-100/90 font-medium">{portfolioLabel}</span>
               <button
                 onClick={() => setHideBalance(!hideBalance)}
-                className="hover:text-white text-blue-100/80 transition-colors"
+                className="hover:text-white text-emerald-100/80 transition-colors"
               >
                 <Eye className="w-4 h-4" />
               </button>
@@ -596,11 +596,11 @@ export default function DashboardPage() {
                 ({percentChange >= 0 ? "+" : ""}
                 {percentChange.toFixed(1)}%)
               </span>
-              <span className="text-blue-200/80">{timeframeLabel}</span>
+              <span className="text-emerald-200/80">{timeframeLabel}</span>
             </div>
           </div>
           <div className="md:text-right">
-            <span className="text-[13px] text-blue-100/90 font-medium">{cadBalanceLabel}</span>
+            <span className="text-[13px] text-emerald-100/90 font-medium">{cadBalanceLabel}</span>
             <div className="text-xl md:text-2xl font-bold mt-1">
               {hideBalance ? (
                 "$•,•••.••"
@@ -644,7 +644,7 @@ export default function DashboardPage() {
                   className={cn(
                     "px-2.5 py-1 rounded-full text-[11px] font-bold transition-all",
                     performanceRange === range
-                      ? "bg-[#2563eb] text-white shadow-md shadow-blue-500/30"
+                      ? "bg-[#064e3b] text-white shadow-md shadow-emerald-500/30"
                       : "bg-transparent text-white/80 hover:text-white hover:bg-white/10",
                   )}
                 >
@@ -664,7 +664,7 @@ export default function DashboardPage() {
                 endDate={customEndDate}
                 maxDate={customEndDate || new Date()}
                 placeholderText={dateFrom}
-                className="px-3 py-1.5 rounded-lg bg-white/10 border border-white/20 text-white text-xs font-medium outline-none focus:border-[#60a5fa] w-[130px]"
+                className="px-3 py-1.5 rounded-lg bg-white/10 border border-white/20 text-white text-xs font-medium outline-none focus:border-[#34d399] w-[130px]"
                 calendarClassName="!font-sans"
               />
               <span className="text-white/50 text-xs">→</span>
@@ -677,7 +677,7 @@ export default function DashboardPage() {
                 minDate={customStartDate || undefined}
                 maxDate={new Date()}
                 placeholderText={dateTo}
-                className="px-3 py-1.5 rounded-lg bg-white/10 border border-white/20 text-white text-xs font-medium outline-none focus:border-[#60a5fa] w-[130px]"
+                className="px-3 py-1.5 rounded-lg bg-white/10 border border-white/20 text-white text-xs font-medium outline-none focus:border-[#34d399] w-[130px]"
                 calendarClassName="!font-sans"
               />
             </div>
@@ -688,11 +688,11 @@ export default function DashboardPage() {
               <AreaChart data={chartPerformanceData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
                 <defs>
                   <linearGradient id="performanceAreaGradient" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="#60a5fa" stopOpacity={0.45} />
-                    <stop offset="100%" stopColor="#60a5fa" stopOpacity={0} />
+                    <stop offset="0%" stopColor="#34d399" stopOpacity={0.45} />
+                    <stop offset="100%" stopColor="#34d399" stopOpacity={0} />
                   </linearGradient>
                   <filter id="lineGlow" x="-20%" y="-20%" width="140%" height="140%">
-                    <feDropShadow dx="0" dy="0" stdDeviation="6" floodColor="#60a5fa" floodOpacity="1" />
+                    <feDropShadow dx="0" dy="0" stdDeviation="6" floodColor="#34d399" floodOpacity="1" />
                   </filter>
                 </defs>
                 <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" vertical={false} />
@@ -727,7 +727,7 @@ export default function DashboardPage() {
                 <Area
                   type="monotone"
                   dataKey="value"
-                  stroke="#60a5fa"
+                  stroke="#34d399"
                   strokeWidth={2.5}
                   fill="url(#performanceAreaGradient)"
                   dot={false}
@@ -864,13 +864,13 @@ export default function DashboardPage() {
                       <div
                         className={cn(
                           "w-10 h-10 rounded-xl flex items-center justify-center",
-                          isDeposit ? "bg-green-50" : "bg-blue-50",
+                          isDeposit ? "bg-green-50" : "bg-emerald-50",
                         )}
                       >
                         {isDeposit ? (
                           <ArrowDownLeft className="w-5 h-5 text-[#10B981]" strokeWidth={2.5} />
                         ) : (
-                          <ArrowUpRight className="w-5 h-5 text-[#113285]" strokeWidth={2.5} />
+                          <ArrowUpRight className="w-5 h-5 text-[#047857]" strokeWidth={2.5} />
                         )}
                       </div>
                       <div>
@@ -884,7 +884,7 @@ export default function DashboardPage() {
                           {(tx.status === "pending" || tx.status === "rejected") && (
                             <button
                               onClick={() => setSelectedTxDetails(tx)}
-                              className="text-[10px] font-bold text-blue-600 bg-blue-50 hover:bg-blue-100 px-1.5 py-0.5 rounded ml-1.5 transition-colors inline-flex items-center gap-1 uppercase"
+                              className="text-[10px] font-bold text-emerald-600 bg-emerald-50 hover:bg-emerald-100 px-1.5 py-0.5 rounded ml-1.5 transition-colors inline-flex items-center gap-1 uppercase"
                             >
                               <Info className="w-3 h-3" />
                               View Details

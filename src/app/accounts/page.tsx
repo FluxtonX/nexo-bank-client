@@ -181,7 +181,7 @@ export default function AccountsOverviewPage() {
             <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
               {accountFamilies.map((account) => (
                 <article key={account.title} className="flex flex-col rounded-2xl border border-banking-border bg-white p-7 shadow-sm transition hover:-translate-y-1 hover:shadow-xl">
-                  <div className="grid h-12 w-12 place-items-center rounded-xl bg-blue-50 text-banking-blue">
+                  <div className="grid h-12 w-12 place-items-center rounded-xl bg-emerald-50 text-banking-blue">
                     <account.icon className="h-6 w-6" />
                   </div>
                   <h3 className="mt-6 text-xl font-semibold text-banking-ink">{account.title}</h3>

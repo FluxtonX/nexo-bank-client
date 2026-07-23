@@ -132,7 +132,7 @@ export function DepositRequestForm({ config, amount }: { config: DepositAddressC
             value={txHash}
             onChange={(event) => setTxHash(event.target.value)}
             placeholder="Paste tx hash after sending"
-            className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm font-bold text-[#0A0F2C] outline-none focus:border-[#113285] focus:ring-4 focus:ring-[#113285]/10"
+            className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm font-bold text-[#0A0F2C] outline-none focus:border-[#047857] focus:ring-4 focus:ring-[#047857]/10"
           />
         </label>
       </div>
@@ -152,7 +152,7 @@ export function DepositRequestForm({ config, amount }: { config: DepositAddressC
       <button
         type="submit"
         disabled={!canSubmit}
-        className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[#113285] px-5 py-3 text-sm font-bold text-white transition-colors hover:bg-[#0D2768] disabled:cursor-not-allowed disabled:bg-gray-300 sm:w-auto"
+        className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[#047857] px-5 py-3 text-sm font-bold text-white transition-colors hover:bg-[#0D2768] disabled:cursor-not-allowed disabled:bg-gray-300 sm:w-auto"
       >
         <Send className="h-4 w-4" />
         {submitting ? "Submitting..." : "Submit request"}

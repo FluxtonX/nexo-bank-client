@@ -9,7 +9,7 @@ export default function KYCLayout({ children }: { children: React.ReactNode }) {
         <div className="mb-5 flex items-center justify-center">
           <Image 
             src="/cdnt-logo.png" 
-            alt="CDNT Bank" 
+            alt="Nexo Bank" 
             width={450} 
             height={150} 
             className="h-20 md:h-24 w-auto object-contain"
@@ -23,10 +23,10 @@ export default function KYCLayout({ children }: { children: React.ReactNode }) {
       </div>
 
       {/* Footer (Requested by user) */}
-      <footer className="mt-8 sm:mt-0 sm:absolute sm:bottom-6 w-full text-center flex flex-col items-center justify-center text-blue-200 text-[12px] opacity-80">
+      <footer className="mt-8 sm:mt-0 sm:absolute sm:bottom-6 w-full text-center flex flex-col items-center justify-center text-emerald-200 text-[12px] opacity-80">
         <Image 
           src="/cdnt-logo.png" 
-          alt="CDNT Bank" 
+          alt="Nexo Bank" 
           width={80} 
           height={30} 
           className="w-[80px] h-auto object-contain brightness-0 invert mb-3 opacity-60"

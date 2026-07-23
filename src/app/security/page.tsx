@@ -37,7 +37,7 @@ export default async function SecurityPage() {
         {/* Header Section */}
         <section className="pt-16 pb-12 px-6">
           <div className="mx-auto max-w-7xl text-center">
-            <h1 className="text-4xl md:text-5xl font-bold text-[#1A3FBB] mb-6 tracking-tight">
+            <h1 className="text-4xl md:text-5xl font-bold text-[#064e3b] mb-6 tracking-tight">
               {content.hero.heading}
             </h1>
             <p className="text-lg md:text-xl text-[#6B7280] leading-relaxed max-w-3xl mx-auto font-medium whitespace-pre-wrap">
@@ -54,7 +54,7 @@ export default async function SecurityPage() {
               const isEven = i % 2 !== 0;
               return (
                 <div key={i} className="bg-white rounded-2xl p-6 flex flex-col items-center justify-center text-center shadow-[0_4px_20px_rgb(0,0,0,0.02)] border border-gray-100 h-40">
-                  <div className={`h-12 w-12 rounded-xl flex items-center justify-center mb-4 shadow-md ${isEven ? 'bg-[#F5B01E] shadow-yellow-500/20' : 'bg-[#1A3FBB] shadow-blue-500/20'}`}>
+                  <div className={`h-12 w-12 rounded-xl flex items-center justify-center mb-4 shadow-md ${isEven ? 'bg-[#F5B01E] shadow-yellow-500/20' : 'bg-[#064e3b] shadow-emerald-500/20'}`}>
                     <IconComponent className="h-6 w-6 text-white" strokeWidth={2} />
                   </div>
                   <h3 className="font-bold text-[#0A0F2C] text-sm leading-tight whitespace-pre-wrap">{badge.title}</h3>
@@ -77,7 +77,7 @@ export default async function SecurityPage() {
                 const IconComponent = IconMap[card.icon] || Lock;
                 return (
                   <div key={i} className="bg-[#F8F9FA] rounded-3xl p-10 border border-gray-100">
-                    <div className="h-12 w-12 rounded-xl bg-[#1A3FBB] flex items-center justify-center mb-6">
+                    <div className="h-12 w-12 rounded-xl bg-[#064e3b] flex items-center justify-center mb-6">
                       <IconComponent className="h-6 w-6 text-white" strokeWidth={2} />
                     </div>
                     <h3 className="text-xl font-bold text-[#0A0F2C] mb-3">{card.title}</h3>
@@ -117,12 +117,12 @@ export default async function SecurityPage() {
                   ))}
                 </ul>
               </div>
-              <div className="bg-[#1A3FBB] rounded-[2rem] p-12 text-center text-white flex flex-col items-center justify-center min-h-[400px] shadow-2xl shadow-blue-900/20">
+              <div className="bg-[#064e3b] rounded-[2rem] p-12 text-center text-white flex flex-col items-center justify-center min-h-[400px] shadow-2xl shadow-emerald-900/20">
                 <div className="h-20 w-20 rounded-full border-2 border-white/20 flex items-center justify-center mb-8 bg-white/10 backdrop-blur-sm">
                   <Lock className="h-8 w-8 text-white" strokeWidth={1.5} />
                 </div>
                 <h3 className="text-2xl font-bold mb-4">{content.twofa.card_title}</h3>
-                <p className="text-blue-100/80 max-w-xs mx-auto">{content.twofa.card_subtitle}</p>
+                <p className="text-emerald-100/80 max-w-xs mx-auto">{content.twofa.card_subtitle}</p>
               </div>
             </div>
           </div>
@@ -156,7 +156,7 @@ export default async function SecurityPage() {
         </section>
 
         {/* CTA Section */}
-        <section className="bg-[#1A3FBB] py-24 px-6">
+        <section className="bg-[#064e3b] py-24 px-6">
           <div className="mx-auto max-w-7xl text-center">
             <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">{content.cta.heading}</h2>
             <p className="text-lg text-white/90 mb-10 font-medium whitespace-pre-wrap">

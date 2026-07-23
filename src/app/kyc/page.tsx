@@ -347,7 +347,7 @@ const nextStep = () => {
               <div 
                 className={cn(
                   "flex items-center justify-center w-[30px] h-[30px] rounded-full text-[13px] font-bold z-10 transition-colors shadow-sm",
-                  isCompleted || isActive ? "bg-[#F5A623] text-[#0A0F2C]" : "bg-[#335CBC] text-blue-200"
+                  isCompleted || isActive ? "bg-[#F5A623] text-[#0A0F2C]" : "bg-[#047857] text-emerald-200"
                 )}
               >
                 {isCompleted ? <Check className="w-3.5 h-3.5" strokeWidth={3} /> : step}
@@ -358,7 +358,7 @@ const nextStep = () => {
                 <div 
                   className={cn(
                     "flex-1 h-[2px] mx-2 transition-colors rounded-full",
-                    step < currentStep ? "bg-[#F5A623]" : "bg-[#335CBC]"
+                    step < currentStep ? "bg-[#F5A623]" : "bg-[#047857]"
                   )}
                 />
               )}
@@ -376,14 +376,14 @@ const nextStep = () => {
           <h1 className="text-[22px] sm:text-[28px] font-bold text-white mb-1 text-center">
             {heading}
           </h1>
-          <p className="text-[14px] text-blue-100 mb-5 text-center font-medium">
+          <p className="text-[14px] text-emerald-100 mb-5 text-center font-medium">
             {subheading}
           </p>
           <StepIndicator />
         </>
       )}
 
-      <div className="bg-white rounded-2xl w-full p-4 sm:p-6 shadow-xl shadow-blue-900/20">
+      <div className="bg-white rounded-2xl w-full p-4 sm:p-6 shadow-xl shadow-emerald-900/20">
         
         {/* Step 1: Personal Information */}
       {currentStep === 1 && (
@@ -402,7 +402,7 @@ const nextStep = () => {
           value={formData.fullName}
           onChange={handleInputChange}
           placeholder="John Michael Smith" 
-          className={`w-full px-3 py-2.5 rounded-xl border text-[14px] text-[#0A0F2C] focus:outline-none focus:ring-2 focus:ring-[#113285]/20 focus:border-[#113285] transition-all ${errors.fullName ? 'border-red-400' : 'border-gray-200'}`}
+          className={`w-full px-3 py-2.5 rounded-xl border text-[14px] text-[#0A0F2C] focus:outline-none focus:ring-2 focus:ring-[#047857]/20 focus:border-[#047857] transition-all ${errors.fullName ? 'border-red-400' : 'border-gray-200'}`}
         />
         {errors.fullName && <p className="text-[11px] text-red-500 mt-1">{errors.fullName}</p>}
       </div>
@@ -415,7 +415,7 @@ const nextStep = () => {
             name="dob"
             value={formData.dob}
             onChange={handleInputChange}
-            className={`w-full px-3 py-2.5 rounded-xl border text-[14px] text-[#0A0F2C] focus:outline-none focus:ring-2 focus:ring-[#113285]/20 focus:border-[#113285] transition-all ${errors.dob ? 'border-red-400' : 'border-gray-200'}`}
+            className={`w-full px-3 py-2.5 rounded-xl border text-[14px] text-[#0A0F2C] focus:outline-none focus:ring-2 focus:ring-[#047857]/20 focus:border-[#047857] transition-all ${errors.dob ? 'border-red-400' : 'border-gray-200'}`}
           />
           {errors.dob && <p className="text-[11px] text-red-500 mt-1">{errors.dob}</p>}
         </div>
@@ -436,8 +436,8 @@ const nextStep = () => {
                 className={cn(
                   "h-[42px] rounded-xl border text-[14px] font-bold transition-all",
                   formData.gender === option.value
-                    ? "border-[#113285] bg-[#113285]/10 text-[#113285]"
-                    : "border-gray-200 bg-white text-[#0A0F2C] hover:border-[#113285]/40",
+                    ? "border-[#047857] bg-[#047857]/10 text-[#047857]"
+                    : "border-gray-200 bg-white text-[#0A0F2C] hover:border-[#047857]/40",
                   errors.gender && formData.gender !== option.value && "border-red-200",
                 )}
               >
@@ -457,7 +457,7 @@ const nextStep = () => {
           value={formData.occupation}
           onChange={handleInputChange}
           placeholder="Software Engineer" 
-          className={`w-full px-3 py-2.5 rounded-xl border text-[14px] text-[#0A0F2C] focus:outline-none focus:ring-2 focus:ring-[#113285]/20 focus:border-[#113285] transition-all ${errors.occupation ? 'border-red-400' : 'border-gray-200'}`}
+          className={`w-full px-3 py-2.5 rounded-xl border text-[14px] text-[#0A0F2C] focus:outline-none focus:ring-2 focus:ring-[#047857]/20 focus:border-[#047857] transition-all ${errors.occupation ? 'border-red-400' : 'border-gray-200'}`}
         />
         {errors.occupation && <p className="text-[11px] text-red-500 mt-1">{errors.occupation}</p>}
       </div>
@@ -465,7 +465,7 @@ const nextStep = () => {
 
     <button 
       onClick={nextStep}
-      className="w-full bg-[#113285] hover:bg-[#0D2665] text-white font-bold text-[14px] py-3 rounded-xl mt-6 transition-colors"
+      className="w-full bg-[#047857] hover:bg-[#0D2665] text-white font-bold text-[14px] py-3 rounded-xl mt-6 transition-colors"
     >
       Continue
     </button>
@@ -488,7 +488,7 @@ const nextStep = () => {
           value={formData.streetAddress}
           onChange={handleInputChange}
           placeholder="123 Main Street" 
-          className={`w-full px-3 py-2.5 rounded-xl border text-[14px] text-[#0A0F2C] focus:outline-none focus:ring-2 focus:ring-[#113285]/20 focus:border-[#113285] transition-all ${errors.streetAddress ? 'border-red-400' : 'border-gray-200'}`}
+          className={`w-full px-3 py-2.5 rounded-xl border text-[14px] text-[#0A0F2C] focus:outline-none focus:ring-2 focus:ring-[#047857]/20 focus:border-[#047857] transition-all ${errors.streetAddress ? 'border-red-400' : 'border-gray-200'}`}
         />
         {errors.streetAddress && <p className="text-[11px] text-red-500 mt-1">{errors.streetAddress}</p>}
       </div>
@@ -502,7 +502,7 @@ const nextStep = () => {
             value={formData.city}
             onChange={handleInputChange}
             placeholder="Toronto" 
-            className={`w-full px-3 py-2.5 rounded-xl border text-[14px] text-[#0A0F2C] focus:outline-none focus:ring-2 focus:ring-[#113285]/20 focus:border-[#113285] transition-all ${errors.city ? 'border-red-400' : 'border-gray-200'}`}
+            className={`w-full px-3 py-2.5 rounded-xl border text-[14px] text-[#0A0F2C] focus:outline-none focus:ring-2 focus:ring-[#047857]/20 focus:border-[#047857] transition-all ${errors.city ? 'border-red-400' : 'border-gray-200'}`}
           />
           {errors.city && <p className="text-[11px] text-red-500 mt-1">{errors.city}</p>}
         </div>
@@ -514,7 +514,7 @@ const nextStep = () => {
             value={formData.province}
             onChange={handleInputChange}
             placeholder="Ontario" 
-            className={`w-full px-3 py-2.5 rounded-xl border text-[14px] text-[#0A0F2C] focus:outline-none focus:ring-2 focus:ring-[#113285]/20 focus:border-[#113285] transition-all ${errors.province ? 'border-red-400' : 'border-gray-200'}`}
+            className={`w-full px-3 py-2.5 rounded-xl border text-[14px] text-[#0A0F2C] focus:outline-none focus:ring-2 focus:ring-[#047857]/20 focus:border-[#047857] transition-all ${errors.province ? 'border-red-400' : 'border-gray-200'}`}
           />
           {errors.province && <p className="text-[11px] text-red-500 mt-1">{errors.province}</p>}
         </div>
@@ -529,7 +529,7 @@ const nextStep = () => {
             value={formData.postalCode}
             onChange={handleInputChange}
             placeholder="M5A 1A1" 
-            className={`w-full px-3 py-2.5 rounded-xl border text-[14px] text-[#0A0F2C] focus:outline-none focus:ring-2 focus:ring-[#113285]/20 focus:border-[#113285] transition-all ${errors.postalCode ? 'border-red-400' : 'border-gray-200'}`}
+            className={`w-full px-3 py-2.5 rounded-xl border text-[14px] text-[#0A0F2C] focus:outline-none focus:ring-2 focus:ring-[#047857]/20 focus:border-[#047857] transition-all ${errors.postalCode ? 'border-red-400' : 'border-gray-200'}`}
           />
           {errors.postalCode && <p className="text-[11px] text-red-500 mt-1">{errors.postalCode}</p>}
         </div>
@@ -541,7 +541,7 @@ const nextStep = () => {
             value={formData.country}
             onChange={handleInputChange}
             placeholder="Canada" 
-            className={`w-full px-3 py-2.5 rounded-xl border text-[14px] text-[#0A0F2C] focus:outline-none focus:ring-2 focus:ring-[#113285]/20 focus:border-[#113285] transition-all ${errors.country ? 'border-red-400' : 'border-gray-200'}`}
+            className={`w-full px-3 py-2.5 rounded-xl border text-[14px] text-[#0A0F2C] focus:outline-none focus:ring-2 focus:ring-[#047857]/20 focus:border-[#047857] transition-all ${errors.country ? 'border-red-400' : 'border-gray-200'}`}
           />
           {errors.country && <p className="text-[11px] text-red-500 mt-1">{errors.country}</p>}
         </div>
@@ -550,7 +550,7 @@ const nextStep = () => {
 
     <div className="grid grid-cols-2 gap-3 mt-6">
       <button onClick={prevStep} className="w-full bg-white border border-gray-200 hover:bg-gray-50 text-[#0A0F2C] font-bold text-[14px] py-3 rounded-xl transition-colors">Back</button>
-      <button onClick={nextStep} className="w-full bg-[#113285] hover:bg-[#0D2665] text-white font-bold text-[14px] py-3 rounded-xl transition-colors">Continue</button>
+      <button onClick={nextStep} className="w-full bg-[#047857] hover:bg-[#0D2665] text-white font-bold text-[14px] py-3 rounded-xl transition-colors">Continue</button>
     </div>
   </div>
 )}
@@ -582,12 +582,12 @@ const nextStep = () => {
           </div>
         ) : (
           <div className="grid grid-cols-2 gap-3">
-            <button onClick={() => idFrontRef.current?.click()} className="flex flex-col items-center justify-center p-4 border-2 border-dashed border-gray-200 rounded-2xl hover:border-[#113285]/50 hover:bg-[#113285]/5 transition-all group">
-              <Upload className="w-6 h-6 mb-2 text-[#4A5568] group-hover:text-[#113285]" strokeWidth={1.5} />
+            <button onClick={() => idFrontRef.current?.click()} className="flex flex-col items-center justify-center p-4 border-2 border-dashed border-gray-200 rounded-2xl hover:border-[#047857]/50 hover:bg-[#047857]/5 transition-all group">
+              <Upload className="w-6 h-6 mb-2 text-[#4A5568] group-hover:text-[#047857]" strokeWidth={1.5} />
               <div className="text-[13px] font-bold text-[#0A0F2C]">Upload File</div>
             </button>
-            <button onClick={() => openCamera('idFront')} className="flex flex-col items-center justify-center p-4 border-2 border-dashed border-gray-200 rounded-2xl hover:border-[#113285]/50 hover:bg-[#113285]/5 transition-all group">
-              <Camera className="w-6 h-6 mb-2 text-[#4A5568] group-hover:text-[#113285]" strokeWidth={1.5} />
+            <button onClick={() => openCamera('idFront')} className="flex flex-col items-center justify-center p-4 border-2 border-dashed border-gray-200 rounded-2xl hover:border-[#047857]/50 hover:bg-[#047857]/5 transition-all group">
+              <Camera className="w-6 h-6 mb-2 text-[#4A5568] group-hover:text-[#047857]" strokeWidth={1.5} />
               <div className="text-[13px] font-bold text-[#0A0F2C]">Take Photo</div>
             </button>
           </div>
@@ -613,12 +613,12 @@ const nextStep = () => {
           </div>
         ) : (
           <div className="grid grid-cols-2 gap-3">
-            <button onClick={() => idBackRef.current?.click()} className="flex flex-col items-center justify-center p-4 border-2 border-dashed border-gray-200 rounded-2xl hover:border-[#113285]/50 hover:bg-[#113285]/5 transition-all group">
-              <Upload className="w-6 h-6 mb-2 text-[#4A5568] group-hover:text-[#113285]" strokeWidth={1.5} />
+            <button onClick={() => idBackRef.current?.click()} className="flex flex-col items-center justify-center p-4 border-2 border-dashed border-gray-200 rounded-2xl hover:border-[#047857]/50 hover:bg-[#047857]/5 transition-all group">
+              <Upload className="w-6 h-6 mb-2 text-[#4A5568] group-hover:text-[#047857]" strokeWidth={1.5} />
               <div className="text-[13px] font-bold text-[#0A0F2C]">Upload File</div>
             </button>
-            <button onClick={() => openCamera('idBack')} className="flex flex-col items-center justify-center p-4 border-2 border-dashed border-gray-200 rounded-2xl hover:border-[#113285]/50 hover:bg-[#113285]/5 transition-all group">
-              <Camera className="w-6 h-6 mb-2 text-[#4A5568] group-hover:text-[#113285]" strokeWidth={1.5} />
+            <button onClick={() => openCamera('idBack')} className="flex flex-col items-center justify-center p-4 border-2 border-dashed border-gray-200 rounded-2xl hover:border-[#047857]/50 hover:bg-[#047857]/5 transition-all group">
+              <Camera className="w-6 h-6 mb-2 text-[#4A5568] group-hover:text-[#047857]" strokeWidth={1.5} />
               <div className="text-[13px] font-bold text-[#0A0F2C]">Take Photo</div>
             </button>
           </div>
@@ -629,7 +629,7 @@ const nextStep = () => {
 
     <div className="grid grid-cols-2 gap-3 mt-6">
       <button onClick={prevStep} className="w-full bg-white border border-gray-200 hover:bg-gray-50 text-[#0A0F2C] font-bold text-[14px] py-3 rounded-xl transition-colors">Back</button>
-      <button onClick={nextStep} className="w-full bg-[#113285] hover:bg-[#0D2665] text-white font-bold text-[14px] py-3 rounded-xl transition-colors">Continue</button>
+      <button onClick={nextStep} className="w-full bg-[#047857] hover:bg-[#0D2665] text-white font-bold text-[14px] py-3 rounded-xl transition-colors">Continue</button>
     </div>
   </div>
 )}
@@ -671,12 +671,12 @@ const nextStep = () => {
           </div>
         ) : (
           <div className="grid grid-cols-2 gap-3">
-            <button onClick={() => selfieRef.current?.click()} className="flex flex-col items-center justify-center p-4 border-2 border-dashed border-gray-200 rounded-2xl hover:border-[#113285]/50 hover:bg-[#113285]/5 transition-all group">
-              <Upload className="w-6 h-6 mb-2 text-[#4A5568] group-hover:text-[#113285]" strokeWidth={1.5} />
+            <button onClick={() => selfieRef.current?.click()} className="flex flex-col items-center justify-center p-4 border-2 border-dashed border-gray-200 rounded-2xl hover:border-[#047857]/50 hover:bg-[#047857]/5 transition-all group">
+              <Upload className="w-6 h-6 mb-2 text-[#4A5568] group-hover:text-[#047857]" strokeWidth={1.5} />
               <div className="text-[13px] font-bold text-[#0A0F2C]">Upload File</div>
             </button>
-            <button onClick={() => openCamera('selfie')} className="flex flex-col items-center justify-center p-4 border-2 border-dashed border-gray-200 rounded-2xl hover:border-[#113285]/50 hover:bg-[#113285]/5 transition-all group">
-              <Camera className="w-6 h-6 mb-2 text-[#4A5568] group-hover:text-[#113285]" strokeWidth={1.5} />
+            <button onClick={() => openCamera('selfie')} className="flex flex-col items-center justify-center p-4 border-2 border-dashed border-gray-200 rounded-2xl hover:border-[#047857]/50 hover:bg-[#047857]/5 transition-all group">
+              <Camera className="w-6 h-6 mb-2 text-[#4A5568] group-hover:text-[#047857]" strokeWidth={1.5} />
               <div className="text-[13px] font-bold text-[#0A0F2C]">Take Photo</div>
             </button>
           </div>
@@ -690,7 +690,7 @@ const nextStep = () => {
       <button
         onClick={submitKyc}
         disabled={isSubmitting}
-        className="w-full flex items-center justify-center bg-[#113285] hover:bg-[#0D2665] disabled:bg-[#113285]/70 text-white font-bold text-[14px] py-3 rounded-xl transition-colors"
+        className="w-full flex items-center justify-center bg-[#047857] hover:bg-[#0D2665] disabled:bg-[#047857]/70 text-white font-bold text-[14px] py-3 rounded-xl transition-colors"
       >
         {isSubmitting ? (<><Loader2 className="w-4 h-4 mr-2 animate-spin" />Submitting...</>) : "Submit for Review"}
       </button>
@@ -726,7 +726,7 @@ const nextStep = () => {
 
             <Link 
               href="/dashboard"
-              className="w-full bg-[#113285] hover:bg-[#0D2665] text-white font-bold text-[14px] py-3 rounded-xl transition-colors block"
+              className="w-full bg-[#047857] hover:bg-[#0D2665] text-white font-bold text-[14px] py-3 rounded-xl transition-colors block"
             >
               Go to Dashboard
             </Link>

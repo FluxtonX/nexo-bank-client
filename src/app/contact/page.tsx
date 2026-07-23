@@ -65,7 +65,7 @@ export default function ContactPage() {
                 <label className="text-[11px] font-bold uppercase tracking-widest text-banking-muted">Message</label>
                 <textarea className="w-full min-h-[160px] rounded-xl border border-banking-border bg-banking-offWhite px-5 py-4 text-sm outline-none focus:border-banking-blue transition-all" placeholder="Describe your issue in detail..." />
               </div>
-              <button className="h-14 rounded-xl bg-banking-blue text-sm font-bold text-white hover:bg-banking-navy shadow-lg shadow-blue-500/20 transition-all active:scale-[0.98]">
+              <button className="h-14 rounded-xl bg-banking-blue text-sm font-bold text-white hover:bg-banking-navy shadow-lg shadow-emerald-500/20 transition-all active:scale-[0.98]">
                 Submit Support Request
               </button>
             </form>

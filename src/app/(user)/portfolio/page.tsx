@@ -16,7 +16,7 @@ function RiskMetric({ label, value, detail, status }: { label: string; value: st
         <div className={cn(
           "h-2 w-2 rounded-full",
           status === 'good' ? 'bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]' : 
-          status === 'warn' ? 'bg-amber-500 shadow-[0_0_8px_rgba(245,158,11,0.5)]' : 'bg-blue-500'
+          status === 'warn' ? 'bg-amber-500 shadow-[0_0_8px_rgba(245,158,11,0.5)]' : 'bg-emerald-500'
         )} />
       </div>
       <div className="flex items-baseline gap-2">

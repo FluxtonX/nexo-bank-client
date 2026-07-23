@@ -325,9 +325,9 @@ export function UserShell({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen bg-[#F8F9FA] text-[#0A0F2C] lg:grid lg:grid-cols-[240px_1fr]">
       {/* Sidebar */}
-      <aside className={cn("hidden border-r border-gray-100 bg-blue-50 lg:block", showFreezeOverlay && "pointer-events-none")}>
+      <aside className={cn("hidden border-r border-gray-100 bg-emerald-50 lg:block", showFreezeOverlay && "pointer-events-none")}>
         <div className="sticky top-0 flex h-screen flex-col">
-          <div className="flex items-center justify-center h-[88px] px-6 bg-blue-50">
+          <div className="flex items-center justify-center h-[88px] px-6 bg-emerald-50">
             <Link
               href="/"
               onClick={(e) => handleFrozenNav("/", e)}
@@ -335,7 +335,7 @@ export function UserShell({ children }: { children: React.ReactNode }) {
             >
               <Image 
                 src="/bluelogo.png" 
-                alt="CDNT" 
+                alt="Nexo Bank" 
                 width={100}
                 height={40}
                 className=" h-auto "
@@ -359,7 +359,7 @@ export function UserShell({ children }: { children: React.ReactNode }) {
                   className={cn(
                     "flex items-center gap-3.5 rounded-xl px-4 py-3 text-[14px] font-medium transition-colors",
                     active 
-                      ? "bg-[#113285] text-white shadow-md shadow-blue-900/10" 
+                      ? "bg-[#047857] text-white shadow-md shadow-emerald-900/10" 
                       : "text-[#4A5568] hover:bg-gray-50 hover:text-[#0A0F2C]",
                     frozenNavClass(href)
                   )}
@@ -450,7 +450,7 @@ export function UserShell({ children }: { children: React.ReactNode }) {
                           visibleNotifications.forEach(n => markNotificationAsRead(n.id));
                           setUnreadCount(0);
                         }}
-                        className="text-[10px] font-bold text-[#113285] hover:underline cursor-pointer"
+                        className="text-[10px] font-bold text-[#047857] hover:underline cursor-pointer"
                       >
                         Mark all as read
                       </button>
@@ -494,7 +494,7 @@ export function UserShell({ children }: { children: React.ReactNode }) {
                             className="p-3.5 flex gap-3 hover:bg-gray-50/50 transition-colors cursor-pointer"
                           >
                             <div className={cn("grid h-8 w-8 place-items-center rounded-lg shrink-0", 
-                              n.type === "Info" ? "bg-blue-50 text-[#113285]" :
+                              n.type === "Info" ? "bg-emerald-50 text-[#047857]" :
                               n.type === "Warning" ? "bg-amber-50 text-amber-600" :
                               n.type === "Success" ? "bg-green-50 text-green-600" : "bg-red-50 text-red-600"
                             )}>
@@ -507,7 +507,7 @@ export function UserShell({ children }: { children: React.ReactNode }) {
                             </div>
                             {!n.is_read && (
                               <div className="flex items-center">
-                                <span className="h-2 w-2 rounded-full bg-blue-500"></span>
+                                <span className="h-2 w-2 rounded-full bg-emerald-500"></span>
                               </div>
                             )}
                           </div>
@@ -524,7 +524,7 @@ export function UserShell({ children }: { children: React.ReactNode }) {
                         if (!e.defaultPrevented) setIsNotificationsOpen(false);
                       }}
                       className={cn(
-                        "block text-center py-2 text-xs font-bold text-[#113285] hover:bg-blue-50/50 rounded-lg transition-colors",
+                        "block text-center py-2 text-xs font-bold text-[#047857] hover:bg-emerald-50/50 rounded-lg transition-colors",
                         frozenNavClass("/notifications")
                       )}
                     >
@@ -553,7 +553,7 @@ export function UserShell({ children }: { children: React.ReactNode }) {
                   isFrozen && "pointer-events-none opacity-40 cursor-not-allowed"
                 )}
               >
-                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#113285] text-[13px] font-bold text-white">
+                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#047857] text-[13px] font-bold text-white">
                   {userProfile?.initials || 'U'}
                 </div>
                 <span className="text-[14px] font-medium text-[#0A0F2C] hidden sm:block">
@@ -570,15 +570,15 @@ export function UserShell({ children }: { children: React.ReactNode }) {
                   </div>
                   <div className="py-1">
                     <Link href="/settings" onClick={(e) => handleFrozenNav("/settings", e)} className={cn("group flex items-center px-4 py-2 text-[13px] text-[#4A5568] hover:bg-gray-50 hover:text-[#0A0F2C]", frozenNavClass("/settings"))}>
-                      <User className="mr-3 h-4 w-4 text-[#718096] group-hover:text-[#113285]" />
+                      <User className="mr-3 h-4 w-4 text-[#718096] group-hover:text-[#047857]" />
                       Profile
                     </Link>
                     <Link href="/settings/security" onClick={(e) => handleFrozenNav("/settings/security", e)} className={cn("group flex items-center px-4 py-2 text-[13px] text-[#4A5568] hover:bg-gray-50 hover:text-[#0A0F2C]", frozenNavClass("/settings/security"))}>
-                      <Shield className="mr-3 h-4 w-4 text-[#718096] group-hover:text-[#113285]" />
+                      <Shield className="mr-3 h-4 w-4 text-[#718096] group-hover:text-[#047857]" />
                       Security
                     </Link>
                     <Link href="/kyc" onClick={(e) => handleFrozenNav("/kyc", e)} className={cn("group flex items-center px-4 py-2 text-[13px] text-[#4A5568] hover:bg-gray-50 hover:text-[#0A0F2C]", frozenNavClass("/kyc"))}>
-                      <FileCheck className="mr-3 h-4 w-4 text-[#718096] group-hover:text-[#113285]" />
+                      <FileCheck className="mr-3 h-4 w-4 text-[#718096] group-hover:text-[#047857]" />
                       Verification/KYC
                     </Link>
                   </div>
@@ -653,20 +653,20 @@ export function UserShell({ children }: { children: React.ReactNode }) {
                 className={cn(
                   "flex flex-1 min-w-[64px] flex-col items-center justify-center gap-1 rounded-xl p-1 transition-colors",
                   active 
-                    ? "text-[#113285]" 
+                    ? "text-[#047857]" 
                     : "text-[#718096] hover:bg-gray-50 hover:text-[#0A0F2C]",
                   frozenNavClass(href)
                 )}
               >
                 <div className={cn(
                   "flex h-8 w-14 items-center justify-center rounded-full transition-all duration-300",
-                  active ? "bg-blue-50/80" : "bg-transparent"
+                  active ? "bg-emerald-50/80" : "bg-transparent"
                 )}>
                   <Icon className={cn("h-[20px] w-[20px] transition-transform", active ? "scale-110" : "")} strokeWidth={active ? 2.5 : 2} />
                 </div>
                 <span className={cn(
                   "text-[10px] font-medium leading-tight text-center tracking-tight",
-                  active ? "font-bold text-[#113285]" : ""
+                  active ? "font-bold text-[#047857]" : ""
                 )}>
                   {shortLabel}
                 </span>
@@ -689,7 +689,7 @@ export function UserShell({ children }: { children: React.ReactNode }) {
             </p>
             <Link
               href={FREEZE_SUPPORT_PATH}
-              className="mt-6 inline-flex items-center justify-center rounded-lg bg-[#113285] px-5 py-2.5 text-[14px] font-bold text-white shadow-sm hover:bg-[#0d2668] transition-colors"
+              className="mt-6 inline-flex items-center justify-center rounded-lg bg-[#047857] px-5 py-2.5 text-[14px] font-bold text-white shadow-sm hover:bg-[#0d2668] transition-colors"
             >
               Contact Support
             </Link>

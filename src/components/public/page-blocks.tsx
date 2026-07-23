@@ -75,7 +75,7 @@ export function ProductPreview() {
       <div className="overflow-hidden rounded-md bg-auth-radial text-white shadow-glow">
         <div className="flex items-center justify-between border-b border-white/12 px-5 py-4">
           <div>
-            <p className="text-sm text-white/66">CDNT dashboard</p>
+            <p className="text-sm text-white/66">Nexo Bank dashboard</p>
             <p className="mt-1 font-semibold">Verified client workspace</p>
           </div>
           <span className="rounded-full bg-emerald-400/18 px-2.5 py-1 text-xs font-semibold text-emerald-100">
@@ -150,7 +150,7 @@ export function FeatureGrid({
             key={item.title}
             className="rounded-lg border border-banking-border bg-white p-5 shadow-sm"
           >
-            <div className="mb-4 grid h-11 w-11 place-items-center rounded-md bg-blue-50 text-banking-blue">
+            <div className="mb-4 grid h-11 w-11 place-items-center rounded-md bg-emerald-50 text-banking-blue">
               <Icon className="h-5 w-5" />
             </div>
             <h3 className="font-semibold text-banking-text">{item.title}</h3>

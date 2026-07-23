@@ -24,7 +24,7 @@ export function TimeframeSelector({
           onClick={() => onIntervalChange(item)}
           className={cn(
             "shrink-0 rounded-md px-2.5 py-1.5 text-xs font-black transition-colors",
-            interval === item ? "bg-blue-50 text-[#1677ff]" : "text-[#0A0F2C] hover:bg-slate-100",
+            interval === item ? "bg-emerald-50 text-[#059669]" : "text-[#0A0F2C] hover:bg-slate-100",
           )}
         >
           {item}
@@ -38,7 +38,7 @@ export function TimeframeSelector({
           aria-label="Open interval filter"
           aria-expanded={menuOpen}
           onClick={onMenuToggle}
-          className="flex h-8 items-center gap-1 rounded-md px-2 text-slate-600 transition-colors hover:bg-slate-100 hover:text-[#113285]"
+          className="flex h-8 items-center gap-1 rounded-md px-2 text-slate-600 transition-colors hover:bg-slate-100 hover:text-[#047857]"
         >
           <SlidersHorizontal className="h-4 w-4" />
           <ChevronDown className={cn("h-3.5 w-3.5 transition-transform", menuOpen && "rotate-180")} />
@@ -53,11 +53,11 @@ export function TimeframeSelector({
                 onClick={() => onIntervalChange(item)}
                 className={cn(
                   "flex w-full items-center justify-between rounded-md px-3 py-2 text-left text-xs font-black transition-colors",
-                  interval === item ? "bg-blue-50 text-[#113285]" : "text-slate-600 hover:bg-slate-50",
+                  interval === item ? "bg-emerald-50 text-[#047857]" : "text-slate-600 hover:bg-slate-50",
                 )}
               >
                 {item}
-                {interval === item && <span className="h-1.5 w-1.5 rounded-full bg-[#113285]" />}
+                {interval === item && <span className="h-1.5 w-1.5 rounded-full bg-[#047857]" />}
               </button>
             ))}
           </div>

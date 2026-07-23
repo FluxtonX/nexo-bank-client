@@ -23,7 +23,7 @@ export default async function AboutPage() {
       {/* Header Section */}
       <section className="pt-24 pb-16 px-6">
         <div className="mx-auto max-w-7xl text-center">
-          <h1 className="text-4xl md:text-5xl font-bold text-[#1A3FBB] mb-6 tracking-tight">
+          <h1 className="text-4xl md:text-5xl font-bold text-[#064e3b] mb-6 tracking-tight">
             {content.hero.heading}
           </h1>
           <p className="text-lg md:text-xl text-[#6B7280] leading-relaxed max-w-3xl mx-auto font-medium whitespace-pre-wrap">
@@ -37,7 +37,7 @@ export default async function AboutPage() {
         <div className="mx-auto max-w-7xl grid md:grid-cols-2 gap-8">
           {/* Mission Card */}
           <div className="bg-white rounded-3xl p-10 md:p-12 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100 transition-transform duration-300 hover:-translate-y-1">
-            <div className="h-14 w-14 rounded-2xl bg-[#1A3FBB] flex items-center justify-center mb-8 shadow-lg shadow-blue-500/20">
+            <div className="h-14 w-14 rounded-2xl bg-[#064e3b] flex items-center justify-center mb-8 shadow-lg shadow-emerald-500/20">
               <Target className="h-7 w-7 text-white" strokeWidth={2} />
             </div>
             <h2 className="text-3xl font-bold text-[#0A0F2C] mb-6">{content.mission.title}</h2>
@@ -72,7 +72,7 @@ export default async function AboutPage() {
               const IconComponent = IconMap[feature.icon] || Shield;
               return (
                 <div key={i} className="bg-white rounded-3xl p-8 border border-gray-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-lg transition-shadow duration-300">
-                  <div className="h-12 w-12 rounded-full bg-[#1A3FBB] flex items-center justify-center mb-6">
+                  <div className="h-12 w-12 rounded-full bg-[#064e3b] flex items-center justify-center mb-6">
                     <IconComponent className="h-6 w-6 text-white" strokeWidth={2} />
                   </div>
                   <h3 className="text-xl font-bold text-[#0A0F2C] mb-6">{feature.title}</h3>
@@ -96,7 +96,7 @@ export default async function AboutPage() {
         <div className="mx-auto max-w-7xl grid grid-cols-2 md:grid-cols-4 gap-12 text-center">
           {content.stats.items.map((stat, i) => (
             <div key={i}>
-              <div className="text-4xl md:text-5xl font-bold text-[#1A3FBB] mb-2 tracking-tight">{stat.value}</div>
+              <div className="text-4xl md:text-5xl font-bold text-[#064e3b] mb-2 tracking-tight">{stat.value}</div>
               <div className="text-[#6B7280] font-medium">{stat.label}</div>
             </div>
           ))}
@@ -104,7 +104,7 @@ export default async function AboutPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="bg-[#1A3FBB] py-24 px-6">
+      <section className="bg-[#064e3b] py-24 px-6">
         <div className="mx-auto max-w-7xl text-center">
           <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">{content.cta.heading}</h2>
           <p className="text-lg text-white/90 mb-10 font-medium whitespace-pre-wrap">

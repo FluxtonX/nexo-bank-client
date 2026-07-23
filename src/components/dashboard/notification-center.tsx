@@ -265,11 +265,11 @@ export function NotificationCenter() {
                 key={item.id}
                 onClick={() => !item.is_read && handleMarkAsRead(item.id)}
                 className={`group flex gap-4 rounded-md border p-4 hover:border-gray-300 transition-colors relative cursor-pointer ${
-                  !item.is_read ? "bg-blue-50/30 border-blue-200" : "bg-white border-banking-border"
+                  !item.is_read ? "bg-emerald-50/30 border-emerald-200" : "bg-white border-banking-border"
                 }`}
               >
                 <div className={`grid h-11 w-11 place-items-center rounded-md shrink-0 ${
-                  !item.is_read ? "bg-blue-100 text-banking-blue" : "bg-blue-50 text-banking-blue"
+                  !item.is_read ? "bg-emerald-100 text-banking-blue" : "bg-emerald-50 text-banking-blue"
                 }`}>
                   <Icon className="h-5 w-5" />
                 </div>
@@ -286,7 +286,7 @@ export function NotificationCenter() {
                 </div>
                 {!item.is_read && (
                   <div className="absolute right-4 top-4">
-                    <span className="h-2.5 w-2.5 rounded-full bg-blue-500"></span>
+                    <span className="h-2.5 w-2.5 rounded-full bg-emerald-500"></span>
                   </div>
                 )}
                 <button

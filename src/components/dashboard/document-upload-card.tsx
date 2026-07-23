@@ -49,7 +49,7 @@ export function DocumentUploadCard({
       ) : (
         <button
           onClick={() => inputRef.current?.click()}
-          className="grid min-h-52 w-full place-items-center rounded-md border border-dashed border-banking-border bg-banking-offWhite p-6 text-center transition hover:border-banking-blue hover:bg-blue-50"
+          className="grid min-h-52 w-full place-items-center rounded-md border border-dashed border-banking-border bg-banking-offWhite p-6 text-center transition hover:border-banking-blue hover:bg-emerald-50"
         >
           <div>
             <UploadCloud className="mx-auto h-10 w-10 text-banking-blue" />

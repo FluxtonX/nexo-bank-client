@@ -19,8 +19,8 @@ const prices = [
     price: "$3,395.40",
     change: "+2.1%",
     up: true,
-    bg: "bg-blue-50",
-    border: "border-blue-100",
+    bg: "bg-emerald-50",
+    border: "border-emerald-100",
     image: "https://cryptologos.cc/logos/ethereum-eth-logo.png",
   },
   {

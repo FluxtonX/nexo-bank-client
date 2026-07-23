@@ -54,7 +54,7 @@ export default function FeatureSection() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5 }}
-              className="text-xs font-bold uppercase tracking-widest text-[#3061EF] mb-3"
+              className="text-xs font-bold uppercase tracking-widest text-[#047857] mb-3"
             >
               Canadian Banking Experience
             </motion.p>
@@ -97,7 +97,7 @@ export default function FeatureSection() {
                 className="rounded-2xl border border-slate-100 bg-white p-6 sm:p-8 transition-all duration-300 flex items-start gap-4 shadow-sm"
               >
                 {/* Small circular blue icon */}
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#3061EF] text-white shadow-lg shadow-blue-500/15">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#047857] text-white shadow-lg shadow-emerald-500/15">
                   <Icon className="h-4.5 w-4.5" />
                 </div>
                 <div>

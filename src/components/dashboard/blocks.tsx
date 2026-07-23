@@ -57,7 +57,7 @@ export function StatCard({
             "grid h-10 w-10 shrink-0 place-items-center rounded-lg border border-banking-border bg-banking-offWhite shadow-inner",
             tone === "positive" && "text-emerald-600 bg-emerald-50/50 border-emerald-100",
             tone === "warning" && "text-amber-600 bg-amber-50/50 border-amber-100",
-            tone === "neutral" && "text-banking-blue bg-blue-50/50 border-blue-100",
+            tone === "neutral" && "text-banking-blue bg-emerald-50/50 border-emerald-100",
           )}
         >
           <Icon className="h-5 w-5" />
@@ -158,8 +158,8 @@ export function PerformanceChart() {
         <defs>
           {/* Area Gradient */}
           <linearGradient id="chartLineGradient" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#014EA1" stopOpacity="0.2" />
-            <stop offset="100%" stopColor="#014EA1" stopOpacity="0.0" />
+            <stop offset="0%" stopColor="#022c22" stopOpacity="0.2" />
+            <stop offset="100%" stopColor="#022c22" stopOpacity="0.0" />
           </linearGradient>
         </defs>
 
@@ -217,7 +217,7 @@ export function PerformanceChart() {
           <path
             d={linePath}
             fill="none"
-            stroke="#014EA1"
+            stroke="#022c22"
             strokeWidth={2.5}
             strokeLinecap="round"
             className="transition-all duration-300"
@@ -258,7 +258,7 @@ export function PerformanceChart() {
                 cy={pt.y}
                 r={isHovered ? 5.5 : 4}
                 fill="#FFFFFF"
-                stroke="#014EA1"
+                stroke="#022c22"
                 strokeWidth={isHovered ? 2.5 : 2}
                 className="transition-all duration-200 ease-out shadow-sm"
               />

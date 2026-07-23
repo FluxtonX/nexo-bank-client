@@ -78,7 +78,7 @@ export const COIN_COLORS: Record<string, string> = {
   NEO: "#00C5D7",
   DASH: "#008DE4",
   ZEC: "#F4B731",
-  CAD: "#1650AB",
+  CAD: "#047857",
 };
 
 export function calculateCADBalance(wallets: any[], rates: Record<string, number>) {

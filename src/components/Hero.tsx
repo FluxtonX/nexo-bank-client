@@ -40,9 +40,9 @@ export default function Hero() {
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
-              className="inline-flex items-center gap-2 rounded-full bg-[#3061EF]/10 px-3.5 py-1.5 text-xs font-bold uppercase tracking-wider text-[#3061EF] mb-6"
+              className="inline-flex items-center gap-2 rounded-full bg-[#047857]/10 px-3.5 py-1.5 text-xs font-bold uppercase tracking-wider text-[#047857] mb-6"
             >
-              <span className="h-2 w-2 rounded-full bg-[#3061EF] animate-pulse" />
+              <span className="h-2 w-2 rounded-full bg-[#047857] animate-pulse" />
               A New Era of Crypto-Banking
             </motion.div>
 
@@ -53,7 +53,7 @@ export default function Hero() {
               className="text-4xl font-extrabold tracking-tight text-[#0B1220] sm:text-5xl md:text-6xl leading-[1.08] lg:max-w-xl"
             >
               Banking Meets <br />
-              <span className="bg-gradient-to-r from-[#3061EF] to-[#1e40af] bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-[#047857] to-[#064e3b] bg-clip-text text-transparent">
                 Crypto Intelligence
               </span>
             </motion.h1>
@@ -76,7 +76,7 @@ export default function Hero() {
             >
               <Link
                 href="/register"
-                className="inline-flex items-center justify-center rounded-full bg-[#0B1220] hover:bg-[#3061EF] px-8 py-4 text-sm font-bold text-white shadow-xl shadow-slate-900/10 hover:shadow-blue-500/25 transition-all hover:scale-105 duration-300 w-full sm:w-auto"
+                className="inline-flex items-center justify-center rounded-full bg-[#0B1220] hover:bg-[#047857] px-8 py-4 text-sm font-bold text-white shadow-xl shadow-slate-900/10 hover:shadow-emerald-500/25 transition-all hover:scale-105 duration-300 w-full sm:w-auto"
               >
                 Open Account
               </Link>
@@ -118,7 +118,7 @@ export default function Hero() {
             className="lg:col-span-6 relative h-[540px] w-full flex items-center justify-center mt-12 lg:mt-0"
           >
             {/* 1. Main Dark Bank Card — large, centered, slightly rotated */}
-            <div className="absolute z-20 w-[340px] sm:w-[380px] h-[210px] sm:h-[230px] rounded-2xl bg-gradient-to-br from-[#0c2461] via-[#0a3d62] to-[#07111F] p-6 sm:p-7 text-white shadow-[0_28px_60px_rgba(12,36,97,0.30)] border border-white/10 transform rotate-[-4deg] translate-x-[-24px] translate-y-[-30px]">
+            <div className="absolute z-20 w-[340px] sm:w-[380px] h-[210px] sm:h-[230px] rounded-2xl bg-gradient-to-br from-[#022c22] via-[#0a3d62] to-[#022c22] p-6 sm:p-7 text-white shadow-[0_28px_60px_rgba(12,36,97,0.30)] border border-white/10 transform rotate-[-4deg] translate-x-[-24px] translate-y-[-30px]">
               <div className="flex justify-between items-start">
                 <div>
                   <p className="text-[9px] text-white/50 font-bold uppercase tracking-wider">
@@ -128,7 +128,7 @@ export default function Hero() {
                     $45,210.04
                   </p>
                 </div>
-                <span className="text-sm font-black tracking-widest text-[#60a5fa]">
+                <span className="text-sm font-black tracking-widest text-[#34d399]">
                   NUB
                 </span>
               </div>
@@ -206,7 +206,7 @@ export default function Hero() {
                   </p>
                   <p className="text-lg font-black text-slate-900 mt-0.5">$45,210.04</p>
                 </div>
-                <span className="rounded-full bg-[#3061EF]/10 px-2.5 py-1 text-[10px] font-bold text-[#3061EF]">
+                <span className="rounded-full bg-[#047857]/10 px-2.5 py-1 text-[10px] font-bold text-[#047857]">
                   +2.42%
                 </span>
               </div>
@@ -215,7 +215,7 @@ export default function Hero() {
                   <path
                     d="M 0 32 C 25 15, 50 35, 75 12 C 85 5, 95 8, 100 8"
                     fill="none"
-                    stroke="#3061EF"
+                    stroke="#047857"
                     strokeWidth="2.5"
                     strokeLinecap="round"
                   />
@@ -226,8 +226,8 @@ export default function Hero() {
                   />
                   <defs>
                     <linearGradient id="hero-sparkline-grad" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0%" stopColor="#3061EF" />
-                      <stop offset="100%" stopColor="#3061EF" stopOpacity="0" />
+                      <stop offset="0%" stopColor="#047857" />
+                      <stop offset="100%" stopColor="#047857" stopOpacity="0" />
                     </linearGradient>
                   </defs>
                 </svg>

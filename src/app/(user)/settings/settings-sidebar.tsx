@@ -28,7 +28,7 @@ export function SettingsSidebar() {
             className={cn(
               "flex items-center gap-4 rounded-xl px-4 py-3 text-[15px] font-medium transition-colors",
               active 
-                ? "bg-[#113285] text-white shadow-md shadow-blue-900/10" 
+                ? "bg-[#047857] text-white shadow-md shadow-emerald-900/10" 
                 : "text-[#0A0F2C] hover:bg-gray-50"
             )}
           >

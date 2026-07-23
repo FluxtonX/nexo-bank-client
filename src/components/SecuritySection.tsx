@@ -48,7 +48,7 @@ export default function SecuritySection() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
-            className="text-xs font-bold uppercase tracking-widest text-[#3061EF] mb-3"
+            className="text-xs font-bold uppercase tracking-widest text-[#047857] mb-3"
           >
             Trust & Compliance
           </motion.p>
@@ -68,7 +68,7 @@ export default function SecuritySection() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="mt-4 text-base leading-relaxed text-slate-500"
           >
-            CDNT is built on institutional stability and strict regulatory adherence, ensuring complete safety for your funds.
+            Nexo Bank is built on institutional stability and strict regulatory adherence, ensuring complete safety for your funds.
           </motion.p>
         </div>
 
@@ -87,7 +87,7 @@ export default function SecuritySection() {
                 className="rounded-2xl border border-slate-150 bg-white p-6 sm:p-8 shadow-sm transition-all duration-300 flex flex-col items-start"
               >
                 {/* Small circular icon wrapper */}
-                <div className="mb-6 flex h-10 w-10 items-center justify-center rounded-full bg-[#3061EF]/10 text-[#3061EF]">
+                <div className="mb-6 flex h-10 w-10 items-center justify-center rounded-full bg-[#047857]/10 text-[#047857]">
                   <Icon className="h-5 w-5" />
                 </div>
                 <h3 className="text-lg font-bold text-[#0B1220] tracking-tight">{item.title}</h3>

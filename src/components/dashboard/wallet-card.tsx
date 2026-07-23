@@ -30,7 +30,7 @@ export function WalletCard({
           <p className="text-sm text-banking-muted">{name}</p>
           <h2 className="mt-1 text-2xl font-semibold">{symbol}</h2>
         </div>
-        <div className="grid h-11 w-11 place-items-center rounded-md bg-blue-50 text-banking-blue">
+        <div className="grid h-11 w-11 place-items-center rounded-md bg-emerald-50 text-banking-blue">
           <QrCode className="h-5 w-5" />
         </div>
       </div>

@@ -45,10 +45,10 @@ export default function MarketSection() {
   ];
 
   return (
-    <section className="bg-gradient-to-br from-[#014EA1] via-[#003B7A] to-[#07111F] text-white py-24 relative overflow-hidden">
+    <section className="bg-[#022c22] bg-gradient-to-br from-[#022c22] via-[#043427] to-[#022c22] text-white py-24 relative overflow-hidden">
       {/* Glow effects */}
-      <div className="absolute top-[10%] left-[-10%] h-[500px] w-[500px] rounded-full bg-sky-400/15 blur-[120px] pointer-events-none" />
-      <div className="absolute bottom-[10%] right-[-10%] h-[500px] w-[500px] rounded-full bg-blue-500/10 blur-[120px] pointer-events-none" />
+      <div className="absolute top-[10%] left-[-10%] h-[500px] w-[500px] rounded-full bg-emerald-500/10 blur-[120px] pointer-events-none" />
+      <div className="absolute bottom-[10%] right-[-10%] h-[500px] w-[500px] rounded-full bg-emerald-500/10 blur-[120px] pointer-events-none" />
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-16">
@@ -58,7 +58,7 @@ export default function MarketSection() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5 }}
-              className="text-xs font-bold uppercase tracking-widest text-sky-300 mb-3"
+              className="text-xs font-bold uppercase tracking-widest text-emerald-400 mb-3"
             >
               Live Markets
             </motion.p>
@@ -78,7 +78,7 @@ export default function MarketSection() {
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="mt-6 md:mt-0 flex items-center gap-2 bg-white/5 border border-white/10 rounded-full px-4 py-2 text-xs font-bold uppercase tracking-widest text-sky-300 w-fit"
+            className="mt-6 md:mt-0 flex items-center gap-2 bg-white/5 border border-white/10 rounded-full px-4 py-2 text-xs font-bold uppercase tracking-widest text-emerald-400 w-fit"
           >
             <span className="h-2 w-2 rounded-full bg-[#10b981] animate-pulse" />
             Realtime - Streaming from 8 venues
@@ -95,7 +95,7 @@ export default function MarketSection() {
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.05 }}
               whileHover={{ y: -6 }}
-              className="rounded-2xl bg-[#091221] border border-white/5 overflow-hidden shadow-[0_20px_40px_rgba(0,0,0,0.4)] transition-all duration-300 flex flex-col justify-between h-[200px] relative group"
+              className="rounded-2xl bg-[#042017] border border-white/10 overflow-hidden shadow-[0_20px_40px_rgba(0,0,0,0.4)] transition-all duration-300 flex flex-col justify-between h-[200px] relative group"
             >
               {/* Card Header Content */}
               <div className="p-6 relative z-10">

@@ -24,7 +24,7 @@ export default function AdvantageBankingPage() {
               <ChevronRight className="h-3 w-3" />
               <span className="text-banking-blue">Advantage Banking</span>
             </nav>
-            <h1 className="text-4xl font-bold text-banking-text md:text-5xl">CDNT Advantage Banking</h1>
+            <h1 className="text-4xl font-bold text-banking-text md:text-5xl">Nexo Bank Advantage Banking</h1>
             <p className="mt-6 text-xl text-banking-muted leading-relaxed">
               Our most versatile chequing account designed for your daily life. Unlimited transactions, no monthly fee with a minimum balance, and premium security.
             </p>
@@ -107,7 +107,7 @@ export default function AdvantageBankingPage() {
               }
             ].map((benefit) => (
               <div key={benefit.title} className="bg-white p-8 rounded-xl border border-banking-border shadow-sm hover:shadow-md transition-shadow">
-                <div className="mb-6 grid h-12 w-12 place-items-center rounded-lg bg-blue-50 text-banking-blue">
+                <div className="mb-6 grid h-12 w-12 place-items-center rounded-lg bg-emerald-50 text-banking-blue">
                   <benefit.icon className="h-6 w-6" />
                 </div>
                 <h3 className="text-lg font-bold text-banking-text">{benefit.title}</h3>

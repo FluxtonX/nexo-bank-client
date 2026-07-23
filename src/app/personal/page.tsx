@@ -145,7 +145,7 @@ export default function PersonalBankingPage() {
 
             <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
               <div className="group rounded-[2.5rem] border border-banking-border bg-white p-10 shadow-sm transition-all hover:shadow-2xl hover:-translate-y-2">
-                <div className="mb-8 grid h-16 w-16 place-items-center rounded-2xl bg-blue-50 text-banking-blue transition-colors group-hover:bg-banking-blue group-hover:text-white">
+                <div className="mb-8 grid h-16 w-16 place-items-center rounded-2xl bg-emerald-50 text-banking-blue transition-colors group-hover:bg-banking-blue group-hover:text-white">
                   <Wallet className="h-8 w-8" />
                 </div>
                 <h3 className="text-2xl font-bold text-banking-ink">Bank Accounts</h3>

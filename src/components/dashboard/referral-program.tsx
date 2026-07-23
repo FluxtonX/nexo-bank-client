@@ -24,7 +24,7 @@ export function ReferralProgram() {
                 NORTH-4821
               </p>
             </div>
-            <div className="grid h-12 w-12 place-items-center rounded-md bg-blue-50 text-banking-blue">
+            <div className="grid h-12 w-12 place-items-center rounded-md bg-emerald-50 text-banking-blue">
               <UserPlus className="h-6 w-6" />
             </div>
           </div>

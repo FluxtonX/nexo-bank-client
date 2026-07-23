@@ -132,7 +132,7 @@ export default function SecuritySettingsPage() {
               placeholder="Enter current password"
               value={currentPassword}
               onChange={(e) => setCurrentPassword(e.target.value)}
-              className="w-full rounded-xl border border-gray-200 px-4 py-3.5 text-[15px] text-[#0A0F2C] outline-none transition-colors focus:border-[#113285] focus:ring-1 focus:ring-[#113285]" 
+              className="w-full rounded-xl border border-gray-200 px-4 py-3.5 text-[15px] text-[#0A0F2C] outline-none transition-colors focus:border-[#047857] focus:ring-1 focus:ring-[#047857]" 
               required
             />
           </div>
@@ -144,7 +144,7 @@ export default function SecuritySettingsPage() {
               placeholder="Enter new password"
               value={newPassword}
               onChange={(e) => setNewPassword(e.target.value)}
-              className="w-full rounded-xl border border-gray-200 px-4 py-3.5 text-[15px] text-[#0A0F2C] outline-none transition-colors focus:border-[#113285] focus:ring-1 focus:ring-[#113285]" 
+              className="w-full rounded-xl border border-gray-200 px-4 py-3.5 text-[15px] text-[#0A0F2C] outline-none transition-colors focus:border-[#047857] focus:ring-1 focus:ring-[#047857]" 
               required
             />
           </div>
@@ -177,7 +177,7 @@ export default function SecuritySettingsPage() {
               placeholder="Confirm new password"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
-              className="w-full rounded-xl border border-gray-200 px-4 py-3.5 text-[15px] text-[#0A0F2C] outline-none transition-colors focus:border-[#113285] focus:ring-1 focus:ring-[#113285]" 
+              className="w-full rounded-xl border border-gray-200 px-4 py-3.5 text-[15px] text-[#0A0F2C] outline-none transition-colors focus:border-[#047857] focus:ring-1 focus:ring-[#047857]" 
               required
             />
             {confirmPassword.length > 0 && !passwordsMatch && (
@@ -201,7 +201,7 @@ export default function SecuritySettingsPage() {
             <button 
               type="submit"
               disabled={!canSubmit}
-              className="rounded-xl bg-[#113285] px-6 py-3 text-[14px] font-bold text-white shadow-sm transition-colors hover:bg-blue-900 focus:outline-none focus:ring-2 focus:ring-[#113285] focus:ring-offset-2 disabled:opacity-50 disabled:hover:bg-[#113285] flex items-center justify-center min-w-[160px]"
+              className="rounded-xl bg-[#047857] px-6 py-3 text-[14px] font-bold text-white shadow-sm transition-colors hover:bg-emerald-900 focus:outline-none focus:ring-2 focus:ring-[#047857] focus:ring-offset-2 disabled:opacity-50 disabled:hover:bg-[#047857] flex items-center justify-center min-w-[160px]"
             >
               {isLoading ? (
                 <span className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
@@ -235,7 +235,7 @@ export default function SecuritySettingsPage() {
           </span>
         </div>
 
-        <button className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3.5 text-[14px] font-bold text-[#0A0F2C] shadow-sm transition-colors hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#113285] focus:ring-offset-2">
+        <button className="w-full rounded-xl border border-gray-200 bg-white px-4 py-3.5 text-[14px] font-bold text-[#0A0F2C] shadow-sm transition-colors hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#047857] focus:ring-offset-2">
           Reconfigure 2FA
         </button>
       </section>
@@ -250,7 +250,7 @@ export default function SecuritySettingsPage() {
         <div className="space-y-4">
           {isLoadingSessions ? (
             <div className="flex justify-center p-4">
-              <span className="w-6 h-6 border-2 border-[#113285]/30 border-t-[#113285] rounded-full animate-spin"></span>
+              <span className="w-6 h-6 border-2 border-[#047857]/30 border-t-[#047857] rounded-full animate-spin"></span>
             </div>
           ) : sessions.length === 0 ? (
             <p className="text-[14px] text-gray-500 text-center py-4">No active sessions found.</p>
@@ -271,7 +271,7 @@ export default function SecuritySettingsPage() {
                   ) : (
                     <button 
                       onClick={() => handleRevokeSession(session.id)}
-                      className="rounded-xl border border-gray-200 bg-white px-5 py-2.5 text-[13px] font-bold text-[#0A0F2C] shadow-sm transition-colors hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#113285] focus:ring-offset-2"
+                      className="rounded-xl border border-gray-200 bg-white px-5 py-2.5 text-[13px] font-bold text-[#0A0F2C] shadow-sm transition-colors hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#047857] focus:ring-offset-2"
                     >
                       Revoke
                     </button>

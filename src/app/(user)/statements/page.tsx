@@ -50,7 +50,7 @@ export default function StatementsPage() {
                 </thead>
                 <tbody className="divide-y divide-banking-border">
                   {sampleStatements.map((s) => (
-                    <tr key={s.id} className="group hover:bg-blue-50/20 transition-colors">
+                    <tr key={s.id} className="group hover:bg-emerald-50/20 transition-colors">
                       <td className="px-6 py-5">
                         <div className="flex items-center gap-3">
                           <Calendar className="h-4 w-4 text-banking-blue" />

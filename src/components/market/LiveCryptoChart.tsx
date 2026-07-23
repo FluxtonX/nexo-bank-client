@@ -85,7 +85,7 @@ type ChartSettings = {
 };
 
 const INDICATORS: Array<{ id: IndicatorId; label: string; color: string }> = [
-  { id: "sma20", label: "SMA 20", color: "#113285" },
+  { id: "sma20", label: "SMA 20", color: "#047857" },
   { id: "ema20", label: "EMA 20", color: "#7C3AED" },
   { id: "vwap", label: "VWAP", color: "#0F766E" },
 ];
@@ -283,8 +283,8 @@ export function LiveCryptoChart({
       },
       crosshair: {
         mode: 0,
-        vertLine: { color: "#113285", labelBackgroundColor: "#113285" },
-        horzLine: { color: "#113285", labelBackgroundColor: "#113285" },
+        vertLine: { color: "#047857", labelBackgroundColor: "#047857" },
+        horzLine: { color: "#047857", labelBackgroundColor: "#047857" },
       },
       handleScroll: {
         mouseWheel: true,
@@ -311,7 +311,7 @@ export function LiveCryptoChart({
     });
 
     const closeLineSeries = chart.addSeries(LineSeries, {
-      color: "#113285",
+      color: "#047857",
       lineWidth: 2,
       priceLineVisible: true,
       visible: DEFAULT_CHART_SETTINGS.style === "line",
@@ -325,7 +325,7 @@ export function LiveCryptoChart({
     chart.priceScale("volume").applyOptions({ scaleMargins: { top: 0.82, bottom: 0 } });
 
     const smaSeries = chart.addSeries(LineSeries, {
-      color: "#113285",
+      color: "#047857",
       lineWidth: 2,
       priceLineVisible: false,
       visible: false,
@@ -389,13 +389,13 @@ export function LiveCryptoChart({
         mode: 0,
         vertLine: {
           visible: chartSettings.showCrosshair,
-          color: "#113285",
-          labelBackgroundColor: "#113285",
+          color: "#047857",
+          labelBackgroundColor: "#047857",
         },
         horzLine: {
           visible: chartSettings.showCrosshair,
-          color: "#113285",
-          labelBackgroundColor: "#113285",
+          color: "#047857",
+          labelBackgroundColor: "#047857",
         },
       },
     });
@@ -633,8 +633,8 @@ export function LiveCryptoChart({
               aria-pressed={active}
               onClick={() => handleToolChange(tool.id)}
               className={cn(
-                "mb-1 grid h-8 w-8 shrink-0 place-items-center rounded-md text-slate-600 transition-colors hover:bg-blue-50 hover:text-[#113285]",
-                active && "bg-blue-50 text-[#113285] ring-1 ring-blue-200",
+                "mb-1 grid h-8 w-8 shrink-0 place-items-center rounded-md text-slate-600 transition-colors hover:bg-emerald-50 hover:text-[#047857]",
+                active && "bg-emerald-50 text-[#047857] ring-1 ring-emerald-200",
               )}
             >
               <Icon className="h-4 w-4" />
@@ -651,7 +651,7 @@ export function LiveCryptoChart({
             onClick={() => handleToolChange("pointer")}
             className={cn(
               "grid h-8 w-8 shrink-0 place-items-center rounded-md text-slate-600 hover:bg-slate-100",
-              activeTool === "pointer" && "bg-blue-50 text-[#113285] ring-1 ring-blue-200",
+              activeTool === "pointer" && "bg-emerald-50 text-[#047857] ring-1 ring-emerald-200",
             )}
           >
             <MousePointer2 className="h-4 w-4" />
@@ -679,7 +679,7 @@ export function LiveCryptoChart({
               }}
               className={cn(
                 "grid h-8 w-8 place-items-center rounded-md text-slate-500 hover:bg-slate-100",
-                settingsMenuOpen && "bg-blue-50 text-[#113285]",
+                settingsMenuOpen && "bg-emerald-50 text-[#047857]",
               )}
             >
               <Settings2 className="h-4 w-4" />
@@ -696,7 +696,7 @@ export function LiveCryptoChart({
                     type="button"
                     title="Reset chart settings"
                     onClick={resetChartSettings}
-                    className="grid h-8 w-8 place-items-center rounded-md text-slate-500 hover:bg-slate-100 hover:text-[#113285]"
+                    className="grid h-8 w-8 place-items-center rounded-md text-slate-500 hover:bg-slate-100 hover:text-[#047857]"
                   >
                     <RotateCcw className="h-4 w-4" />
                   </button>
@@ -713,7 +713,7 @@ export function LiveCryptoChart({
                           onClick={() => updateChartSetting("style", style)}
                           className={cn(
                             "rounded-md px-3 py-2 text-xs font-black capitalize transition-colors",
-                            chartSettings.style === style ? "bg-white text-[#113285] shadow-sm" : "text-slate-500 hover:text-[#0A0F2C]",
+                            chartSettings.style === style ? "bg-white text-[#047857] shadow-sm" : "text-slate-500 hover:text-[#0A0F2C]",
                           )}
                         >
                           {style}
@@ -735,7 +735,7 @@ export function LiveCryptoChart({
                         onClick={() => updateChartSetting(key as keyof ChartSettings, !chartSettings[key as keyof ChartSettings] as never)}
                         className={cn(
                           "flex items-center justify-between rounded-lg border px-3 py-2 text-xs font-black transition-colors",
-                          chartSettings[key as keyof ChartSettings] ? "border-blue-200 bg-blue-50 text-[#113285]" : "border-slate-200 text-slate-600 hover:bg-slate-50",
+                          chartSettings[key as keyof ChartSettings] ? "border-emerald-200 bg-emerald-50 text-[#047857]" : "border-slate-200 text-slate-600 hover:bg-slate-50",
                         )}
                       >
                         {label}
@@ -746,7 +746,7 @@ export function LiveCryptoChart({
 
                   <div>
                     <div className="mb-2 flex items-center gap-2 text-xs font-black text-[#0A0F2C]">
-                      <Palette className="h-4 w-4 text-[#113285]" />
+                      <Palette className="h-4 w-4 text-[#047857]" />
                       Candle Colors
                     </div>
                     <div className="grid grid-cols-2 gap-3">
@@ -774,7 +774,7 @@ export function LiveCryptoChart({
                   <button
                     type="button"
                     onClick={() => chartRef.current?.timeScale().fitContent()}
-                    className="w-full rounded-lg bg-[#113285] px-3 py-2 text-xs font-black text-white transition-colors hover:bg-[#0D266A]"
+                    className="w-full rounded-lg bg-[#047857] px-3 py-2 text-xs font-black text-white transition-colors hover:bg-[#064e3b]"
                   >
                     Fit Chart To Data
                   </button>
@@ -795,7 +795,7 @@ export function LiveCryptoChart({
                 setIndicatorMenuOpen((value) => !value);
                 setCompareMenuOpen(false);
               }}
-              className={cn("rounded-md px-2.5 py-2 text-[11px] font-black transition-colors", selectedIndicators.length > 0 ? "bg-blue-50 text-[#113285]" : "text-[#0A0F2C] hover:bg-slate-100")}
+              className={cn("rounded-md px-2.5 py-2 text-[11px] font-black transition-colors", selectedIndicators.length > 0 ? "bg-emerald-50 text-[#047857]" : "text-[#0A0F2C] hover:bg-slate-100")}
             >
               Indicators
             </button>
@@ -812,7 +812,7 @@ export function LiveCryptoChart({
                       <span className="h-2 w-2 rounded-full" style={{ backgroundColor: indicator.color }} />
                       {indicator.label}
                     </span>
-                    {selectedIndicators.includes(indicator.id) && <span className="text-[#113285]">On</span>}
+                    {selectedIndicators.includes(indicator.id) && <span className="text-[#047857]">On</span>}
                   </button>
                 ))}
               </div>
@@ -826,7 +826,7 @@ export function LiveCryptoChart({
                 setCompareMenuOpen((value) => !value);
                 setIndicatorMenuOpen(false);
               }}
-              className={cn("rounded-md px-2.5 py-2 text-[11px] font-black transition-colors", compareSymbol ? "bg-blue-50 text-[#113285]" : "text-[#0A0F2C] hover:bg-slate-100")}
+              className={cn("rounded-md px-2.5 py-2 text-[11px] font-black transition-colors", compareSymbol ? "bg-emerald-50 text-[#047857]" : "text-[#0A0F2C] hover:bg-slate-100")}
             >
               Compare
             </button>
@@ -841,7 +841,7 @@ export function LiveCryptoChart({
                   className="mb-1 flex w-full items-center justify-between rounded-md px-3 py-2 text-left text-xs font-black text-slate-700 transition-colors hover:bg-slate-50"
                 >
                   None
-                  {!compareSymbol && <span className="h-1.5 w-1.5 rounded-full bg-[#113285]" />}
+                  {!compareSymbol && <span className="h-1.5 w-1.5 rounded-full bg-[#047857]" />}
                 </button>
                 {COINS.filter((coinOption) => coinOption.symbol !== normalizedSymbol).map((coinOption) => (
                   <button
@@ -884,7 +884,7 @@ export function LiveCryptoChart({
         <span className="shrink-0 text-slate-300">/</span>
         <span className="shrink-0">Binance</span>
         {selectedIndicators.length > 0 && (
-          <span className="shrink truncate rounded bg-blue-50 px-1 py-0.5 text-[#113285]">
+          <span className="shrink truncate rounded bg-emerald-50 px-1 py-0.5 text-[#047857]">
             {selectedIndicators.map((item) => INDICATORS.find((indicator) => indicator.id === item)?.label).join(", ")}
           </span>
         )}
@@ -914,7 +914,7 @@ export function LiveCryptoChart({
           <div className="rounded-xl border border-slate-200 bg-white px-5 py-4 text-center shadow-xl">
             {loading ? (
               <>
-                <Loader2 className="mx-auto h-5 w-5 animate-spin text-[#113285]" />
+                <Loader2 className="mx-auto h-5 w-5 animate-spin text-[#047857]" />
                 <p className="mt-2 text-sm font-black text-[#0A0F2C]">Loading Binance market data</p>
               </>
             ) : (

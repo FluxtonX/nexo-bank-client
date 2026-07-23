@@ -17,7 +17,7 @@ export default async function PricingPage() {
         {/* Header Section */}
         <section className="pt-16 pb-12 px-6">
           <div className="mx-auto max-w-7xl text-center">
-            <h1 className="text-4xl md:text-5xl font-bold text-[#1A3FBB] mb-6 tracking-tight">
+            <h1 className="text-4xl md:text-5xl font-bold text-[#064e3b] mb-6 tracking-tight">
               {content.hero.heading}
             </h1>
             <p className="text-lg md:text-xl text-[#6B7280] leading-relaxed max-w-3xl mx-auto font-medium whitespace-pre-wrap">
@@ -32,7 +32,7 @@ export default async function PricingPage() {
             
             {/* Transaction Fees Table */}
             <div className="bg-white rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100 overflow-hidden">
-              <div className="bg-[#1A3FBB] px-8 py-4">
+              <div className="bg-[#064e3b] px-8 py-4">
                 <h2 className="text-xl font-bold text-white">{content.fees.title}</h2>
               </div>
               <div className="overflow-x-auto">
@@ -50,7 +50,7 @@ export default async function PricingPage() {
                     {content.fees.rows.map((row, idx) => (
                       <tr key={idx} className="hover:bg-gray-50/50 transition-colors">
                         <td className="px-8 py-5 text-sm font-medium text-[#0A0F2C]">{row[0]}</td>
-                        <td className="px-8 py-5 text-sm font-bold text-[#1A3FBB]">{row[1]}</td>
+                        <td className="px-8 py-5 text-sm font-bold text-[#064e3b]">{row[1]}</td>
                         <td className="px-8 py-5 text-sm text-[#6B7280]">{row[2]}</td>
                       </tr>
                     ))}
@@ -132,7 +132,7 @@ export default async function PricingPage() {
         </section>
 
         {/* CTA Section */}
-        <section className="bg-[#1A3FBB] py-24 px-6">
+        <section className="bg-[#064e3b] py-24 px-6">
           <div className="mx-auto max-w-7xl text-center">
             <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">{content.cta.heading}</h2>
             <p className="text-lg text-white/90 mb-10 font-medium whitespace-pre-wrap">

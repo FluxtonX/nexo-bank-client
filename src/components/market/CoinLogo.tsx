@@ -32,7 +32,7 @@ export function CoinLogo({
           onError={() => setFailed(true)}
         />
       ) : (
-        <span className="text-xs font-black text-[#113285]">{symbol.slice(0, 1)}</span>
+        <span className="text-xs font-black text-[#047857]">{symbol.slice(0, 1)}</span>
       )}
     </span>
   );

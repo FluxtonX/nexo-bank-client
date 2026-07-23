@@ -79,7 +79,7 @@ const coinImages: Record<string, string> = {
 function DepositMockup() {
   const [active, setActive] = React.useState("BTC");
   return (
-    <div className="w-full rounded-2xl bg-[#07111F] p-5 text-white shadow-2xl">
+    <div className="w-full rounded-2xl bg-[#022c22] p-5 text-white shadow-2xl">
       <div className="mb-4 flex items-center justify-between border-b border-white/10 pb-3">
         <p className="text-xs font-bold uppercase tracking-widest text-white/40">Deposit Asset</p>
         <span className="rounded-full bg-emerald-500/20 px-2 py-0.5 text-[10px] font-bold text-emerald-400">KYC Verified</span>
@@ -131,7 +131,7 @@ function WithdrawMockup() {
   const [step, setStep] = React.useState(1);
   const steps = ["Asset", "Network", "Address", "Amount", "Confirm", "Done"];
   return (
-    <div className="w-full rounded-2xl bg-[#07111F] p-5 text-white shadow-2xl">
+    <div className="w-full rounded-2xl bg-[#022c22] p-5 text-white shadow-2xl">
       <div className="mb-4 flex items-center justify-between border-b border-white/10 pb-3">
         <p className="text-xs font-bold uppercase tracking-widest text-white/40">Crypto Withdraw</p>
         <span className="text-[10px] font-bold text-banking-gold">Step {step} of 6</span>
@@ -255,7 +255,7 @@ function TrackMockup() {
     { label: "Confirmed", time: "—", done: false },
   ];
   return (
-    <div className="w-full rounded-2xl bg-[#07111F] p-5 text-white shadow-2xl">
+    <div className="w-full rounded-2xl bg-[#022c22] p-5 text-white shadow-2xl">
       <div className="mb-4 flex items-center justify-between border-b border-white/10 pb-3">
         <p className="text-xs font-bold uppercase tracking-widest text-white/40">Withdrawal Status</p>
         <span className="rounded-full bg-amber-500/20 px-2 py-0.5 text-[10px] font-bold text-amber-400">In Progress</span>
@@ -272,7 +272,7 @@ function TrackMockup() {
         <div className="absolute left-[7px] top-2 bottom-2 w-px bg-white/10" />
         {stages.map((s, i) => (
           <div key={s.label} className="relative flex items-center gap-3 mb-3">
-            <div className={`absolute -left-4 h-3.5 w-3.5 rounded-full border-2 flex items-center justify-center ${s.done ? "border-banking-gold bg-banking-gold/20" : "border-white/20 bg-[#07111F]"}`}>
+            <div className={`absolute -left-4 h-3.5 w-3.5 rounded-full border-2 flex items-center justify-center ${s.done ? "border-banking-gold bg-banking-gold/20" : "border-white/20 bg-[#022c22]"}`}>
               {s.done && <span className="h-1.5 w-1.5 rounded-full bg-banking-gold" />}
             </div>
             <div className="flex-1 flex items-center justify-between">

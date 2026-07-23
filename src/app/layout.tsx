@@ -30,7 +30,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning className={`${plusJakartaSans.variable} ${inter.variable}`}>
       <body className="antialiased" suppressHydrationWarning>
-        <NextTopLoader color="#2563eb" height={3} showSpinner={false} crawl={true} crawlSpeed={200} initialPosition={0.08} />
+        <NextTopLoader color="#064e3b" height={3} showSpinner={false} crawl={true} crawlSpeed={200} initialPosition={0.08} />
         <AppProviders>
           <MaintenanceGuard appType="client" />
           {children}

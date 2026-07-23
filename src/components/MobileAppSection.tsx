@@ -23,7 +23,7 @@ export default function MobileAppSection() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5 }}
-              className="text-xs font-bold uppercase tracking-widest text-[#3061EF] mb-3"
+              className="text-xs font-bold uppercase tracking-widest text-[#047857] mb-3"
             >
               On The Go
             </motion.p>
@@ -80,9 +80,9 @@ export default function MobileAppSection() {
                 repeatType: "reverse",
                 ease: "easeInOut",
               }}
-              className="absolute right-4 top-4 z-10 w-[230px] h-[450px] rounded-[36px] bg-[#07111F] p-2 shadow-2xl border-[5px] border-slate-800/90 transform rotate-[6deg] translate-x-[15px]"
+              className="absolute right-4 top-4 z-10 w-[230px] h-[450px] rounded-[36px] bg-[#022c22] p-2 shadow-2xl border-[5px] border-slate-800/90 transform rotate-[6deg] translate-x-[15px]"
             >
-              <div className="relative w-full h-full rounded-[28px] bg-[#07111F] overflow-hidden p-4 text-white flex flex-col justify-between">
+              <div className="relative w-full h-full rounded-[28px] bg-[#022c22] overflow-hidden p-4 text-white flex flex-col justify-between">
                 {/* iPhone Notch */}
                 <div className="absolute top-0 left-1/2 -translate-x-1/2 w-24 h-4 bg-slate-900 rounded-b-xl" />
 
@@ -164,7 +164,7 @@ export default function MobileAppSection() {
                 </div>
 
                 {/* Bank Card Graphic */}
-                <div className="rounded-xl bg-gradient-to-br from-[#0c2461] to-[#07111F] p-3 text-white shadow-md my-2">
+                <div className="rounded-xl bg-gradient-to-br from-[#022c22] to-[#022c22] p-3 text-white shadow-md my-2">
                   <p className="text-[7px] text-white/50 uppercase tracking-wider">Debit Card</p>
                   <p className="text-sm font-black mt-0.5">$45,210.04</p>
                   <p className="text-[8px] font-mono mt-3.5 tracking-widest text-white/80">•••• •••• •••• 8824</p>

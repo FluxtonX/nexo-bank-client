@@ -76,7 +76,7 @@ export default function HeroSection({ content }: { content: LandingHeroContent }
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.75 }}
           >
-            <button className="bg-primary-navy text-white rounded-full px-7 py-3.5 font-semibold text-[15px] hover:bg-blue-900 transition-all flex items-center justify-center gap-2">
+            <button className="bg-primary-navy text-white rounded-full px-7 py-3.5 font-semibold text-[15px] hover:bg-emerald-900 transition-all flex items-center justify-center gap-2">
               {content.btn1} <span>→</span>
             </button>
             <button className="bg-white border border-gray-200 text-gray-800 rounded-full px-7 py-3.5 font-medium text-[15px] hover:bg-gray-50 hover:border-gray-300 transition-all flex items-center justify-center gap-2">
@@ -139,7 +139,7 @@ export default function HeroSection({ content }: { content: LandingHeroContent }
             {/* Cell B: Dark bank card */}
             <div
               className="rounded-2xl p-6 shadow-xl text-white flex flex-col justify-between min-h-[150px]"
-              style={{ background: "linear-gradient(135deg, #1A3FBB 0%, #07111F 100%)" }}
+              style={{ background: "linear-gradient(135deg, #064e3b 0%, #022c22 100%)" }}
             >
               <div className="flex justify-between items-start">
                 <div>
@@ -148,8 +148,8 @@ export default function HeroSection({ content }: { content: LandingHeroContent }
                   </p>
                   <p className="text-[26px] font-black mt-1 tracking-tight">$48,210.94</p>
                 </div>
-                <div className="w-10 h-10 rounded-xl border border-[#3061EF]/60 flex items-center justify-center">
-                  <svg viewBox="0 0 24 24" className="w-5 h-5 text-[#3061EF]" fill="currentColor">
+                <div className="w-10 h-10 rounded-xl border border-[#047857]/60 flex items-center justify-center">
+                  <svg viewBox="0 0 24 24" className="w-5 h-5 text-[#047857]" fill="currentColor">
                     <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z"/>
                   </svg>
                 </div>
@@ -181,7 +181,7 @@ export default function HeroSection({ content }: { content: LandingHeroContent }
               <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 flex-1">
                 <div className="flex items-center justify-between mb-3">
                   <div className="flex items-center gap-1.5">
-                    <span className="text-[#3061EF] font-bold text-sm">▲</span>
+                    <span className="text-[#047857] font-bold text-sm">▲</span>
                     <span className="text-[13px] font-semibold text-gray-600">24%</span>
                   </div>
                   <div className="w-9 h-9 rounded-full bg-[#0B1220] flex items-center justify-center">
@@ -198,7 +198,7 @@ export default function HeroSection({ content }: { content: LandingHeroContent }
               {/* Accent card */}
               <div
                 className="rounded-2xl p-5 relative overflow-hidden"
-                style={{ background: "#3061EF" }}
+                style={{ background: "#047857" }}
               >
                 <div className="absolute -right-4 -bottom-4 w-24 h-24 rounded-full opacity-10" style={{ background: "white" }} />
                 <div className="absolute right-4 bottom-4 w-14 h-14 rounded-full opacity-10" style={{ background: "white" }} />

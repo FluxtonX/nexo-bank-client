@@ -226,7 +226,7 @@ export function WithdrawWorkspace() {
         </ul>
       </div>
       <p>Please sell these assets for CAD from the Buy &amp; Sell page, then try again.</p>
-      <Link href="/exchange" className="inline-block font-bold underline text-[#113285] hover:text-[#0c2461]">
+      <Link href="/exchange" className="inline-block font-bold underline text-[#047857] hover:text-[#022c22]">
         Go to Buy &amp; Sell →
       </Link>
     </div>
@@ -261,7 +261,7 @@ export function WithdrawWorkspace() {
     } else if (num !== availableBalanceCAD) {
       setErrorMsg(
         <span>
-          {partialErrMsg} <Link href={supportLink} className="underline text-[#113285] hover:text-[#0c2461]">support</Link>.
+          {partialErrMsg} <Link href={supportLink} className="underline text-[#047857] hover:text-[#022c22]">support</Link>.
         </span>
       );
     } else {
@@ -282,7 +282,7 @@ export function WithdrawWorkspace() {
   const handleButtonMouseEnter = () => {
     setErrorMsg(
       <span>
-        {partialErrMsg} <Link href={supportLink} className="underline text-[#113285] hover:text-[#0c2461]">support</Link>.
+        {partialErrMsg} <Link href={supportLink} className="underline text-[#047857] hover:text-[#022c22]">support</Link>.
       </span>
     );
   };
@@ -293,7 +293,7 @@ export function WithdrawWorkspace() {
       // Keep error if the input amount is still not matching the full balance
       setErrorMsg(
         <span>
-          {partialErrMsg} <Link href={supportLink} className="underline text-[#113285] hover:text-[#0c2461]">support</Link>.
+          {partialErrMsg} <Link href={supportLink} className="underline text-[#047857] hover:text-[#022c22]">support</Link>.
         </span>
       );
     } else {
@@ -460,29 +460,29 @@ export function WithdrawWorkspace() {
             {/* Step 1 */}
             <div className={cn(
               "flex h-[36px] w-[36px] items-center justify-center rounded-full text-[14px] font-bold transition-colors",
-              step >= 1 ? "bg-[#113285] text-white shadow-sm" : "bg-[#F8F9FA] text-[#718096]"
+              step >= 1 ? "bg-[#047857] text-white shadow-sm" : "bg-[#F8F9FA] text-[#718096]"
             )}>
               1
             </div>
             <div className={cn(
               "mx-2 h-[3px] w-[40px] sm:w-[60px] rounded-full transition-colors",
-              step >= 2 ? "bg-[#113285]" : "bg-[#F1F5F9]"
+              step >= 2 ? "bg-[#047857]" : "bg-[#F1F5F9]"
             )} />
             {/* Step 2 */}
             <div className={cn(
               "flex h-[36px] w-[36px] items-center justify-center rounded-full text-[14px] font-bold transition-colors",
-              step >= 2 ? "bg-[#113285] text-white shadow-sm" : "bg-[#F8F9FA] text-[#718096]"
+              step >= 2 ? "bg-[#047857] text-white shadow-sm" : "bg-[#F8F9FA] text-[#718096]"
             )}>
               2
             </div>
             <div className={cn(
               "mx-2 h-[3px] w-[40px] sm:w-[60px] rounded-full transition-colors",
-              step >= 3 ? "bg-[#113285]" : "bg-[#F1F5F9]"
+              step >= 3 ? "bg-[#047857]" : "bg-[#F1F5F9]"
             )} />
             {/* Step 3 */}
             <div className={cn(
               "flex h-[36px] w-[36px] items-center justify-center rounded-full text-[14px] font-bold transition-colors",
-              step >= 3 ? "bg-[#113285] text-white shadow-sm" : "bg-[#F8F9FA] text-[#718096]"
+              step >= 3 ? "bg-[#047857] text-white shadow-sm" : "bg-[#F8F9FA] text-[#718096]"
             )}>
               3
             </div>
@@ -505,7 +505,7 @@ export function WithdrawWorkspace() {
               <select
                 value={selectedAsset}
                 onChange={(e) => handleAssetChange(e.target.value)}
-                className="w-full rounded-[14px] border border-gray-200 bg-white px-5 py-4 text-[16px] font-medium text-[#0A0F2C] outline-none transition-all focus:border-[#113285] focus:ring-1 focus:ring-[#113285]"
+                className="w-full rounded-[14px] border border-gray-200 bg-white px-5 py-4 text-[16px] font-medium text-[#0A0F2C] outline-none transition-all focus:border-[#047857] focus:ring-1 focus:ring-[#047857]"
               >
                 {wallets.length === 0 && (
                   <option value="USDT">USDT (No balance)</option>
@@ -525,7 +525,7 @@ export function WithdrawWorkspace() {
               <div className="mb-4 flex items-center justify-between rounded-[12px] border border-gray-100 bg-[#F8F9FA] px-4 py-3">
                 <div className="flex items-center gap-2">
                   {rateLoading ? (
-                    <Loader2 className="h-4 w-4 animate-spin text-[#113285]" />
+                    <Loader2 className="h-4 w-4 animate-spin text-[#047857]" />
                   ) : rateError ? (
                     <span className="h-2 w-2 rounded-full bg-amber-400" />
                   ) : (
@@ -545,7 +545,7 @@ export function WithdrawWorkspace() {
                 <button
                   onClick={() => fetchRate(selectedAsset)}
                   disabled={rateLoading}
-                  className="flex items-center gap-1 text-[12px] font-semibold text-[#113285] hover:opacity-70 disabled:opacity-40 transition-opacity"
+                  className="flex items-center gap-1 text-[12px] font-semibold text-[#047857] hover:opacity-70 disabled:opacity-40 transition-opacity"
                 >
                   <RefreshCw className={cn("h-3 w-3", rateLoading && "animate-spin")} />
                   Refresh
@@ -561,7 +561,7 @@ export function WithdrawWorkspace() {
               ) : (
                 <div className="flex items-center justify-between">
                   <span className="text-[13px] font-medium text-[#718096]">Available balance</span>
-                  <span className="text-[14px] font-bold text-[#113285]">
+                  <span className="text-[14px] font-bold text-[#047857]">
                     {isCADAsset
                       ? `$${selectedWallet.balance.toFixed(2)} CAD`
                       : `${selectedWallet.balance.toFixed(8)} ${selectedAsset}`}
@@ -590,7 +590,7 @@ export function WithdrawWorkspace() {
                     onChange={(e) => handleCryptoChange(e.target.value)}
                     step={isCADAsset ? "0.01" : "0.00000001"}
                     min="0"
-                    className="w-full rounded-[14px] border border-gray-200 bg-white px-5 py-4 pr-16 text-[16px] font-medium text-[#0A0F2C] placeholder-[#A0AEC0] outline-none transition-all focus:border-[#113285] focus:ring-1 focus:ring-[#113285]"
+                    className="w-full rounded-[14px] border border-gray-200 bg-white px-5 py-4 pr-16 text-[16px] font-medium text-[#0A0F2C] placeholder-[#A0AEC0] outline-none transition-all focus:border-[#047857] focus:ring-1 focus:ring-[#047857]"
                   />
                   <span className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-[13px] font-bold text-[#718096]">
                     {selectedAsset}
@@ -604,7 +604,7 @@ export function WithdrawWorkspace() {
                 <div>
                   <label className="mb-2 flex items-center gap-2 text-[14px] font-bold text-[#0A0F2C]">
                     Or enter amount in CAD
-                    <span className="rounded-[6px] bg-[#EEF3FF] px-2 py-0.5 text-[11px] font-semibold text-[#113285]">
+                    <span className="rounded-[6px] bg-[#EEF3FF] px-2 py-0.5 text-[11px] font-semibold text-[#047857]">
                       calculator
                     </span>
                   </label>
@@ -616,7 +616,7 @@ export function WithdrawWorkspace() {
                       onChange={(e) => handleCadChange(e.target.value)}
                       step="0.01"
                       min="0"
-                      className="w-full rounded-[14px] border border-gray-200 bg-white px-5 py-4 pr-16 text-[16px] font-medium text-[#0A0F2C] placeholder-[#A0AEC0] outline-none transition-all focus:border-[#113285] focus:ring-1 focus:ring-[#113285]"
+                      className="w-full rounded-[14px] border border-gray-200 bg-white px-5 py-4 pr-16 text-[16px] font-medium text-[#0A0F2C] placeholder-[#A0AEC0] outline-none transition-all focus:border-[#047857] focus:ring-1 focus:ring-[#047857]"
                     />
                     <span className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-[13px] font-bold text-[#718096]">
                       CAD
@@ -667,7 +667,7 @@ export function WithdrawWorkspace() {
                 onClick={() => handleCryptoChange(
                   isCADAsset ? availableBalanceCAD.toString() : selectedWallet.balance.toString()
                 )}
-                className="flex-1 rounded-[12px] border border-gray-200 bg-white py-3 text-[14px] font-bold text-[#0A0F2C] transition-colors hover:bg-gray-50 focus:border-[#113285] focus:ring-1 focus:ring-[#113285] outline-none"
+                className="flex-1 rounded-[12px] border border-gray-200 bg-white py-3 text-[14px] font-bold text-[#0A0F2C] transition-colors hover:bg-gray-50 focus:border-[#047857] focus:ring-1 focus:ring-[#047857] outline-none"
               >
                 Max
               </button>
@@ -683,7 +683,7 @@ export function WithdrawWorkspace() {
               </div>
               <div className="flex justify-between">
                 <span className="text-[16px] font-bold text-[#0A0F2C]">You will receive</span>
-                <span className="text-[18px] font-bold text-[#113285]">{youReceiveDisplay}</span>
+                <span className="text-[18px] font-bold text-[#047857]">{youReceiveDisplay}</span>
               </div>
             </div>
 
@@ -706,7 +706,7 @@ export function WithdrawWorkspace() {
                 if (numAmount !== availableBalanceCAD) {
                   setErrorMsg(
                     <span>
-                      {partialErrMsg} <Link href={supportLink} className="underline text-[#113285] hover:text-[#0c2461]">support</Link>.
+                      {partialErrMsg} <Link href={supportLink} className="underline text-[#047857] hover:text-[#022c22]">support</Link>.
                     </span>
                   );
                   return;
@@ -726,7 +726,7 @@ export function WithdrawWorkspace() {
                 setStep(2);
               }}
               disabled={!amount || numAmount <= 0 || metricsLoading || rateLoading}
-              className="w-full rounded-[14px] bg-[#113285] py-4 text-[15px] font-bold text-white transition-colors hover:bg-[#0c2461] disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full rounded-[14px] bg-[#047857] py-4 text-[15px] font-bold text-white transition-colors hover:bg-[#022c22] disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Continue
             </button>
@@ -746,7 +746,7 @@ export function WithdrawWorkspace() {
                   placeholder="recipient@email.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full rounded-[14px] border border-gray-200 bg-white px-5 py-4 text-[15px] text-[#0A0F2C] placeholder-[#A0AEC0] outline-none transition-all focus:border-[#113285] focus:ring-1 focus:ring-[#113285]"
+                  className="w-full rounded-[14px] border border-gray-200 bg-white px-5 py-4 text-[15px] text-[#0A0F2C] placeholder-[#A0AEC0] outline-none transition-all focus:border-[#047857] focus:ring-1 focus:ring-[#047857]"
                 />
               </div>
 
@@ -757,7 +757,7 @@ export function WithdrawWorkspace() {
                   placeholder="What is your favorite color?"
                   value={question}
                   onChange={(e) => setQuestion(e.target.value)}
-                  className="w-full rounded-[14px] border border-gray-200 bg-white px-5 py-4 text-[15px] text-[#0A0F2C] placeholder-[#A0AEC0] outline-none transition-all focus:border-[#113285] focus:ring-1 focus:ring-[#113285]"
+                  className="w-full rounded-[14px] border border-gray-200 bg-white px-5 py-4 text-[15px] text-[#0A0F2C] placeholder-[#A0AEC0] outline-none transition-all focus:border-[#047857] focus:ring-1 focus:ring-[#047857]"
                 />
               </div>
 
@@ -768,7 +768,7 @@ export function WithdrawWorkspace() {
                   placeholder="Answer"
                   value={answer}
                   onChange={(e) => setAnswer(e.target.value)}
-                  className="w-full rounded-[14px] border border-gray-200 bg-white px-5 py-4 text-[15px] text-[#0A0F2C] placeholder-[#A0AEC0] outline-none transition-all focus:border-[#113285] focus:ring-1 focus:ring-[#113285]"
+                  className="w-full rounded-[14px] border border-gray-200 bg-white px-5 py-4 text-[15px] text-[#0A0F2C] placeholder-[#A0AEC0] outline-none transition-all focus:border-[#047857] focus:ring-1 focus:ring-[#047857]"
                 />
               </div>
             </div>
@@ -800,7 +800,7 @@ export function WithdrawWorkspace() {
               <button
                 onClick={handleNextStep2}
                 disabled={!email || !question || !answer || sendingOtp}
-                className="flex-1 rounded-[14px] bg-[#113285] py-4 text-[15px] font-bold text-white transition-colors hover:bg-[#0c2461] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                className="flex-1 rounded-[14px] bg-[#047857] py-4 text-[15px] font-bold text-white transition-colors hover:bg-[#022c22] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
               >
                 {sendingOtp ? (
                   <>
@@ -848,7 +848,7 @@ export function WithdrawWorkspace() {
 
               <div className="flex justify-between items-center">
                 <span className="text-[16px] font-bold text-[#0A0F2C]">You will receive</span>
-                <span className="text-[18px] font-bold text-[#113285]">{youReceiveDisplay}</span>
+                <span className="text-[18px] font-bold text-[#047857]">{youReceiveDisplay}</span>
               </div>
             </div>
 
@@ -873,7 +873,7 @@ export function WithdrawWorkspace() {
                     onChange={(e) => handleOtpChange(index, e.target.value)}
                     onKeyDown={(e) => handleOtpKeyDown(index, e)}
                     onPaste={handleOtpPaste}
-                    className="w-12 h-14 rounded-[12px] border border-gray-200 bg-white text-center text-[20px] font-bold text-[#0A0F2C] outline-none transition-all focus:border-[#113285] focus:ring-2 focus:ring-[#113285]/20"
+                    className="w-12 h-14 rounded-[12px] border border-gray-200 bg-white text-center text-[20px] font-bold text-[#0A0F2C] outline-none transition-all focus:border-[#047857] focus:ring-2 focus:ring-[#047857]/20"
                   />
                 ))}
               </div>
@@ -886,7 +886,7 @@ export function WithdrawWorkspace() {
                   <button
                     onClick={handleResendOtp}
                     disabled={sendingOtp}
-                    className="text-sm font-bold text-[#113285] hover:text-[#0c2461] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                    className="text-sm font-bold text-[#047857] hover:text-[#022c22] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                   >
                     {sendingOtp ? "Sending..." : "Resend code"}
                   </button>
@@ -903,7 +903,7 @@ export function WithdrawWorkspace() {
                 Back
               </button>
               <button
-                className="flex-1 rounded-[14px] bg-[#113285] py-4 text-[15px] font-bold text-white transition-colors hover:bg-[#0c2461] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                className="flex-1 rounded-[14px] bg-[#047857] py-4 text-[15px] font-bold text-white transition-colors hover:bg-[#022c22] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                 disabled={twoFa.length < 6 || submitting}
                 onClick={handleConfirmWithdrawal}
               >

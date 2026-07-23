@@ -13,7 +13,7 @@ const slides = [
     image: "https://images.unsplash.com/photo-1501167786227-4cba60f6d58f?auto=format&fit=crop&q=80&w=2070",
     ctaPrimary: "Open an Account",
     ctaSecondary: "Learn More",
-    accent: "CDNT Advantage"
+    accent: "Nexo Bank Advantage"
   },
   {
     id: 2,

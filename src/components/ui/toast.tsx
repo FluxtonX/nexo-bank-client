@@ -47,7 +47,7 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
               ) : toast.type === "warning" ? (
                 <AlertCircle className="mt-0.5 h-5 w-5 text-amber-600" />
               ) : toast.type === "info" ? (
-                <Info className="mt-0.5 h-5 w-5 text-blue-600" />
+                <Info className="mt-0.5 h-5 w-5 text-emerald-600" />
               ) : (
                 <CheckCircle2 className="mt-0.5 h-5 w-5 text-emerald-600" />
               )}

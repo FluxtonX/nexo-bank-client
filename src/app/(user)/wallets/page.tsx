@@ -180,7 +180,7 @@ export default function WalletsPage() {
                     </div>
                   </div>
 
-                  <div className="bg-[#E0E7FF] rounded-xl p-6 border border-blue-100/50 mb-6">
+                  <div className="bg-[#E0E7FF] rounded-xl p-6 border border-emerald-100/50 mb-6">
                     <div className="flex items-center gap-2 text-primary-blue font-semibold text-sm mb-3">
                       <TriangleAlert className="w-4 h-4" />
                       {cadTitle}
@@ -193,7 +193,7 @@ export default function WalletsPage() {
                   <div className="mt-6">
                     <Link
                       href="/withdraw"
-                      className="w-full bg-primary-blue hover:bg-blue-800 text-white font-semibold rounded-xl py-3.5 flex items-center justify-center gap-2 transition-colors text-center"
+                      className="w-full bg-primary-blue hover:bg-emerald-800 text-white font-semibold rounded-xl py-3.5 flex items-center justify-center gap-2 transition-colors text-center"
                     >
                       <ArrowUpRight className="w-5 h-5" />
                       Withdraw CAD
@@ -246,7 +246,7 @@ export default function WalletsPage() {
                       </button>
                       <button
                         onClick={() => setShowQr(!showQr)}
-                        className={`p-3 border rounded-xl transition-colors ${showQr ? "bg-blue-50 border-primary-blue text-primary-blue" : "border-gray-200 hover:bg-gray-50 text-gray-600"}`}
+                        className={`p-3 border rounded-xl transition-colors ${showQr ? "bg-emerald-50 border-primary-blue text-primary-blue" : "border-gray-200 hover:bg-gray-50 text-gray-600"}`}
                         title="Show QR Code"
                       >
                         <QrCode className="w-5 h-5" />
@@ -281,7 +281,7 @@ export default function WalletsPage() {
                   <div className="mt-6 flex gap-4">
                     <Link
                       href={`/deposit?asset=${selectedWallet?.symbol}`}
-                      className="flex-1 bg-primary-blue hover:bg-blue-800 text-white font-semibold rounded-xl py-3.5 flex items-center justify-center gap-2 transition-colors text-center"
+                      className="flex-1 bg-primary-blue hover:bg-emerald-800 text-white font-semibold rounded-xl py-3.5 flex items-center justify-center gap-2 transition-colors text-center"
                     >
                       <ArrowDownLeft className="w-5 h-5" />
                       Deposit {selectedWallet?.symbol}

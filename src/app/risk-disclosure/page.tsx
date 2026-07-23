@@ -73,7 +73,7 @@ export default function RiskDisclosurePage() {
               <AlertTriangle className="mx-auto h-12 w-12 text-red-600 mb-6" />
               <h2 className="text-2xl font-bold text-red-900 mb-4">No Financial Advice</h2>
               <p className="text-sm leading-7 text-red-900/70 max-w-2xl mx-auto">
-                All content on the CDNT platform is for informational purposes only and does not constitute financial, investment, or legal advice. You should consult with a qualified professional before making any financial decisions.
+                All content on the Nexo Bank platform is for informational purposes only and does not constitute financial, investment, or legal advice. You should consult with a qualified professional before making any financial decisions.
               </p>
             </div>
           </div>

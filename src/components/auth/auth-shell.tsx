@@ -21,14 +21,13 @@ export function AuthShell({
     <main className="min-h-screen overflow-hidden bg-auth-radial text-white">
       <div className="mx-auto grid min-h-screen w-full max-w-7xl grid-cols-1 gap-10 px-5 py-6 lg:grid-cols-[1.05fr_0.95fr] lg:px-8">
         <section className="flex min-h-[42vh] flex-col justify-between py-4 lg:min-h-0 lg:py-8">
-          <Link href="/" className="inline-flex w-fit items-center gap-3">
-            <div className="h-20 md:h-24 w-auto min-w-[270px]">
-              <img 
-                src="/cdnt-logo.png" 
-                alt="CDNT Logo" 
-                className="h-full w-auto object-contain" 
-              />
+          <Link href="/" className="inline-flex w-fit items-center gap-2.5 group">
+            <div className="h-10 w-10 rounded-xl bg-gradient-to-tr from-emerald-400 to-emerald-600 flex items-center justify-center text-slate-950 font-black text-xl shadow-lg shadow-emerald-500/20">
+              N
             </div>
+            <span className="text-2xl font-extrabold tracking-tight text-white">
+              Nexo <span className="text-emerald-400">Bank</span>
+            </span>
           </Link>
 
 

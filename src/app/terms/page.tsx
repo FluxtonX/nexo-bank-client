@@ -18,7 +18,7 @@ export default function TermsPage() {
             <div>
               <h2 className="text-lg font-bold text-amber-900 mb-2">Legal Agreement</h2>
               <p className="text-sm leading-relaxed text-amber-900/70">
-                By accessing or using the CDNT platform, you agree to be bound by these Terms of Service. Please read them carefully as they contain important information regarding your legal rights, remedies, and obligations.
+                By accessing or using the Nexo Bank platform, you agree to be bound by these Terms of Service. Please read them carefully as they contain important information regarding your legal rights, remedies, and obligations.
               </p>
             </div>
           </div>
