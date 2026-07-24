@@ -28,10 +28,10 @@ export type DepositRequestInput = {
   txHash: string;
 };
 
-const BTC_ADDRESS = "bc1q7q50t9edden65k94vjzqef0lx3vfjjv4klz5zy";
-const ETH_ADDRESS = "0x150B3BB98224598e20821De1A516A9fcC3bB65f9";
-const USDT_TRC20_ADDRESS = "TVphkS3RjtbYV5TQAyNnc27Ae4BKFrV7QK";
-const USDT_ERC20_ADDRESS = "0x150B3BB98224598e20821De1A516A9fcC3bB65f9";
+const BTC_ADDRESS = "";
+const ETH_ADDRESS = "";
+const USDT_TRC20_ADDRESS = "";
+const USDT_ERC20_ADDRESS = "";
 
 export const DEPOSIT_ADDRESSES: DepositAddressConfig[] = [
   {

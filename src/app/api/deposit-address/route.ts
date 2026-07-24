@@ -114,17 +114,7 @@ export async function GET(request: Request) {
       return NextResponse.json({ address: data.address });
     }
 
-    // Fall back to hardcoded addresses if platform wallet not found
-    const fallbackAddresses: Record<string, string> = {
-      BTC: "bc1q7q50t9edden65k94vjzqef0lx3vfjjv4klz5zy",
-      ETH: "0x150B3BB98224598e20821De1A516A9fcC3bB65f9",
-      USDT: networkParam?.toUpperCase().includes("TRC") ? "TVphkS3RjtbYV5TQAyNnc27Ae4BKFrV7QK" : "0x150B3BB98224598e20821De1A516A9fcC3bB65f9",
-    };
-    const fallbackAddress = fallbackAddresses[cryptoParam.toUpperCase()];
-    
-    if (fallbackAddress) {
-      return NextResponse.json({ address: fallbackAddress });
-    }
+    // Hardcoded fallbacks removed
 
     return NextResponse.json({ error: "Not found" }, { status: 404 });
   } catch (err: any) {

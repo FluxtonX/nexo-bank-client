@@ -398,15 +398,8 @@ export function useClientWallets() {
       const currencySymbols = Array.from(uniqueCurrencies);
       const cadRates = await fetchLiveCADRates(currencySymbols.length > 0 ? currencySymbols : ["BTC", "ETH", "USDT"]);
 
-      // Hardcoded fallback addresses (used when platform_wallets table has no entry)
-      const FALLBACK_ADDRESSES: Record<string, WalletNetworkAddress[]> = {
-        BTC: [{ network: "Bitcoin Network", address: "bc1q7q50t9edden65k94vjzqef0lx3vfjjv4klz5zy" }],
-        ETH: [{ network: "Ethereum (ERC20)", address: "0x150B3BB98224598e20821De1A516A9fcC3bB65f9" }],
-        USDT: [
-          { network: "TRC20 (Tron)", address: "TVphkS3RjtbYV5TQAyNnc27Ae4BKFrV7QK" },
-          { network: "ERC20 (Ethereum)", address: "0x150B3BB98224598e20821De1A516A9fcC3bB65f9" },
-        ],
-      };
+      // Hardcoded fallback addresses removed to always fetch from DB
+      const FALLBACK_ADDRESSES: Record<string, WalletNetworkAddress[]> = {};
 
       const platformAddressMap = (platformWallets || []).reduce((acc: Record<string, string>, w: { crypto: string; address: string }) => {
         acc[w.crypto] = w.address;
