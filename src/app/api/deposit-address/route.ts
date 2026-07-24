@@ -4,25 +4,7 @@ import { createAdminClient } from "@/lib/supabase/admin";
 
 export const dynamic = "force-dynamic";
 
-// Network name mapping to handle different naming conventions
-function getPlatformNetworkName(crypto: string, network: string): string {
-  const upperNetwork = network.toUpperCase();
-  const upperCrypto = crypto.toUpperCase();
-  
-  // Map from config network codes to database-stored network names
-  if (upperCrypto === "BTC" || upperNetwork === "BTC") {
-    return "Bitcoin Mainnet";
-  }
-  if (upperCrypto === "ETH" || upperNetwork === "ETH") {
-    return "Ethereum Mainnet";
-  }
-  if (upperCrypto === "USDT") {
-    if (upperNetwork === "TRC20") return "TRON (TRC-20)";
-    if (upperNetwork === "ERC20") return "Ethereum (ERC20)";
-    return "TRON (TRC-20) / Ethereum";
-  }
-  return network;
-}
+// Helper function removed because we query exact network codes from admin panel
 
 export async function GET(request: Request) {
   try {
@@ -92,16 +74,14 @@ export async function GET(request: Request) {
     // Fall back to platform wallets using admin client (bypasses RLS)
     const supabaseAdmin = createAdminClient();
     
-    // Map network name to platform_wallets convention
-    const platformNetwork = networkParam ? getPlatformNetworkName(cryptoParam, networkParam) : null;
-    
+    // Use exact network from param since admin sets it directly (e.g. BTC, TRC20, ERC20)
     let platformQuery = supabaseAdmin
       .from("platform_wallets")
       .select("address")
-      .eq("crypto", cryptoParam);
+      .eq("crypto", cryptoParam.toUpperCase());
       
-    if (platformNetwork) {
-      platformQuery = platformQuery.eq("network", platformNetwork);
+    if (networkParam) {
+      platformQuery = platformQuery.eq("network", networkParam.toUpperCase());
     }
 
     const { data, error } = await platformQuery.limit(1).maybeSingle();
