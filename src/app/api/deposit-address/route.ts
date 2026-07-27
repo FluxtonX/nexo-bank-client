@@ -74,27 +74,51 @@ export async function GET(request: Request) {
     // Fall back to platform wallets using admin client (bypasses RLS)
     const supabaseAdmin = createAdminClient();
     
-    // Use exact network from param since admin sets it directly (e.g. BTC, TRC20, ERC20)
-    let platformQuery = supabaseAdmin
+    const { data: platformData, error } = await supabaseAdmin
       .from("platform_wallets")
-      .select("address")
+      .select("address, network")
       .eq("crypto", cryptoParam.toUpperCase());
-      
-    if (networkParam) {
-      platformQuery = platformQuery.eq("network", networkParam.toUpperCase());
-    }
-
-    const { data, error } = await platformQuery.limit(1).maybeSingle();
 
     if (error) {
       throw error;
     }
 
-    if (data) {
-      return NextResponse.json({ address: data.address });
-    }
+    if (platformData && platformData.length > 0) {
+      // For single-network assets (BTC, ETH), just return the first/only address
+      if (cryptoParam.toUpperCase() === "BTC" || cryptoParam.toUpperCase() === "ETH") {
+        return NextResponse.json({ address: platformData[0].address });
+      }
 
-    // Hardcoded fallbacks removed
+      // For USDT (multi-network), do fuzzy matching on network
+      if (cryptoParam.toUpperCase() === "USDT" && networkParam) {
+        const upperNetworkParam = networkParam.toUpperCase();
+        
+        // TRC20: match rows where network contains "trc" OR "tron"
+        if (upperNetworkParam === "TRC20") {
+          const trcMatch = platformData.find(addr => 
+            addr.network && (addr.network.toUpperCase().includes("TRC") || addr.network.toUpperCase().includes("TRON"))
+          );
+          if (trcMatch) {
+            return NextResponse.json({ address: trcMatch.address });
+          }
+        }
+
+        // ERC20: match rows where network contains "erc" OR "eth"
+        if (upperNetworkParam === "ERC20") {
+          const ercMatch = platformData.find(addr => 
+            addr.network && (addr.network.toUpperCase().includes("ERC") || addr.network.toUpperCase().includes("ETH"))
+          );
+          if (ercMatch) {
+            return NextResponse.json({ address: ercMatch.address });
+          }
+        }
+
+        // Fallback to first if no match
+        return NextResponse.json({ address: platformData[0].address });
+      }
+
+      return NextResponse.json({ address: platformData[0].address });
+    }
 
     return NextResponse.json({ error: "Not found" }, { status: 404 });
   } catch (err: any) {
