@@ -557,7 +557,7 @@ export default function DashboardPage() {
 
   return (
     <div className="space-y-6">
-      <div className="bg-slate-950 rounded-2xl p-8 text-white shadow-lg">
+      <div className="bg-[#064E3B] rounded-2xl p-8 text-white shadow-lg">
         <div className="flex flex-col md:flex-row justify-between items-start gap-6">
           <div>
             <div className="flex items-center gap-2 mb-1">
@@ -632,7 +632,7 @@ export default function DashboardPage() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-6">
-        <div className="rounded-2xl p-6 shadow-lg backdrop-blur-md bg-white/5 border border-white/10 bg-gradient-to-br from-[#1e3a8a]/95 to-[#0f172a]/90">
+        <div className="rounded-2xl p-6 shadow-lg backdrop-blur-md bg-white/5 border border-white/10 bg-gradient-to-br from-[#0f172a]/95 to-[#020617]/90">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
             <h2 className="text-[15px] font-bold text-white">{perfTitle}</h2>
             <div className="flex flex-wrap gap-1.5">
@@ -644,7 +644,7 @@ export default function DashboardPage() {
                   className={cn(
                     "px-2.5 py-1 rounded-full text-[11px] font-bold transition-all",
                     performanceRange === range
-                      ? "bg-[#064e3b] text-white shadow-md shadow-emerald-500/30"
+                      ? "bg-[#F59E0B] text-[#0f172a] shadow-md shadow-amber-500/30"
                       : "bg-transparent text-white/80 hover:text-white hover:bg-white/10",
                   )}
                 >
@@ -688,11 +688,11 @@ export default function DashboardPage() {
               <AreaChart data={chartPerformanceData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
                 <defs>
                   <linearGradient id="performanceAreaGradient" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="#34d399" stopOpacity={0.45} />
-                    <stop offset="100%" stopColor="#34d399" stopOpacity={0} />
+                    <stop offset="0%" stopColor="#F59E0B" stopOpacity={0.45} />
+                    <stop offset="100%" stopColor="#F59E0B" stopOpacity={0} />
                   </linearGradient>
                   <filter id="lineGlow" x="-20%" y="-20%" width="140%" height="140%">
-                    <feDropShadow dx="0" dy="0" stdDeviation="6" floodColor="#34d399" floodOpacity="1" />
+                    <feDropShadow dx="0" dy="0" stdDeviation="6" floodColor="#F59E0B" floodOpacity="1" />
                   </filter>
                 </defs>
                 <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" vertical={false} />
@@ -727,7 +727,7 @@ export default function DashboardPage() {
                 <Area
                   type="monotone"
                   dataKey="value"
-                  stroke="#34d399"
+                  stroke="#F59E0B"
                   strokeWidth={2.5}
                   fill="url(#performanceAreaGradient)"
                   dot={false}
