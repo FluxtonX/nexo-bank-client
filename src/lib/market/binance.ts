@@ -71,6 +71,21 @@ function parseNumber(value: string | number) {
 export async function getCandles(symbol: string, interval: string, limit = 500): Promise<MarketCandle[]> {
   const normalizedSymbol = assertSymbol(symbol);
   const normalizedInterval = assertInterval(interval);
+
+  if (normalizedSymbol === "USDTUSDT") {
+    // Mock a stable $1 price for USDT since Binance doesn't support this pair directly
+    const now = Math.floor(Date.now() / 1000);
+    const step = normalizedInterval === "1m" ? 60 : normalizedInterval === "30m" ? 1800 : 3600;
+    return Array.from({ length: 100 }).map((_, i) => ({
+      time: now - (99 - i) * step,
+      open: 1.0,
+      high: 1.0,
+      low: 1.0,
+      close: 1.0,
+      volume: 0,
+    }));
+  }
+
   const safeLimit = Math.min(Math.max(Number(limit) || 500, 1), 1000);
   const url = new URL("/api/v3/uiKlines", BINANCE_DATA_BASE_URL);
   url.searchParams.set("symbol", normalizedSymbol);
@@ -95,6 +110,21 @@ export async function getCandles(symbol: string, interval: string, limit = 500):
 
 export async function getTicker24h(symbol: string): Promise<MarketTicker24h> {
   const normalizedSymbol = assertSymbol(symbol);
+
+  if (normalizedSymbol === "USDTUSDT") {
+    // Mock a stable $1 price for USDT
+    return {
+      symbol: "USDTUSDT",
+      lastPrice: 1.0,
+      priceChange: 0,
+      priceChangePercent: 0,
+      highPrice: 1.0,
+      lowPrice: 1.0,
+      volume: 0,
+      quoteVolume: 0,
+    };
+  }
+
   const url = new URL("/api/v3/ticker/24hr", BINANCE_DATA_BASE_URL);
   url.searchParams.set("symbol", normalizedSymbol);
 
