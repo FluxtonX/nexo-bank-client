@@ -465,7 +465,7 @@ const nextStep = () => {
 
     <button 
       onClick={nextStep}
-      className="w-full bg-[#047857] hover:bg-[#0D2665] text-white font-bold text-[14px] py-3 rounded-xl mt-6 transition-colors"
+      className="w-full bg-[#047857] hover:bg-[#064E3B] text-white font-bold text-[14px] py-3 rounded-xl mt-6 transition-colors"
     >
       Continue
     </button>
@@ -550,7 +550,7 @@ const nextStep = () => {
 
     <div className="grid grid-cols-2 gap-3 mt-6">
       <button onClick={prevStep} className="w-full bg-white border border-gray-200 hover:bg-gray-50 text-[#0A0F2C] font-bold text-[14px] py-3 rounded-xl transition-colors">Back</button>
-      <button onClick={nextStep} className="w-full bg-[#047857] hover:bg-[#0D2665] text-white font-bold text-[14px] py-3 rounded-xl transition-colors">Continue</button>
+      <button onClick={nextStep} className="w-full bg-[#047857] hover:bg-[#064E3B] text-white font-bold text-[14px] py-3 rounded-xl transition-colors">Continue</button>
     </div>
   </div>
 )}
@@ -629,7 +629,7 @@ const nextStep = () => {
 
     <div className="grid grid-cols-2 gap-3 mt-6">
       <button onClick={prevStep} className="w-full bg-white border border-gray-200 hover:bg-gray-50 text-[#0A0F2C] font-bold text-[14px] py-3 rounded-xl transition-colors">Back</button>
-      <button onClick={nextStep} className="w-full bg-[#047857] hover:bg-[#0D2665] text-white font-bold text-[14px] py-3 rounded-xl transition-colors">Continue</button>
+      <button onClick={nextStep} className="w-full bg-[#047857] hover:bg-[#064E3B] text-white font-bold text-[14px] py-3 rounded-xl transition-colors">Continue</button>
     </div>
   </div>
 )}
@@ -690,7 +690,7 @@ const nextStep = () => {
       <button
         onClick={submitKyc}
         disabled={isSubmitting}
-        className="w-full flex items-center justify-center bg-[#047857] hover:bg-[#0D2665] disabled:bg-[#047857]/70 text-white font-bold text-[14px] py-3 rounded-xl transition-colors"
+        className="w-full flex items-center justify-center bg-[#047857] hover:bg-[#064E3B] disabled:bg-[#047857]/70 text-white font-bold text-[14px] py-3 rounded-xl transition-colors"
       >
         {isSubmitting ? (<><Loader2 className="w-4 h-4 mr-2 animate-spin" />Submitting...</>) : "Submit for Review"}
       </button>
@@ -726,7 +726,7 @@ const nextStep = () => {
 
             <Link 
               href="/dashboard"
-              className="w-full bg-[#047857] hover:bg-[#0D2665] text-white font-bold text-[14px] py-3 rounded-xl transition-colors block"
+              className="w-full bg-[#047857] hover:bg-[#064E3B] text-white font-bold text-[14px] py-3 rounded-xl transition-colors block"
             >
               Go to Dashboard
             </Link>

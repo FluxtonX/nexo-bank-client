@@ -3,7 +3,7 @@ import { NexoBankLogoWhite } from "@/components/ui/NexoBankLogoWhite";
 
 export default function KYCLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="min-h-screen bg-[#11409F] flex flex-col items-center justify-center py-6 px-4 sm:px-6 lg:px-8 pb-28 sm:pb-6 relative">
+    <div className="min-h-screen bg-[#064E3B] flex flex-col items-center justify-center py-6 px-4 sm:px-6 lg:px-8 pb-28 sm:pb-6 relative">
       <div className="w-full max-w-[560px] flex flex-col items-center z-10">
         
         {/* Logo */}
