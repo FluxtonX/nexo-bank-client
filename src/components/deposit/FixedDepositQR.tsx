@@ -76,10 +76,15 @@ export function FixedDepositQR({ config, liveAddress, addressError }: FixedDepos
 
       <button
         onClick={handleCopy}
+        title={displayAddress}
         className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-white px-4 py-3 text-sm font-bold text-[#0A0F2C] transition-colors hover:bg-emerald-50"
       >
         {copied ? <ClipboardCheck className="h-4 w-4 shrink-0 text-emerald-600" /> : <Copy className="h-4 w-4 shrink-0" />}
-        <span className="truncate">{displayAddress}</span>
+        <span className="font-mono tracking-tight">
+          {displayAddress.length > 24
+            ? `${displayAddress.slice(0, 12)}...${displayAddress.slice(-10)}`
+            : displayAddress}
+        </span>
       </button>
 
       <div className="mt-4 rounded-2xl border border-amber-300/25 bg-amber-300/10 p-4">
