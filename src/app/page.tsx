@@ -24,6 +24,7 @@ import OnboardingSection from "@/components/OnboardingSection";
 import AppPreviewSection from "@/components/AppPreviewSection";
 import CTASection from "@/components/CTASection";
 import Footer from "@/components/Footer";
+import ContactSection from "@/components/ContactSection";
 
 // ISR: re-render this page at most every 5 minutes.
 // Remove or set to 0 for fully dynamic (per-request) rendering.
@@ -45,6 +46,7 @@ export default async function Home() {
       <AppPreviewSection content={content.app} />
 
       <CTASection content={content.cta} />
+      <ContactSection />
       <Footer content={content.footer} />
     </main>
   );
