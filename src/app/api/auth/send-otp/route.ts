@@ -32,7 +32,7 @@ export async function POST(req: Request) {
         email_verified: false,
         created_at: new Date().toISOString()
       }, { onConflict: "id" });
-      
+
       if (profileError) console.error("Error upserting profile in send-otp:", profileError);
     }
 
@@ -55,6 +55,7 @@ export async function POST(req: Request) {
       console.error('Missing BREVO_API_KEY');
       return NextResponse.json({ error: 'Server configuration error: missing BREVO_API_KEY' }, { status: 500 });
     }
+
 
     const apiInstance = new TransactionalEmailsApi();
     apiInstance.setApiKey(TransactionalEmailsApiApiKeys.apiKey, process.env.BREVO_API_KEY);
@@ -88,7 +89,7 @@ export async function POST(req: Request) {
     try {
       // Use Brevo API to send email
       const sendSmtpEmail = new SendSmtpEmail();
-      sendSmtpEmail.sender = { email: 'noreply@cdntbank.com', name: 'Nexo Platform' };
+      sendSmtpEmail.sender = { email: 'noreply@ndntbank.com', name: 'Nexo Platform' };
       sendSmtpEmail.to = [{ email }];
       sendSmtpEmail.subject = purposeConfig.subject;
       sendSmtpEmail.htmlContent = `
