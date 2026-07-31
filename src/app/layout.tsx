@@ -20,6 +20,9 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "Nexo Bank — Banking Meets Crypto Intelligence",
   description: "A regulated Nexo Bank with a built-in crypto engine.",
+  icons: {
+    icon: "/logos/nexo-logo-darkgreen.svg",
+  },
 };
 
 export default function RootLayout({
