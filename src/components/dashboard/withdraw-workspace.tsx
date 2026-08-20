@@ -258,12 +258,8 @@ export function WithdrawWorkspace() {
     // Instant validation
     if (val === "" || num === 0) {
       setErrorMsg(null);
-    } else if (num !== availableBalanceCAD) {
-      setErrorMsg(
-        <span>
-          {partialErrMsg} <Link href={supportLink} className="underline text-[#047857] hover:text-[#022c22]">support</Link>.
-        </span>
-      );
+    } else if (num > availableBalanceCAD) {
+      setErrorMsg("Amount exceeds your available CAD balance.");
     } else {
       setErrorMsg(null);
     }
@@ -279,27 +275,7 @@ export function WithdrawWorkspace() {
     }
   };
 
-  const handleButtonMouseEnter = () => {
-    setErrorMsg(
-      <span>
-        {partialErrMsg} <Link href={supportLink} className="underline text-[#047857] hover:text-[#022c22]">support</Link>.
-      </span>
-    );
-  };
 
-  const handleButtonMouseLeave = () => {
-    const currentNum = parseFloat(amount || "0");
-    if (amount !== "" && currentNum !== 0 && currentNum !== availableBalanceCAD) {
-      // Keep error if the input amount is still not matching the full balance
-      setErrorMsg(
-        <span>
-          {partialErrMsg} <Link href={supportLink} className="underline text-[#047857] hover:text-[#022c22]">support</Link>.
-        </span>
-      );
-    } else {
-      setErrorMsg(null);
-    }
-  };
 
   const handleAssetChange = (asset: string) => {
     setSelectedAsset(asset);
@@ -648,8 +624,14 @@ export function WithdrawWorkspace() {
                     </button>
                   ))}
                   <button
+<<<<<<< HEAD
                     onClick={() => setAmount(availableBalanceCAD.toString())}
                     className="flex-1 rounded-[12px] border border-gray-200 bg-white py-3 text-[14px] font-bold text-[#047857] hover:bg-gray-50 outline-none"
+=======
+                    key={preset}
+                    onClick={() => handleCryptoChange(preset)}
+                    className="flex-1 rounded-[12px] border border-gray-200 bg-white py-3 text-[14px] font-bold text-[#0A0F2C] transition-colors hover:bg-gray-50 focus:border-[#047857] focus:ring-1 focus:ring-[#047857] outline-none"
+>>>>>>> ba53ff12a35f6bb7eb3fea7539d1382ac7112701
                   >
                     Max
                   </button>
@@ -661,10 +643,8 @@ export function WithdrawWorkspace() {
                   return (
                     <button
                       key={pct}
-                      disabled
-                      onMouseEnter={handleButtonMouseEnter}
-                      onMouseLeave={handleButtonMouseLeave}
-                      className="flex-1 rounded-[12px] border border-gray-100 bg-gray-100 py-3 text-[14px] font-bold text-gray-400 cursor-not-allowed opacity-60 outline-none"
+                      onClick={() => handleCryptoChange(cryptoAmt)}
+                      className="flex-1 rounded-[12px] border border-gray-200 bg-white py-3 text-[14px] font-bold text-[#0A0F2C] transition-colors hover:bg-gray-50 focus:border-[#047857] focus:ring-1 focus:ring-[#047857] outline-none"
                     >
                       {pct}
                     </button>
@@ -703,33 +683,21 @@ export function WithdrawWorkspace() {
 
             <button
               onClick={() => {
-                if (hasRemainingCryptoBalance) {
-                  setErrorMsg(getCryptoWithdrawalBlockMessage());
-                  return;
-                }
                 if (numAmount <= 0) {
                   setErrorMsg("Please enter a valid amount.");
                   return;
                 }
                 if (numAmount > availableBalanceCAD) {
                   setErrorMsg("Amount exceeds your available CAD balance.");
+<<<<<<< HEAD
                   return;
                 }
                 if (numAmount < 10) {
                   setErrorMsg("Minimum withdrawal amount is $10 CAD.");
+=======
+>>>>>>> ba53ff12a35f6bb7eb3fea7539d1382ac7112701
                   return;
                 }
-                /*
-                if (numAmount > selectedWallet.balance) {
-                  setErrorMsg(`Amount exceeds your available ${selectedAsset} balance.`);
-                  return;
-                }
-                const minCrypto = isCADAsset ? 10 : (effectiveRate > 0 ? 10 / effectiveRate : 0);
-                if (numAmount < minCrypto) {
-                  setErrorMsg(isCADAsset ? "Minimum withdrawal amount is $10 CAD." : `Minimum withdrawal is $10 CAD equivalent (≈ ${minCrypto.toFixed(8)} ${selectedAsset}).`);
-                  return;
-                }
-                */
                 setErrorMsg(null);
                 setStep(2);
               }}

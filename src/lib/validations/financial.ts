@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 export const withdrawalSchema = z.object({
-  amount: z.coerce.number().min(100, "Minimum withdrawal is $100 CAD"),
+  amount: z.coerce.number().min(1, "Minimum withdrawal is $1 CAD"),
   interacEmail: z.string().email("Enter a valid Interac email"),
   note: z.string().max(240, "Note must be under 240 characters").optional(),
 });
