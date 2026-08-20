@@ -1,6 +1,11 @@
 import NProgress from "nprogress";
 
-NProgress.configure({ showSpinner: false });
+NProgress.configure({ 
+  showSpinner: false,
+  minimum: 0.1,
+  trickleSpeed: 100,
+  speed: 200
+});
 
 let activeCount = 0;
 

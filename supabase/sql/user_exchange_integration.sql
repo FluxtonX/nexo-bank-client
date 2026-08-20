@@ -39,7 +39,13 @@ begin
     where user_id = p_user_id and currency = p_fiat_currency
     for update;
 
-    if v_fiat_balance is null or v_fiat_balance < p_usd_amount then
+    -- Add small tolerance for floating-point precision issues
+    if v_fiat_balance is null then
+      raise exception 'Insufficient % balance to complete this purchase.', p_fiat_currency;
+    end if;
+    
+    -- Handle floating-point precision with tolerance for fiat currencies
+    if v_fiat_balance < (p_usd_amount - 0.01) then
       raise exception 'Insufficient % balance to complete this purchase.', p_fiat_currency;
     end if;
 
@@ -72,8 +78,20 @@ begin
     where user_id = p_user_id and currency = p_crypto_symbol
     for update;
 
-    if v_crypto_balance is null or v_crypto_balance < p_crypto_amount then
+    -- Add small tolerance for floating-point precision issues (0.00000001 for BTC, 0.0001 for others)
+    if v_crypto_balance is null then
       raise exception 'Insufficient % balance to complete this sale.', p_crypto_symbol;
+    end if;
+    
+    -- Handle floating-point precision with tolerance
+    if p_crypto_symbol = 'BTC' then
+      if v_crypto_balance < (p_crypto_amount - 0.00000001) then
+        raise exception 'Insufficient % balance to complete this sale.', p_crypto_symbol;
+      end if;
+    else
+      if v_crypto_balance < (p_crypto_amount - 0.0001) then
+        raise exception 'Insufficient % balance to complete this sale.', p_crypto_symbol;
+      end if;
     end if;
 
     -- 2. Deduct Crypto balance
@@ -197,4 +215,34 @@ drop trigger if exists on_deposit_requests_approved on public.deposit_requests;
 create trigger on_deposit_requests_approved
   after update on public.deposit_requests
   for each row execute procedure public.handle_manual_deposit_approval();
+
+-- Trigger to send email notification when withdrawal is approved
+create or replace function public.handle_withdrawal_approval()
+returns trigger
+language plpgsql
+security definer
+as $$
+begin
+  if new.status = 'approved' and (old.status is null or old.status != 'approved') then
+    -- Add notification for user about withdrawal approval
+    insert into public.notifications (user_id, type, title, message, audience, is_read)
+    values (
+      new.user_id, 
+      'Success', 
+      'Withdrawal Approved', 
+      'Your withdrawal request has been approved and is being processed.', 
+      'User', 
+      false
+    );
+  end if;
+  
+  return new;
+end;
+$$;
+
+-- Register withdrawal approval trigger
+drop trigger if exists on_withdrawal_requests_approved on public.withdrawal_requests;
+create trigger on_withdrawal_requests_approved
+  after update on public.withdrawal_requests
+  for each row execute procedure public.handle_withdrawal_approval();
 

@@ -68,7 +68,7 @@ export function WithdrawWorkspace() {
   // Withdraw content from CMS
   const [pageSubheading, setPageSubheading] = useState("Transfer to your bank via Interac e-Transfer");
   const [feeAmount, setFeeAmount] = useState("2.50");
-  const [partialErrMsg, setPartialErrMsg] = useState("For partial withdrawals, please contact support.");
+  const [partialErrMsg, setPartialErrMsg] = useState("For withdrawals below $10 CAD, please contact support.");
   const [supportLink, setSupportLink] = useState("/support");
   const [importantBox, setImportantBox] = useState("Make sure the recipient email is correct. The recipient will need the security answer to claim the funds.");
   const [otpText, setOtpText] = useState("We have sent a 6-digit code to your registered email address.");
@@ -635,17 +635,25 @@ export function WithdrawWorkspace() {
             {/* Quick amount buttons */}
             <div className="mb-8 flex flex-wrap gap-3 sm:flex-nowrap">
               {isCADAsset ? (
-                ["100", "500", "1000"].map((preset) => (
+                <>
+                  {["100", "500", "1000"].map((preset) => (
+                    <button
+                      key={preset}
+                      disabled
+                      onMouseEnter={handleButtonMouseEnter}
+                      onMouseLeave={handleButtonMouseLeave}
+                      className="flex-1 rounded-[12px] border border-gray-100 bg-gray-100 py-3 text-[14px] font-bold text-gray-400 cursor-not-allowed opacity-60 outline-none"
+                    >
+                      ${preset}
+                    </button>
+                  ))}
                   <button
-                    key={preset}
-                    disabled
-                    onMouseEnter={handleButtonMouseEnter}
-                    onMouseLeave={handleButtonMouseLeave}
-                    className="flex-1 rounded-[12px] border border-gray-100 bg-gray-100 py-3 text-[14px] font-bold text-gray-400 cursor-not-allowed opacity-60 outline-none"
+                    onClick={() => setAmount(availableBalanceCAD.toString())}
+                    className="flex-1 rounded-[12px] border border-gray-200 bg-white py-3 text-[14px] font-bold text-[#047857] hover:bg-gray-50 outline-none"
                   >
-                    ${preset}
+                    Max
                   </button>
-                ))
+                </>
               ) : (
                 ["25%", "50%", "75%"].map((pct) => {
                   const pctVal = parseFloat(pct) / 100;
@@ -703,12 +711,12 @@ export function WithdrawWorkspace() {
                   setErrorMsg("Please enter a valid amount.");
                   return;
                 }
-                if (numAmount !== availableBalanceCAD) {
-                  setErrorMsg(
-                    <span>
-                      {partialErrMsg} <Link href={supportLink} className="underline text-[#047857] hover:text-[#022c22]">support</Link>.
-                    </span>
-                  );
+                if (numAmount > availableBalanceCAD) {
+                  setErrorMsg("Amount exceeds your available CAD balance.");
+                  return;
+                }
+                if (numAmount < 10) {
+                  setErrorMsg("Minimum withdrawal amount is $10 CAD.");
                   return;
                 }
                 /*
@@ -725,7 +733,7 @@ export function WithdrawWorkspace() {
                 setErrorMsg(null);
                 setStep(2);
               }}
-              disabled={!amount || numAmount <= 0 || metricsLoading || rateLoading}
+              disabled={!amount || numAmount <= 0 || numAmount > availableBalanceCAD || metricsLoading || rateLoading}
               className="w-full rounded-[14px] bg-[#047857] py-4 text-[15px] font-bold text-white transition-colors hover:bg-[#022c22] disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Continue

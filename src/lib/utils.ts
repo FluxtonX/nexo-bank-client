@@ -120,9 +120,20 @@ export async function fetchLiveCADRates(symbols?: string[]): Promise<Record<stri
     const uniqueIds = [...new Set(coinIds)].join(",");
     
     const coinGeckoRes = await fetch(
-      `https://api.coingecko.com/api/v3/simple/price?ids=${uniqueIds}&vs_currencies=cad`
+      `https://api.coingecko.com/api/v3/simple/price?ids=${uniqueIds}&vs_currencies=cad`,
+      { cache: "no-store" }
     );
+    
+    if (!coinGeckoRes.ok) {
+      throw new Error(`CoinGecko API failed with status: ${coinGeckoRes.status}`);
+    }
+    
     const coinGeckoData = await coinGeckoRes.json();
+
+    // Handle case where API returns unexpected data structure
+    if (!coinGeckoData || typeof coinGeckoData !== 'object') {
+      throw new Error('Invalid data structure from CoinGecko API');
+    }
 
     cachedRates = {};
     
@@ -154,6 +165,7 @@ export async function fetchLiveCADRates(symbols?: string[]): Promise<Record<stri
     lastFetchTime = now;
   } catch (error) {
     console.error("Failed to fetch live CAD rates, using defaults", error);
+    // Always provide fallback rates to prevent UI breakage
     if (!cachedRates) {
       cachedRates = {
         BTC: 95000,
