@@ -8,21 +8,16 @@ create extension if not exists pg_cron;
 -- This will trigger the Edge Function via net.http_post if available, 
 -- or you can use an external cron service to call the Edge Function directly
 
--- Schedule to run every 3 minutes
--- Note: pg_cron may not support net.http_post in all Supabase plans
--- If this fails, use Option 2 (external cron service) instead
+-- First, remove the existing cron job if it exists
+select cron.unschedule('support-chat-reminders-cron');
+
+-- Schedule to run every 3 minutes using a simpler approach
+-- This will call the enqueue function directly in the database
 select cron.schedule(
   'support-chat-reminders-cron',
   '*/3 * * * *',  -- Every 3 minutes
   $$
-  select net.http_post(
-    url := 'https://psugoqazdztntspgqbiu.supabase.co/functions/v1/support-chat-reminders',
-    headers := jsonb_build_object(
-      'Authorization', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBzdWdvcWF6ZHp0bnRzcGdxYml1Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc4NDcxNDY0OCwiZXhwIjoyMTAwMjkwNjQ4fQ.0ajH-7hSPjOBDwD-Z4obl0kAekhfq_KFqILz-xWbfhQ',
-      'Content-Type', 'application/json'
-    ),
-    body := '{}'::jsonb
-  );
+  select enqueue_due_support_chat_reminders();
   $$
 );
 
