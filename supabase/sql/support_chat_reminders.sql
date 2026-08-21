@@ -31,7 +31,7 @@ as $$
   from public.support_messages message
   join public.support_threads thread on thread.id = message.thread_id
   where message.sender = 'Admin'
-    and message.created_at <= now() - interval '10 minutes'
+    and message.created_at <= now() - interval '3 minutes'
     and thread.status not in ('Resolved', 'Closed')
     and not exists (
       select 1
