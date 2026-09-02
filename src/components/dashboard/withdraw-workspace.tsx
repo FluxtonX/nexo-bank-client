@@ -207,31 +207,6 @@ export function WithdrawWorkspace() {
   const isCADAsset = selectedAsset.toUpperCase() === "CAD";
   const selectedWallet = wallets.find(w => w.currency === selectedAsset) || { currency: selectedAsset, balance: 0 };
 
-  const remainingCryptoWallets = wallets.filter(
-    (w) => w.currency.toUpperCase() !== "CAD" && w.balance > 0
-  );
-  const hasRemainingCryptoBalance = remainingCryptoWallets.length > 0;
-
-  const getCryptoWithdrawalBlockMessage = (): ReactNode => (
-    <div className="space-y-3">
-      <p>You still have cryptocurrency that hasn&apos;t been sold for CAD.</p>
-      <div>
-        <p className="mb-1.5">The following assets must be sold before you can withdraw:</p>
-        <ul className="space-y-0.5">
-          {remainingCryptoWallets.map((w) => (
-            <li key={w.currency}>
-              {formatRemainingCryptoBalance(w.currency, w.balance)} {w.currency.toUpperCase()}
-            </li>
-          ))}
-        </ul>
-      </div>
-      <p>Please sell these assets for CAD from the Buy &amp; Sell page, then try again.</p>
-      <Link href="/exchange" className="inline-block font-bold underline text-[#047857] hover:text-[#022c22]">
-        Go to Buy &amp; Sell →
-      </Link>
-    </div>
-  );
-
   // Effective rate: live rate > metrics rate > fallback
   const effectiveRate = liveRate ?? cadRates[selectedAsset] ?? 1;
   const availableBalanceCAD = isCADAsset ? selectedWallet.balance : selectedWallet.balance * effectiveRate;
@@ -255,18 +230,8 @@ export function WithdrawWorkspace() {
       setCadAmount("");
     }
     
-    // Instant validation
-    if (val === "" || num === 0) {
-      setErrorMsg(null);
-    } else if (num !== availableBalanceCAD) {
-      setErrorMsg(
-        <span>
-          {partialErrMsg} <Link href={supportLink} className="underline text-[#047857] hover:text-[#022c22]">support</Link>.
-        </span>
-      );
-    } else {
-      setErrorMsg(null);
-    }
+    // Clear error message on valid input
+    setErrorMsg(null);
   };
 
   const handleCadChange = (val: string) => {
@@ -276,28 +241,6 @@ export function WithdrawWorkspace() {
       setAmount((num / effectiveRate).toFixed(8));
     } else {
       setAmount("");
-    }
-  };
-
-  const handleButtonMouseEnter = () => {
-    setErrorMsg(
-      <span>
-        {partialErrMsg} <Link href={supportLink} className="underline text-[#047857] hover:text-[#022c22]">support</Link>.
-      </span>
-    );
-  };
-
-  const handleButtonMouseLeave = () => {
-    const currentNum = parseFloat(amount || "0");
-    if (amount !== "" && currentNum !== 0 && currentNum !== availableBalanceCAD) {
-      // Keep error if the input amount is still not matching the full balance
-      setErrorMsg(
-        <span>
-          {partialErrMsg} <Link href={supportLink} className="underline text-[#047857] hover:text-[#022c22]">support</Link>.
-        </span>
-      );
-    } else {
-      setErrorMsg(null);
     }
   };
 
@@ -639,46 +582,44 @@ export function WithdrawWorkspace() {
                   {["100", "500", "1000"].map((preset) => (
                     <button
                       key={preset}
-                      disabled
-                      onMouseEnter={handleButtonMouseEnter}
-                      onMouseLeave={handleButtonMouseLeave}
-                      className="flex-1 rounded-[12px] border border-gray-100 bg-gray-100 py-3 text-[14px] font-bold text-gray-400 cursor-not-allowed opacity-60 outline-none"
+                      onClick={() => handleCryptoChange(preset)}
+                      className="flex-1 rounded-[12px] border border-gray-200 bg-white py-3 text-[14px] font-bold text-[#0A0F2C] hover:bg-gray-50 transition-colors outline-none"
                     >
                       ${preset}
                     </button>
                   ))}
                   <button
-                    onClick={() => setAmount(availableBalanceCAD.toString())}
+                    onClick={() => handleCryptoChange(availableBalanceCAD.toString())}
                     className="flex-1 rounded-[12px] border border-gray-200 bg-white py-3 text-[14px] font-bold text-[#047857] hover:bg-gray-50 outline-none"
                   >
                     Max
                   </button>
                 </>
               ) : (
-                ["25%", "50%", "75%"].map((pct) => {
-                  const pctVal = parseFloat(pct) / 100;
-                  const cryptoAmt = (selectedWallet.balance * pctVal).toFixed(8);
-                  return (
-                    <button
-                      key={pct}
-                      disabled
-                      onMouseEnter={handleButtonMouseEnter}
-                      onMouseLeave={handleButtonMouseLeave}
-                      className="flex-1 rounded-[12px] border border-gray-100 bg-gray-100 py-3 text-[14px] font-bold text-gray-400 cursor-not-allowed opacity-60 outline-none"
-                    >
-                      {pct}
-                    </button>
-                  );
-                })
+                <>
+                  {["25%", "50%", "75%"].map((pct) => {
+                    const pctVal = parseFloat(pct) / 100;
+                    const cryptoAmt = (selectedWallet.balance * pctVal).toFixed(8);
+                    return (
+                      <button
+                        key={pct}
+                        onClick={() => handleCryptoChange(cryptoAmt)}
+                        className="flex-1 rounded-[12px] border border-gray-200 bg-white py-3 text-[14px] font-bold text-[#0A0F2C] hover:bg-gray-50 transition-colors outline-none"
+                      >
+                        {pct}
+                      </button>
+                    );
+                  })}
+                  <button
+                    onClick={() => handleCryptoChange(
+                      isCADAsset ? availableBalanceCAD.toString() : selectedWallet.balance.toString()
+                    )}
+                    className="flex-1 rounded-[12px] border border-gray-200 bg-white py-3 text-[14px] font-bold text-[#0A0F2C] transition-colors hover:bg-gray-50 focus:border-[#047857] focus:ring-1 focus:ring-[#047857] outline-none"
+                  >
+                    Max
+                  </button>
+                </>
               )}
-              <button
-                onClick={() => handleCryptoChange(
-                  isCADAsset ? availableBalanceCAD.toString() : selectedWallet.balance.toString()
-                )}
-                className="flex-1 rounded-[12px] border border-gray-200 bg-white py-3 text-[14px] font-bold text-[#0A0F2C] transition-colors hover:bg-gray-50 focus:border-[#047857] focus:ring-1 focus:ring-[#047857] outline-none"
-              >
-                Max
-              </button>
             </div>
 
             {/* Fee summary */}
@@ -703,10 +644,6 @@ export function WithdrawWorkspace() {
 
             <button
               onClick={() => {
-                if (hasRemainingCryptoBalance) {
-                  setErrorMsg(getCryptoWithdrawalBlockMessage());
-                  return;
-                }
                 if (numAmount <= 0) {
                   setErrorMsg("Please enter a valid amount.");
                   return;
@@ -715,21 +652,6 @@ export function WithdrawWorkspace() {
                   setErrorMsg("Amount exceeds your available CAD balance.");
                   return;
                 }
-                if (numAmount < 10) {
-                  setErrorMsg("Minimum withdrawal amount is $10 CAD.");
-                  return;
-                }
-                /*
-                if (numAmount > selectedWallet.balance) {
-                  setErrorMsg(`Amount exceeds your available ${selectedAsset} balance.`);
-                  return;
-                }
-                const minCrypto = isCADAsset ? 10 : (effectiveRate > 0 ? 10 / effectiveRate : 0);
-                if (numAmount < minCrypto) {
-                  setErrorMsg(isCADAsset ? "Minimum withdrawal amount is $10 CAD." : `Minimum withdrawal is $10 CAD equivalent (≈ ${minCrypto.toFixed(8)} ${selectedAsset}).`);
-                  return;
-                }
-                */
                 setErrorMsg(null);
                 setStep(2);
               }}
