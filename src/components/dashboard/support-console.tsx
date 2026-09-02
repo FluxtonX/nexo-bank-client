@@ -447,8 +447,7 @@ export function SupportConsole({ onTicketCreated }: SupportConsoleProps) {
     setMessages((current) => [...current, tempUserMsg]);
 
     try {
-      let currentThread = thread;
-      let ticketId = currentThread?.ticket_id;
+      const currentThread = thread;
       const categoryTag = selectedCategory
         ? selectedSubcategory
           ? `${selectedCategory} - ${selectedSubcategory}`

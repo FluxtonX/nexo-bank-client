@@ -207,31 +207,6 @@ export function WithdrawWorkspace() {
   const isCADAsset = selectedAsset.toUpperCase() === "CAD";
   const selectedWallet = wallets.find(w => w.currency === selectedAsset) || { currency: selectedAsset, balance: 0 };
 
-  const remainingCryptoWallets = wallets.filter(
-    (w) => w.currency.toUpperCase() !== "CAD" && w.balance > 0
-  );
-  const hasRemainingCryptoBalance = remainingCryptoWallets.length > 0;
-
-  const getCryptoWithdrawalBlockMessage = (): ReactNode => (
-    <div className="space-y-3">
-      <p>You still have cryptocurrency that hasn&apos;t been sold for CAD.</p>
-      <div>
-        <p className="mb-1.5">The following assets must be sold before you can withdraw:</p>
-        <ul className="space-y-0.5">
-          {remainingCryptoWallets.map((w) => (
-            <li key={w.currency}>
-              {formatRemainingCryptoBalance(w.currency, w.balance)} {w.currency.toUpperCase()}
-            </li>
-          ))}
-        </ul>
-      </div>
-      <p>Please sell these assets for CAD from the Buy &amp; Sell page, then try again.</p>
-      <Link href="/exchange" className="inline-block font-bold underline text-[#047857] hover:text-[#022c22]">
-        Go to Buy &amp; Sell →
-      </Link>
-    </div>
-  );
-
   // Effective rate: live rate > metrics rate > fallback
   const effectiveRate = liveRate ?? cadRates[selectedAsset] ?? 1;
   const availableBalanceCAD = isCADAsset ? selectedWallet.balance : selectedWallet.balance * effectiveRate;
@@ -669,10 +644,6 @@ export function WithdrawWorkspace() {
 
             <button
               onClick={() => {
-                if (hasRemainingCryptoBalance) {
-                  setErrorMsg(getCryptoWithdrawalBlockMessage());
-                  return;
-                }
                 if (numAmount <= 0) {
                   setErrorMsg("Please enter a valid amount.");
                   return;
