@@ -195,8 +195,9 @@ export function UserShell({ children }: { children: React.ReactNode }) {
 
       setIsFrozen(data?.is_frozen ?? false);
 
+      const channelName = `freeze-watch-${user.id}-${Date.now()}`;
       channel = supabase
-        .channel("freeze-watch")
+        .channel(channelName)
         .on(
           "postgres_changes",
           {
@@ -220,6 +221,8 @@ export function UserShell({ children }: { children: React.ReactNode }) {
   }, [supabase]);
 
   useEffect(() => {
+    let notifChannel: ReturnType<typeof supabase.channel> | null = null;
+
     async function fetchNotifications() {
       try {
         const { data: { user } } = await supabase.auth.getUser();
@@ -242,6 +245,16 @@ export function UserShell({ children }: { children: React.ReactNode }) {
           
           setIsHighValue((count || 0) > 0);
         }
+
+        if (!notifChannel) {
+          const channelName = `realtime-notifications-${user.id}-${Date.now()}`;
+          notifChannel = supabase
+            .channel(channelName)
+            .on("postgres_changes", { event: "*", schema: "public", table: "notifications" }, () => {
+              fetchNotifications();
+            })
+            .subscribe();
+        }
       } catch (e) {
         console.error("Error loading notifications:", e);
       } finally {
@@ -251,15 +264,10 @@ export function UserShell({ children }: { children: React.ReactNode }) {
     
     fetchNotifications();
 
-    const channel = supabase
-      .channel("realtime-notifications")
-      .on("postgres_changes", { event: "*", schema: "public", table: "notifications" }, () => {
-        fetchNotifications();
-      })
-      .subscribe();
-
     return () => {
-      supabase.removeChannel(channel);
+      if (notifChannel) {
+        supabase.removeChannel(notifChannel);
+      }
     };
   }, [supabase]);
 

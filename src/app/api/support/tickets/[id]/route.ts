@@ -126,6 +126,60 @@ export async function POST(
   }
 }
 
+export async function PATCH(
+  request: Request,
+  context: { params: Promise<{ id: string }> }
+) {
+  try {
+    const supabase = await createClient();
+    const {
+      data: { user },
+      error: authError,
+    } = await supabase.auth.getUser();
+
+    if (authError || !user) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    const { id: threadId } = await context.params;
+    const { status } = await request.json();
+
+    if (!status || !["Resolved", "Closed", "Active", "Waiting"].includes(status)) {
+      return NextResponse.json({ error: "Invalid status" }, { status: 400 });
+    }
+
+    const { createAdminClient } = await import("@/lib/supabase/admin");
+    const adminSupabase = createAdminClient();
+
+    const { data: updatedThread, error: updateErr } = await adminSupabase
+      .from("support_threads")
+      .update({
+        status,
+        updated_at: new Date().toISOString(),
+      })
+      .eq("id", threadId)
+      .eq("user_id", user.id)
+      .select()
+      .single();
+
+    if (updateErr) throw updateErr;
+
+    // Insert a system note in the chat if marked resolved
+    if (status === "Resolved") {
+      await adminSupabase.from("support_messages").insert({
+        thread_id: threadId,
+        sender: "Admin",
+        text: "This ticket has been marked as Resolved by the user. If you have any further questions, feel free to start a new inquiry.",
+      });
+    }
+
+    return NextResponse.json({ success: true, thread: updatedThread });
+  } catch (error: any) {
+    console.error("Error updating support ticket status:", error);
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
+}
+
 export async function DELETE(
   request: Request,
   context: { params: Promise<{ id: string }> }
