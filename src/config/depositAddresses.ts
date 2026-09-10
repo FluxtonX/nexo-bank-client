@@ -1,4 +1,4 @@
-export type DepositAsset = "BTC" | "ETH" | "USDT" | "fiat";
+export type DepositAsset = "BTC" | "ETH" | "USDT" | "USDC" | "fiat";
 
 export type DepositNetwork = "BTC" | "ETH" | "TRC20" | "ERC20";
 
@@ -107,6 +107,25 @@ export const DEPOSIT_ADDRESSES: DepositAddressConfig[] = [
     confirmations: 12,
     arrivalTime: "5-15 mins",
     logoUrl: "https://cryptologos.cc/logos/tether-usdt-logo.png",
+  },
+  {
+    asset: "USDC",
+    assetName: "USD Coin",
+    network: "ERC20",
+    networkName: "Ethereum ERC20",
+    address: "",
+    qrValue: "",
+    warning:
+      "Send only USDC on Ethereum ERC20 network to this address. Sending any other coin or network may cause permanent loss.",
+    explorerName: "Etherscan",
+    explorerTxUrl: "https://etherscan.io/tx/{TX_HASH}",
+    verificationApiName: "Etherscan ERC20 Token Transfer API",
+    verificationApiEndpoint:
+      "https://api.etherscan.io/v2/api?chainid=1&module=account&action=tokentx&address={ADDRESS}&contractaddress=0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48&apikey={ETHERSCAN_API_KEY}",
+    minAmount: 10,
+    confirmations: 12,
+    arrivalTime: "5-15 mins",
+    logoUrl: "https://cryptologos.cc/logos/usd-coin-usdc-logo.png",
   },
 ];
 

@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from "react";
 import { Download, Search, Loader2, X } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { cn, formatTorontoDateTime } from "@/lib/utils";
 import { TransactionTable } from "@/components/dashboard/blocks";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { useClientTransactions, useDashboardMetrics, type TransactionRow } from "@/hooks/useClientQueries";
@@ -194,9 +194,9 @@ export default function TransactionsPage() {
                 </div>
               </div>
               <div>
-                <p className="text-[12px] font-semibold uppercase tracking-wide text-[#718096]">Date</p>
+                <p className="text-[12px] font-semibold uppercase tracking-wide text-[#718096]">Date (Toronto Time)</p>
                 <p className="mt-1 text-[14px] font-bold text-[#0A0F2C]">
-                  {selectedTransaction.rawDate.toLocaleString()}
+                  {formatTorontoDateTime(selectedTransaction.rawDate)}
                 </p>
               </div>
               <div>

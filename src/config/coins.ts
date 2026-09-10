@@ -15,6 +15,7 @@ export const COINS: CoinConfig[] = [
   { symbol: "BTCUSDT", baseAsset: "BTC", quoteAsset: "USDT", label: "Bitcoin", pairLabel: "BTC/USDT", logoUrl: "https://cryptologos.cc/logos/bitcoin-btc-logo.png" },
   { symbol: "ETHUSDT", baseAsset: "ETH", quoteAsset: "USDT", label: "Ethereum", pairLabel: "ETH/USDT", logoUrl: "https://cryptologos.cc/logos/ethereum-eth-logo.png" },
   { symbol: "USDTUSDT", baseAsset: "USDT", quoteAsset: "USDT", label: "Tether", pairLabel: "USDT/USDT", logoUrl: "https://cryptologos.cc/logos/tether-usdt-logo.png" },
+  { symbol: "USDCUSDT", baseAsset: "USDC", quoteAsset: "USDT", label: "USD Coin", pairLabel: "USDC/USDT", logoUrl: "https://cryptologos.cc/logos/usd-coin-usdc-logo.png" },
   { symbol: "BNBUSDT", baseAsset: "BNB", quoteAsset: "USDT", label: "BNB", pairLabel: "BNB/USDT", logoUrl: "https://cryptologos.cc/logos/bnb-bnb-logo.png" },
   { symbol: "SOLUSDT", baseAsset: "SOL", quoteAsset: "USDT", label: "Solana", pairLabel: "SOL/USDT", logoUrl: "https://cryptologos.cc/logos/solana-sol-logo.png" },
   { symbol: "XRPUSDT", baseAsset: "XRP", quoteAsset: "USDT", label: "XRP", pairLabel: "XRP/USDT", logoUrl: "https://cryptologos.cc/logos/xrp-xrp-logo.png" },

@@ -174,9 +174,11 @@ export function NotificationCenter() {
       const diffDays = Math.floor(diffHr / 24);
 
       let timeStr = "just now";
-      if (diffDays > 0) timeStr = `${diffDays}d ago`;
-      else if (diffHr > 0) timeStr = `${diffHr}h ago`;
-      else if (diffMin > 0) timeStr = `${diffMin}m ago`;
+      if (diffMs >= 60000) {
+        if (diffDays > 0) timeStr = `${diffDays}d ago`;
+        else if (diffHr > 0) timeStr = `${diffHr}h ago`;
+        else if (diffMin > 0) timeStr = `${diffMin}m ago`;
+      }
 
       return {
         id: n.id,

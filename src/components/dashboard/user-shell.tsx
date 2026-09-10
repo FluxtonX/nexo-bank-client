@@ -62,6 +62,7 @@ export function UserShell({ children }: { children: React.ReactNode }) {
 
   const formatTime = (dateStr: string) => {
     const diffMs = Date.now() - new Date(dateStr).getTime();
+    if (diffMs < 60000) return "just now";
     const diffMin = Math.floor(diffMs / 1000 / 60);
     const diffHr = Math.floor(diffMin / 60);
     const diffDays = Math.floor(diffHr / 24);

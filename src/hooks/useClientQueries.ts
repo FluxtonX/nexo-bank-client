@@ -2,7 +2,7 @@
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createClient } from "@/lib/supabase/client";
-import { fetchLiveCADRates, calculateCADBalance } from "@/lib/utils";
+import { fetchLiveCADRates, calculateCADBalance, formatTorontoDate, formatTorontoDateTime } from "@/lib/utils";
 import { getCoinBySymbol } from "@/config/coins";
 import { clientQueryKeys } from "@/lib/query-keys";
 
@@ -293,7 +293,7 @@ export function useClientTransactions() {
         rawAmount: Number(d.expected_amount),
         fiat: getCadValue(d.asset || "USDT", Number(d.expected_amount)),
         status: d.status,
-        date: new Date(d.created_at).toLocaleDateString(),
+        date: formatTorontoDate(d.created_at),
         description: `TXN-${d.id.substring(0, 8).toUpperCase()}`,
         rawDate: new Date(d.created_at),
         txHash: d.tx_hash || undefined,
@@ -309,7 +309,7 @@ export function useClientTransactions() {
         rawAmount: Number(w.amount),
         fiat: getCadValue(w.asset || (w.method === "interac" ? "CAD" : "USDT"), Number(w.amount)),
         status: w.status,
-        date: new Date(w.created_at).toLocaleDateString(),
+        date: formatTorontoDate(w.created_at),
         description: `TXN-${w.id.substring(0, 8).toUpperCase()}`,
         rawDate: new Date(w.created_at),
         txHash: w.wallet_address || w.interac_email || undefined,
@@ -417,7 +417,7 @@ export function useClientWallets() {
         ...(ledger || []).map((l: { id: string; type: string; created_at: string; amount: number; currency: string; status?: string }) => ({
           id: l.id,
           type: l.type === "DEPOSIT" ? "Deposit" : "Withdrawal",
-          time: `${new Date(l.created_at).toLocaleDateString()} ${new Date(l.created_at).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}`,
+          time: formatTorontoDateTime(l.created_at),
           amount: `${l.type === "DEPOSIT" ? "+" : "-"}${Number(l.amount).toLocaleString(undefined, { maximumFractionDigits: 8 })} ${l.currency}`,
           amountType: l.type === "DEPOSIT" ? "positive" : "negative",
           status: l.status || "Confirmed",
@@ -427,7 +427,7 @@ export function useClientWallets() {
         ...(deposits || []).map((d: { id: string; created_at: string; expected_amount: number; asset: string }) => ({
           id: d.id,
           type: "Deposit",
-          time: `${new Date(d.created_at).toLocaleDateString()} ${new Date(d.created_at).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}`,
+          time: formatTorontoDateTime(d.created_at),
           amount: `+${Number(d.expected_amount).toLocaleString(undefined, { maximumFractionDigits: 8 })} ${d.asset}`,
           amountType: "positive",
           status: "Pending Approval",
@@ -437,7 +437,7 @@ export function useClientWallets() {
         ...(withdrawals || []).map((w: { id: string; created_at: string; amount: number; asset?: string }) => ({
           id: w.id,
           type: "Withdrawal",
-          time: `${new Date(w.created_at).toLocaleDateString()} ${new Date(w.created_at).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}`,
+          time: formatTorontoDateTime(w.created_at),
           amount: `-${Number(w.amount).toLocaleString(undefined, { maximumFractionDigits: 8 })} ${w.asset || "CAD"}`,
           amountType: "negative",
           status: "Pending Approval",
@@ -589,9 +589,12 @@ export function useWithdrawBalance() {
 type CreateWithdrawalInput = {
   asset: string;
   amount: number;
-  interacEmail: string;
-  securityQuestion: string;
-  securityAnswer: string;
+  method?: "interac" | "crypto";
+  interacEmail?: string;
+  securityQuestion?: string;
+  securityAnswer?: string;
+  network?: string;
+  walletAddress?: string;
 };
 
 export function useCreateWithdrawalRequest() {
@@ -623,38 +626,52 @@ export function useCreateWithdrawalRequest() {
         userName = profile?.full_name || user.email || "A user";
       }
 
+      const method = input.method || (input.asset.toUpperCase() === "CAD" ? "interac" : "crypto");
+      const isCrypto = method === "crypto";
+
       const { error: insertError } = await supabase.from("withdrawal_requests").insert({
         user_id: user.id,
         asset: input.asset,
         amount: input.amount,
-        method: "interac",
-        interac_email: input.interacEmail,
-        security_question: input.securityQuestion,
-        security_answer: input.securityAnswer,
+        method: method,
+        interac_email: input.interacEmail || null,
+        security_question: input.securityQuestion || null,
+        security_answer: input.securityAnswer || null,
+        network: input.network || null,
+        wallet_address: input.walletAddress || null,
         status: "pending",
+        created_at: new Date().toISOString(),
       });
 
       if (insertError) {
         throw new Error(insertError.message);
       }
 
+      const userMsg = isCrypto
+        ? `Your withdrawal request for ${input.amount} ${input.asset} to ${input.walletAddress || "external wallet"} is pending confirmation.`
+        : `Your withdrawal request for $${input.amount.toLocaleString()} CAD is pending confirmation.`;
+
+      const adminMsg = isCrypto
+        ? `${userName} has submitted a new crypto withdrawal request for ${input.amount} ${input.asset} (${input.network || "Crypto Network"}).`
+        : `${userName} has submitted a new withdrawal request for $${input.amount.toLocaleString()} CAD.`;
+
       await supabase.from("notifications").insert([
         {
           user_id: user.id,
           type: "Info",
-          title: "Withdrawal Pending",
-          message: `Your withdrawal request for $${input.amount.toLocaleString()} CAD is pending confirmation.`,
+          title: isCrypto ? "Crypto Withdrawal Pending" : "Withdrawal Pending",
+          message: userMsg,
           audience: "User",
-          is_read: false
+          is_read: false,
         },
         {
           audience: "Admin",
           type: "Info",
-          title: "New Withdrawal Request",
-          message: `${userName} has submitted a new withdrawal request for $${input.amount.toLocaleString()} CAD.`,
+          title: isCrypto ? "New Crypto Withdrawal Request" : "New Withdrawal Request",
+          message: adminMsg,
           is_read: false,
-          link: "/dashboard/withdrawals"
-        }
+          link: "/dashboard/withdrawals",
+        },
       ]);
     },
     onSuccess: () => {

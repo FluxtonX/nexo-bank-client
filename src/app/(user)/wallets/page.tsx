@@ -192,7 +192,7 @@ export default function WalletsPage() {
 
                   <div className="mt-6">
                     <Link
-                      href="/withdraw"
+                      href="/withdraw?method=cash"
                       className="w-full bg-primary-blue hover:bg-emerald-800 text-white font-semibold rounded-xl py-3.5 flex items-center justify-center gap-2 transition-colors text-center"
                     >
                       <ArrowUpRight className="w-5 h-5" />
@@ -287,7 +287,7 @@ export default function WalletsPage() {
                       Deposit {selectedWallet?.symbol}
                     </Link>
                     <Link
-                      href="/withdraw"
+                      href={`/withdraw?method=crypto&asset=${selectedWallet?.symbol}`}
                       className="flex-1 bg-white border border-gray-200 hover:bg-gray-50 text-gray-900 font-semibold rounded-xl py-3.5 flex items-center justify-center gap-2 transition-colors text-center"
                     >
                       <ArrowUpRight className="w-5 h-5" />

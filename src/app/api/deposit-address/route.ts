@@ -39,8 +39,8 @@ export async function GET(request: Request) {
         return NextResponse.json({ address: userAddresses[0].address });
       }
 
-      // For USDT (multi-network), do fuzzy matching on network
-      if (cryptoParam.toUpperCase() === "USDT" && networkParam) {
+      // For USDT / USDC (multi-network), do fuzzy matching on network
+      if ((cryptoParam.toUpperCase() === "USDT" || cryptoParam.toUpperCase() === "USDC") && networkParam) {
         const upperNetworkParam = networkParam.toUpperCase();
         
         // TRC20: match rows where network contains "trc" OR "tron"
@@ -89,8 +89,8 @@ export async function GET(request: Request) {
         return NextResponse.json({ address: platformData[0].address });
       }
 
-      // For USDT (multi-network), do fuzzy matching on network
-      if (cryptoParam.toUpperCase() === "USDT" && networkParam) {
+      // For USDT / USDC (multi-network), do fuzzy matching on network
+      if ((cryptoParam.toUpperCase() === "USDT" || cryptoParam.toUpperCase() === "USDC") && networkParam) {
         const upperNetworkParam = networkParam.toUpperCase();
         
         // TRC20: match rows where network contains "trc" OR "tron"

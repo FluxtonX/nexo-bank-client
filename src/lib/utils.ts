@@ -184,3 +184,38 @@ export async function fetchLiveCADRates(symbols?: string[]): Promise<Record<stri
 
   return cachedRates!;
 }
+
+export const TORONTO_TIMEZONE = "America/Toronto";
+
+export function formatTorontoDate(
+  date: Date | string,
+  options: Intl.DateTimeFormatOptions = {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  }
+): string {
+  const d = typeof date === "string" ? new Date(date) : date;
+  return new Intl.DateTimeFormat("en-US", {
+    timeZone: TORONTO_TIMEZONE,
+    ...options,
+  }).format(d);
+}
+
+export function formatTorontoDateTime(
+  date: Date | string,
+  options: Intl.DateTimeFormatOptions = {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true,
+  }
+): string {
+  const d = typeof date === "string" ? new Date(date) : date;
+  return new Intl.DateTimeFormat("en-US", {
+    timeZone: TORONTO_TIMEZONE,
+    ...options,
+  }).format(d);
+}

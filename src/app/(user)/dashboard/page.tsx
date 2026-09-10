@@ -11,6 +11,8 @@ import {
   TrendingUp,
   Info,
   X,
+  Banknote,
+  Coins,
 } from "lucide-react";
 import {
   AreaChart,
@@ -35,12 +37,13 @@ import {
 } from "@/hooks/useClientQueries";
 import { CoinLogo } from "@/components/market/CoinLogo";
 import { getCoinBySymbol } from "@/config/coins";
-import { cn, COIN_COLORS } from "@/lib/utils";
+import { cn, COIN_COLORS, formatTorontoDateTime } from "@/lib/utils";
 import { createClient } from "@/lib/supabase/client";
 
 function formatRelativeTime(date: Date): string {
   const now = new Date();
   const diffMs = now.getTime() - date.getTime();
+  if (diffMs < 60000) return "just now";
   const diffSec = Math.floor(diffMs / 1000);
   const diffMin = Math.floor(diffSec / 60);
   const diffHr = Math.floor(diffMin / 60);
@@ -331,6 +334,7 @@ export default function DashboardPage() {
   
   // Dashboard content from CMS
   const [portfolioLabel, setPortfolioLabel] = useState("Total Portfolio Value");
+  const [cryptoBalanceLabel, setCryptoBalanceLabel] = useState("Crypto Balance");
   const [timeframeLabel, setTimeframeLabel] = useState("this month");
   const [cadBalanceLabel, setCadBalanceLabel] = useState("CAD Balance");
   const [depositBtn, setDepositBtn] = useState("Deposit");
@@ -368,6 +372,9 @@ export default function DashboardPage() {
             switch (row.key) {
               case "dashboard.top_header.portfolio_label":
                 setPortfolioLabel(row.value);
+                break;
+              case "dashboard.top_header.crypto_balance_label":
+                setCryptoBalanceLabel(row.value);
                 break;
               case "dashboard.top_header.timeframe_label":
                 setTimeframeLabel(row.value);
@@ -449,6 +456,16 @@ export default function DashboardPage() {
   const cadBalance = metrics?.cadBalance ?? 0;
   const thisMonthDeposits = metrics?.thisMonthDeposits ?? 0;
   const percentChange = metrics?.percentChange ?? 0;
+
+  const cryptoBalance = useMemo(() => {
+    const sum = visibleWallets
+      .filter((w) => w.currency.toUpperCase() !== "CAD")
+      .reduce((acc, w) => {
+        const rate = cadRates[w.currency] || cadRates.USDT || 1.36;
+        return acc + w.balance * rate;
+      }, 0);
+    return sum > 0 ? sum : Math.max(0, portfolioValue - cadBalance);
+  }, [visibleWallets, cadRates, portfolioValue, cadBalance]);
 
   const allocationData = useMemo(() => {
     const buildItem = (symbol: string, value: number) => {
@@ -557,77 +574,133 @@ export default function DashboardPage() {
 
   return (
     <div className="space-y-6">
-      <div className="bg-[#064E3B] rounded-2xl p-8 text-white shadow-lg">
-        <div className="flex flex-col md:flex-row justify-between items-start gap-6">
-          <div>
-            <div className="flex items-center gap-2 mb-1">
-              <span className="text-[13px] text-emerald-100/90 font-medium">{portfolioLabel}</span>
-              <button
-                onClick={() => setHideBalance(!hideBalance)}
-                className="hover:text-white text-emerald-100/80 transition-colors"
-              >
-                <Eye className="w-4 h-4" />
-              </button>
-            </div>
-            <h1 className="text-4xl md:text-[44px] font-bold tracking-tight mb-2">
-              {hideBalance ? (
-                "$••,•••.••"
-              ) : loadingBalance ? (
-                <div className="h-8 w-48 bg-gray-200 animate-pulse rounded" />
-              ) : (
-                `$${portfolioValue.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
-              )}
-            </h1>
-            <div className="flex items-center gap-1.5 text-[14px]">
-              <TrendingUp
-                className={cn("w-4 h-4", percentChange >= 0 ? "text-[#FFD166]" : "text-red-400")}
-              />
-              <span
-                className={cn(
-                  "font-semibold",
-                  percentChange >= 0 ? "text-[#FFD166]" : "text-red-400",
+      {/* ─── DUAL GREEN BALANCE CARDS (CRYPTO & CAD) ─── */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+        {/* CARD 1: CRYPTO BALANCE */}
+        <div className="bg-[#064E3B] rounded-2xl p-7 text-white shadow-lg flex flex-col justify-between relative overflow-hidden">
+          <div className="flex items-start justify-between gap-4">
+            <div>
+              <div className="flex items-center gap-2 mb-1">
+                <Coins className="w-4 h-4 text-[#FFD166]" />
+                <span className="text-[13px] text-emerald-100/90 font-medium">{cryptoBalanceLabel}</span>
+                <button
+                  type="button"
+                  onClick={() => setHideBalance(!hideBalance)}
+                  className="hover:text-white text-emerald-100/80 transition-colors cursor-pointer"
+                  title="Toggle balance visibility"
+                >
+                  <Eye className="w-4 h-4" />
+                </button>
+              </div>
+              <h1 className="text-3xl sm:text-4xl font-bold tracking-tight mb-2">
+                {hideBalance ? (
+                  "$••,•••.••"
+                ) : loadingBalance ? (
+                  <div className="h-8 w-40 bg-white/20 animate-pulse rounded" />
+                ) : (
+                  `$${cryptoBalance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} CAD`
                 )}
-              >
-                {percentChange >= 0 ? "+" : "-"}$
-                {Math.abs(thisMonthDeposits).toLocaleString(undefined, {
-                  minimumFractionDigits: 2,
-                  maximumFractionDigits: 2,
-                })}{" "}
-                ({percentChange >= 0 ? "+" : ""}
-                {percentChange.toFixed(1)}%)
+              </h1>
+              <div className="flex items-center gap-1.5 text-[13px]">
+                <TrendingUp
+                  className={cn("w-4 h-4", percentChange >= 0 ? "text-[#FFD166]" : "text-red-400")}
+                />
+                <span
+                  className={cn(
+                    "font-semibold",
+                    percentChange >= 0 ? "text-[#FFD166]" : "text-red-400",
+                  )}
+                >
+                  {percentChange >= 0 ? "+" : "-"}$
+                  {Math.abs(thisMonthDeposits).toLocaleString(undefined, {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                  })}{" "}
+                  ({percentChange >= 0 ? "+" : ""}
+                  {percentChange.toFixed(1)}%)
+                </span>
+                <span className="text-emerald-200/80">{timeframeLabel}</span>
+              </div>
+            </div>
+            <div className="hidden sm:flex flex-col items-end">
+              <span className="text-[11px] font-semibold uppercase tracking-wider text-emerald-200/80 font-mono">
+                Total Crypto
               </span>
-              <span className="text-emerald-200/80">{timeframeLabel}</span>
+              <span className="text-xs text-emerald-100/90 font-mono">BTC • ETH • USDT • USDC</span>
             </div>
           </div>
-          <div className="md:text-right">
-            <span className="text-[13px] text-emerald-100/90 font-medium">{cadBalanceLabel}</span>
-            <div className="text-xl md:text-2xl font-bold mt-1">
-              {hideBalance ? (
-                "$•,•••.••"
-              ) : loadingBalance ? (
-                <div className="h-8 w-48 bg-gray-200 animate-pulse rounded" />
-              ) : (
-                `$${cadBalance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
-              )}
-            </div>
+
+          <div className="grid grid-cols-2 gap-3 mt-6">
+            <Link
+              href="/deposit"
+              className="flex items-center justify-center gap-2 bg-[#FFC107] hover:bg-[#FFD166] text-[#0A0F2C] rounded-xl py-3 font-bold text-[13px] transition-colors shadow-sm"
+            >
+              <ArrowDownLeft className="w-4 h-4" strokeWidth={2.5} />
+              Deposit Crypto
+            </Link>
+            <Link
+              href="/withdraw?method=crypto"
+              className="flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 text-white rounded-xl py-3 font-bold text-[13px] transition-colors shadow-sm"
+            >
+              <ArrowUpRight className="w-4 h-4" strokeWidth={2.5} />
+              Withdraw Crypto
+            </Link>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-8">
-          <Link
-            href="/deposit"
-            className="flex items-center justify-center gap-2 bg-[#FFC107] hover:bg-[#FFD166] text-[#0A0F2C] rounded-xl py-3.5 font-bold text-[14px] transition-colors shadow-sm"
-          >
-            <ArrowDownLeft className="w-4 h-4" strokeWidth={2.5} />
-            {depositBtn}
-          </Link>
-          <Link
-            href="/withdraw"
-            className="flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 text-white rounded-xl py-3.5 font-bold text-[14px] transition-colors shadow-sm"
-          >
-            <ArrowUpRight className="w-4 h-4" strokeWidth={2.5} />
-            {withdrawBtn}
-          </Link>
+        {/* CARD 2: CAD BALANCE */}
+        <div className="bg-[#064E3B] rounded-2xl p-7 text-white shadow-lg flex flex-col justify-between relative overflow-hidden">
+          <div className="flex items-start justify-between gap-4">
+            <div>
+              <div className="flex items-center gap-2 mb-1">
+                <Banknote className="w-4 h-4 text-emerald-300" />
+                <span className="text-[13px] text-emerald-100/90 font-medium">{cadBalanceLabel}</span>
+                <button
+                  type="button"
+                  onClick={() => setHideBalance(!hideBalance)}
+                  className="hover:text-white text-emerald-100/80 transition-colors cursor-pointer"
+                  title="Toggle balance visibility"
+                >
+                  <Eye className="w-4 h-4" />
+                </button>
+              </div>
+              <h2 className="text-3xl sm:text-4xl font-bold tracking-tight mb-2">
+                {hideBalance ? (
+                  "$•,•••.••"
+                ) : loadingBalance ? (
+                  <div className="h-8 w-40 bg-white/20 animate-pulse rounded" />
+                ) : (
+                  `$${cadBalance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} CAD`
+                )}
+              </h2>
+              <div className="flex items-center gap-1.5 text-[13px] text-emerald-200/90">
+                <span>Available for instant Interac e-Transfer</span>
+              </div>
+            </div>
+            <div className="hidden sm:flex flex-col items-end">
+              <span className="text-[11px] font-semibold uppercase tracking-wider text-emerald-200/80 font-mono">
+                Fiat Cash
+              </span>
+              <span className="text-xs text-emerald-100/90 font-mono">Canadian Dollars</span>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-3 mt-6">
+            <Link
+              href="/deposit?asset=fiat"
+              className="flex items-center justify-center gap-2 bg-[#FFC107] hover:bg-[#FFD166] text-[#0A0F2C] rounded-xl py-3 font-bold text-[13px] transition-colors shadow-sm"
+            >
+              <ArrowDownLeft className="w-4 h-4" strokeWidth={2.5} />
+              Deposit CAD
+            </Link>
+            <Link
+              href="/withdraw?method=cash"
+              className="flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 text-white rounded-xl py-3 font-bold text-[13px] transition-colors shadow-sm"
+            >
+              <ArrowUpRight className="w-4 h-4" strokeWidth={2.5} />
+              Withdraw CAD
+            </Link>
+          </div>
         </div>
       </div>
 
@@ -985,6 +1058,12 @@ export default function DashboardPage() {
                     {selectedTxDetails.status}
                   </span>
                 </div>
+              </div>
+              <div>
+                <p className="text-[12px] font-semibold uppercase tracking-wide text-[#718096]">Date (Toronto Time)</p>
+                <p className="mt-1 text-[14px] font-bold text-[#0A0F2C]">
+                  {formatTorontoDateTime(selectedTxDetails.date)}
+                </p>
               </div>
 
               {selectedTxDetails.status === "rejected" && (selectedTxDetails.rejectionReason || selectedTxDetails.adminNote) && (
