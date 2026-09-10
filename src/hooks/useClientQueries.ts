@@ -2,9 +2,17 @@
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createClient } from "@/lib/supabase/client";
-import { fetchLiveCADRates, calculateCADBalance, formatTorontoDate, formatTorontoDateTime } from "@/lib/utils";
+import {
+  fetchLiveCADRates,
+  fetchLiveFiatRates,
+  calculateCADBalance,
+  calculateFiatBalance,
+  formatTorontoDate,
+  formatTorontoDateTime,
+} from "@/lib/utils";
 import { getCoinBySymbol } from "@/config/coins";
 import { clientQueryKeys } from "@/lib/query-keys";
+import { getCurrencyForCountry, CurrencyConfig } from "@/lib/constants/countries";
 
 async function getAuthenticatedUserId() {
   const supabase = createClient();
@@ -38,9 +46,12 @@ async function fetchMarketPrices() {
 export type DashboardMetrics = {
   prices: Record<string, number>;
   cadRates: Record<string, number>;
+  fiatRates: Record<string, number>;
+  userCurrency: CurrencyConfig;
   wallets: Array<{ currency: string; balance: number }>;
   portfolioValue: number;
   cadBalance: number;
+  fiatBalance: number;
   thisMonthDeposits: number;
   percentChange: number;
 };
@@ -58,11 +69,22 @@ export function useDashboardMetrics() {
         .eq("user_id", user.id)
         .eq("type", "DEPOSIT")
         .gte("created_at", new Date(new Date().getFullYear(), new Date().getMonth() - 1, 1).toISOString());
+      const kycPromise = supabase
+        .from("kyc_submissions")
+        .select("country")
+        .eq("user_id", user.id)
+        .order("created_at", { ascending: false })
+        .limit(1)
+        .maybeSingle();
 
-      const [{ data: userWallets, error: walletsErr }, { data: ledger }] = await Promise.all([
+      const [{ data: userWallets, error: walletsErr }, { data: ledger }, kycRes] = await Promise.all([
         walletsPromise,
         ledgerPromise,
+        kycPromise,
       ]);
+
+      const userCountry = kycRes?.data?.country || (user.user_metadata as any)?.country || "Canada";
+      const userCurrency = getCurrencyForCountry(userCountry);
 
       // Extract unique currencies for dynamic rate fetching
       const uniqueCurrencies = new Set<string>();
@@ -70,39 +92,42 @@ export function useDashboardMetrics() {
         if (w.currency) uniqueCurrencies.add(w.currency.toUpperCase());
       });
       const currencySymbols = Array.from(uniqueCurrencies);
-      const liveCadRates = await fetchLiveCADRates(currencySymbols.length > 0 ? currencySymbols : ["BTC", "ETH", "USDT"]);
+      const liveFiatRates = await fetchLiveFiatRates(
+        currencySymbols.length > 0 ? currencySymbols : ["BTC", "ETH", "USDT"],
+        userCurrency.code
+      );
 
       const pricePromise = fetchMarketPrices();
       const prices = await pricePromise;
 
       let portfolioValue = 0;
       let cadBalance = 0;
+      let fiatBalance = 0;
       const wallets: Array<{ currency: string; balance: number }> = [];
 
       if (!walletsErr && userWallets) {
         userWallets.forEach((w: any) => {
           const balance = Number(w.balance || 0);
-          // Include CAD wallet even if balance is 0 (for withdrawal functionality)
-          if (balance > 0 || w.currency.toUpperCase() === 'CAD') {
+          const curr = w.currency?.toUpperCase();
+          if (balance > 0 || curr === "CAD" || curr === userCurrency.code) {
             wallets.push({ currency: w.currency, balance });
-            // If it's CAD, add directly to portfolio value (no conversion needed)
-            if (w.currency.toUpperCase() === 'CAD') {
-              portfolioValue += balance;
-              cadBalance += balance;
-            }
+          }
+          if (curr === "CAD") {
+            cadBalance += balance;
+          }
+          if (curr === userCurrency.code) {
+            fiatBalance += balance;
           }
         });
         
-        // Calculate portfolio value for non-CAD currencies only
-        const nonCadWallets = userWallets.filter((w: any) => w.currency.toUpperCase() !== 'CAD');
-        portfolioValue += calculateCADBalance(nonCadWallets, liveCadRates);
+        portfolioValue = calculateFiatBalance(userWallets, liveFiatRates, userCurrency.code);
       }
 
       let thisMonthDeposits = 0;
       let percentChange = 0;
 
       if (ledger) {
-        const rates = { ...prices, CAD: 1, USDC: 1 };
+        const rates = { ...prices, CAD: 1, USDC: 1, [userCurrency.code]: 1 };
         let thisMonth = 0;
         let lastMonth = 0;
         const now = new Date();
@@ -125,10 +150,13 @@ export function useDashboardMetrics() {
 
       return {
         prices,
-        cadRates: liveCadRates,
+        cadRates: liveFiatRates,
+        fiatRates: liveFiatRates,
+        userCurrency,
         wallets,
         portfolioValue,
         cadBalance,
+        fiatBalance,
         thisMonthDeposits,
         percentChange,
       };
@@ -253,7 +281,15 @@ export function useClientTransactions() {
     queryFn: async (): Promise<TransactionRow[]> => {
       const { supabase, user } = await getAuthenticatedUserId();
 
-      const [depositsRes, withdrawalsRes] = await Promise.all([
+      const kycPromise = supabase
+        .from("kyc_submissions")
+        .select("country")
+        .eq("user_id", user.id)
+        .order("created_at", { ascending: false })
+        .limit(1)
+        .maybeSingle();
+
+      const [depositsRes, withdrawalsRes, kycRes] = await Promise.all([
         supabase
           .from("deposit_requests")
           .select("id, created_at, expected_amount, asset, status, tx_hash, admin_note")
@@ -262,6 +298,7 @@ export function useClientTransactions() {
           .from("withdrawal_requests")
           .select("id, created_at, amount, method, status, wallet_address, interac_email, rejection_reason, admin_note, asset")
           .eq("user_id", user.id),
+        kycPromise,
       ]);
 
       if (depositsRes.error) {
@@ -271,18 +308,26 @@ export function useClientTransactions() {
         console.error("Failed to fetch withdrawal_requests:", withdrawalsRes.error);
       }
 
+      const userCountry = kycRes?.data?.country || (user.user_metadata as any)?.country || "Canada";
+      const userCurrency = getCurrencyForCountry(userCountry);
+
       const allAssets = Array.from(new Set([
         ...(depositsRes.data || []).map((d) => (d.asset || "USDT").toUpperCase()),
         ...(withdrawalsRes.data || []).map((w) => (w.asset || "USDT").toUpperCase()),
       ]));
-      const cadRates = await fetchLiveCADRates(allAssets.length > 0 ? allAssets : ["BTC", "ETH", "USDT"]);
+      const fiatRates = await fetchLiveFiatRates(
+        allAssets.length > 0 ? allAssets : ["BTC", "ETH", "USDT"],
+        userCurrency.code
+      );
 
-      const getCadValue = (asset: string, amount: number): string => {
+      const getFiatValue = (asset: string, amount: number): string => {
         const sym = (asset || "USDT").toUpperCase();
-        if (sym === "CAD") return `$${amount.toFixed(2)} CAD`;
-        const rate = cadRates[sym] || cadRates["USDT"] || 1.36;
-        const cadVal = amount * rate;
-        return `$${cadVal.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} CAD`;
+        if (sym === userCurrency.code || (userCurrency.code === "CAD" && sym === "CAD")) {
+          return `${userCurrency.symbol}${amount.toFixed(2)} ${userCurrency.code}`;
+        }
+        const rate = fiatRates[sym] || fiatRates["USDT"] || 1;
+        const fiatVal = amount * rate;
+        return `${userCurrency.symbol}${fiatVal.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ${userCurrency.code}`;
       };
 
       const deposits: TransactionRow[] = (depositsRes.data || []).map((d) => ({
@@ -291,7 +336,7 @@ export function useClientTransactions() {
         asset: d.asset || "USD",
         amount: String(d.expected_amount),
         rawAmount: Number(d.expected_amount),
-        fiat: getCadValue(d.asset || "USDT", Number(d.expected_amount)),
+        fiat: getFiatValue(d.asset || "USDT", Number(d.expected_amount)),
         status: d.status,
         date: formatTorontoDate(d.created_at),
         description: `TXN-${d.id.substring(0, 8).toUpperCase()}`,
@@ -307,7 +352,7 @@ export function useClientTransactions() {
         asset: w.asset || (w.method === "interac" ? "CAD" : "USD"),
         amount: String(w.amount),
         rawAmount: Number(w.amount),
-        fiat: getCadValue(w.asset || (w.method === "interac" ? "CAD" : "USDT"), Number(w.amount)),
+        fiat: getFiatValue(w.asset || (w.method === "interac" ? "CAD" : "USDT"), Number(w.amount)),
         status: w.status,
         date: formatTorontoDate(w.created_at),
         description: `TXN-${w.id.substring(0, 8).toUpperCase()}`,
@@ -360,6 +405,14 @@ export function useClientWallets() {
     queryFn: async (): Promise<MappedWallet[]> => {
       const { supabase, user } = await getAuthenticatedUserId();
 
+      const kycPromise = supabase
+        .from("kyc_submissions")
+        .select("country")
+        .eq("user_id", user.id)
+        .order("created_at", { ascending: false })
+        .limit(1)
+        .maybeSingle();
+
       const [
         userWalletsRes,
         platformWalletsRes,
@@ -367,6 +420,7 @@ export function useClientWallets() {
         ledgerRes,
         depositsRes,
         withdrawalsRes,
+        kycRes,
       ] = await Promise.all([
         supabase.from("user_wallets").select("*").eq("user_id", user.id),
         supabase.from("platform_wallets").select("crypto, network, address"),
@@ -374,6 +428,7 @@ export function useClientWallets() {
         supabase.from("wallet_ledger").select("*").eq("user_id", user.id).order("created_at", { ascending: false }),
         supabase.from("deposit_requests").select("*").eq("user_id", user.id).eq("status", "pending").order("created_at", { ascending: false }),
         supabase.from("withdrawal_requests").select("*").eq("user_id", user.id).eq("status", "pending").order("created_at", { ascending: false }),
+        kycPromise,
       ]);
 
       if (userWalletsRes.error) throw userWalletsRes.error;
@@ -382,6 +437,9 @@ export function useClientWallets() {
       if (ledgerRes.error) throw ledgerRes.error;
       if (depositsRes.error) throw depositsRes.error;
       if (withdrawalsRes.error) throw withdrawalsRes.error;
+
+      const userCountry = kycRes?.data?.country || (user.user_metadata as any)?.country || "Canada";
+      const userCurrency = getCurrencyForCountry(userCountry);
 
       const userWallets = userWalletsRes.data;
       const platformWallets = platformWalletsRes.data;
@@ -396,7 +454,10 @@ export function useClientWallets() {
         if (w.currency) uniqueCurrencies.add(w.currency.toUpperCase());
       });
       const currencySymbols = Array.from(uniqueCurrencies);
-      const cadRates = await fetchLiveCADRates(currencySymbols.length > 0 ? currencySymbols : ["BTC", "ETH", "USDT"]);
+      const fiatRates = await fetchLiveFiatRates(
+        currencySymbols.length > 0 ? currencySymbols : ["BTC", "ETH", "USDT"],
+        userCurrency.code
+      );
 
       // Hardcoded fallback addresses removed to always fetch from DB
       const FALLBACK_ADDRESSES: Record<string, WalletNetworkAddress[]> = {};
@@ -407,7 +468,7 @@ export function useClientWallets() {
       }, {});
 
       // Build user-specific address map (takes precedence over platform addresses)
-      const userAddressMap = (userWalletAddresses || []).reduce((acc: Record<string, { address: string; network: string }>, w: { crypto: string; network: string; address: string }) => {
+      const _userAddressMap = (userWalletAddresses || []).reduce((acc: Record<string, { address: string; network: string }>, w: { crypto: string; network: string; address: string }) => {
         const key = `${w.crypto}_${w.network}`;
         acc[key] = { address: w.address, network: w.network };
         return acc;
@@ -438,10 +499,10 @@ export function useClientWallets() {
           id: w.id,
           type: "Withdrawal",
           time: formatTorontoDateTime(w.created_at),
-          amount: `-${Number(w.amount).toLocaleString(undefined, { maximumFractionDigits: 8 })} ${w.asset || "CAD"}`,
+          amount: `-${Number(w.amount).toLocaleString(undefined, { maximumFractionDigits: 8 })} ${w.asset || userCurrency.code}`,
           amountType: "negative",
           status: "Pending Approval",
-          currency: w.asset || "CAD",
+          currency: w.asset || userCurrency.code,
           createdAt: new Date(w.created_at),
         })),
       ].sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
@@ -456,24 +517,24 @@ export function useClientWallets() {
       // Get all currencies from user wallets plus defaults
       const allCurrencies = Array.from(new Set([...defaultCurrencies, ...Array.from(userWalletCurrencies)]));
       
-      // Calculate total portfolio value in CAD (excluding CAD wallet itself)
-      let totalPortfolioValue = 0;
+      const fiatCode = userCurrency.code;
+      const userFiatWallet = (userWallets || []).find((w: any) => w.currency?.toUpperCase() === fiatCode);
+      const cadWallet = (userWallets || []).find((w: any) => w.currency?.toUpperCase() === 'CAD');
+      const fiatBalance = Number(userFiatWallet?.balance || (fiatCode === 'CAD' ? cadWallet?.balance : 0) || 0);
+
+      // Calculate total portfolio value in userCurrency
+      let _totalPortfolioValue = 0;
       (userWallets || []).forEach((w: any) => {
         const currency = w.currency?.toUpperCase();
         const balance = Number(w.balance || 0);
-        // Skip CAD for portfolio calculation since it's already in CAD
-        if (currency === 'CAD') return;
-        const rate = cadRates[currency] || cadRates.USDT || 1.36;
-        totalPortfolioValue += balance * rate;
+        if (currency === fiatCode || currency === 'CAD') return;
+        const rate = fiatRates[currency] || fiatRates.USDT || 1;
+        _totalPortfolioValue += balance * rate;
       });
-      
-      // Add CAD balance directly if it exists
-      const cadWallet = (userWallets || []).find((w: any) => w.currency?.toUpperCase() === 'CAD');
-      const cadBalance = Number(cadWallet?.balance || 0);
-      totalPortfolioValue += cadBalance;
+      _totalPortfolioValue += fiatBalance;
       
       allCurrencies.forEach((currency) => {
-        if (currency === 'CAD') return; // CAD is handled separately below
+        if (currency === fiatCode || currency === 'CAD') return; // Fiat is handled separately below
 
         const userWallet = (userWallets || []).find((w: any) => w.currency?.toUpperCase() === currency);
         const balance = Number(userWallet?.balance || 0);
@@ -483,7 +544,7 @@ export function useClientWallets() {
           return;
         }
 
-        const rate = cadRates[currency] || cadRates.USDT || 1.36;
+        const rate = fiatRates[currency] || fiatRates.USDT || 1;
         const decimals = currency === "USDT" || currency === "USDC" ? 2 : 8;
         
         // Build addresses: prefer user-specific, then platform DB entries, then fallback hardcoded
@@ -509,8 +570,7 @@ export function useClientWallets() {
         const primaryAddress = addresses[0]?.address || `${currency.toLowerCase()}...address`;
         const primaryNetwork = addresses[0]?.network || `${currency} Network`;
 
-        // CAD balance is stored directly — use it as-is without any rate conversion.
-        const displayValue = currency === "CAD" ? balance : balance * rate;
+        const displayValue = balance * rate;
         mappedWallets.push({
           id: currency.toLowerCase(),
           name: currency,
@@ -518,7 +578,7 @@ export function useClientWallets() {
           balance: balance.toFixed(decimals),
           rawBalance: balance,
           rawFiatValue: displayValue,
-          value: `$${displayValue.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
+          value: `${userCurrency.symbol}${displayValue.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
           change: currency === "USDT" || currency === "USDC" ? "Stable" : "Live",
           changeType: currency === "USDT" || currency === "USDC" ? "neutral" : "positive",
           network: primaryNetwork,
@@ -529,16 +589,37 @@ export function useClientWallets() {
         });
       });
 
-      // Add CAD wallet with stored balance (not calculated)
-      if (cadBalance > 0 || defaultCurrencies.includes("CAD")) {
+      // Add user's primary fiat wallet
+      if (fiatBalance > 0 || defaultCurrencies.includes(fiatCode) || defaultCurrencies.includes("CAD")) {
+        mappedWallets.push({
+          id: fiatCode.toLowerCase(),
+          name: fiatCode,
+          symbol: fiatCode,
+          balance: fiatBalance.toFixed(2),
+          rawBalance: fiatBalance,
+          rawFiatValue: fiatBalance,
+          value: `${userCurrency.symbol}${fiatBalance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
+          change: "Fiat",
+          changeType: "neutral",
+          network: userCurrency.name ? `${userCurrency.name} (${fiatCode})` : `${fiatCode} Account`,
+          address: "",
+          addresses: [],
+          image: undefined,
+          activities: allActivities.filter((act) => act.currency === fiatCode || (fiatCode === 'CAD' && act.currency === 'CAD')).slice(0, 5),
+        });
+      }
+
+      // If user has a CAD wallet with balance > 0 and their primary currency is not CAD, also show CAD
+      if (fiatCode !== "CAD" && cadWallet && Number(cadWallet.balance || 0) > 0) {
+        const cadBal = Number(cadWallet.balance);
         mappedWallets.push({
           id: "cad",
           name: "CAD",
           symbol: "CAD",
-          balance: cadBalance.toFixed(2),
-          rawBalance: cadBalance,
-          rawFiatValue: cadBalance,
-          value: `$${cadBalance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
+          balance: cadBal.toFixed(2),
+          rawBalance: cadBal,
+          rawFiatValue: cadBal,
+          value: `$${cadBal.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
           change: "Fiat",
           changeType: "neutral",
           network: "Canadian Dollar",

@@ -7,6 +7,9 @@ import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 import { useToast } from "@/components/ui/toast";
+import { CountrySelect } from "@/components/ui/country-select";
+import { RegionSelect } from "@/components/ui/region-select";
+import { getRegionsForCountry } from "@/lib/constants/provinces";
 
 export default function KYCPage() {
   const [currentStep, setCurrentStep] = useState(1);
@@ -507,15 +510,32 @@ const nextStep = () => {
           {errors.city && <p className="text-[11px] text-red-500 mt-1">{errors.city}</p>}
         </div>
         <div>
-          <label className="block text-[12px] font-bold text-[#0A0F2C] mb-1">Province</label>
-          <input 
-            type="text" 
-            name="province"
-            value={formData.province}
-            onChange={handleInputChange}
-            placeholder="Ontario" 
-            className={`w-full px-3 py-2.5 rounded-xl border text-[14px] text-[#0A0F2C] focus:outline-none focus:ring-2 focus:ring-[#047857]/20 focus:border-[#047857] transition-all ${errors.province ? 'border-red-400' : 'border-gray-200'}`}
-          />
+          <label className="block text-[12px] font-bold text-[#0A0F2C] mb-1">
+            {formData.country === "Canada" ? "Province / Territory" : "Province / State"}
+          </label>
+          {getRegionsForCountry(formData.country) ? (
+            <RegionSelect
+              regions={getRegionsForCountry(formData.country)!}
+              value={formData.province}
+              onChange={(regionName) => {
+                setFormData((prev) => ({ ...prev, province: regionName }));
+                if (errors.province) {
+                  setErrors((prev) => ({ ...prev, province: "" }));
+                }
+              }}
+              placeholder={formData.country === "Canada" ? "Select Province (e.g. Ontario, Quebec)" : "Select State"}
+              error={errors.province}
+            />
+          ) : (
+            <input 
+              type="text" 
+              name="province"
+              value={formData.province}
+              onChange={handleInputChange}
+              placeholder="Ontario" 
+              className={`w-full px-3 py-2.5 rounded-xl border text-[14px] text-[#0A0F2C] focus:outline-none focus:ring-2 focus:ring-[#047857]/20 focus:border-[#047857] transition-all ${errors.province ? 'border-red-400' : 'border-gray-200'}`}
+            />
+          )}
           {errors.province && <p className="text-[11px] text-red-500 mt-1">{errors.province}</p>}
         </div>
       </div>
@@ -535,13 +555,16 @@ const nextStep = () => {
         </div>
         <div>
           <label className="block text-[12px] font-bold text-[#0A0F2C] mb-1">Country</label>
-          <input 
-            type="text" 
-            name="country"
+          <CountrySelect
             value={formData.country}
-            onChange={handleInputChange}
-            placeholder="Canada" 
-            className={`w-full px-3 py-2.5 rounded-xl border text-[14px] text-[#0A0F2C] focus:outline-none focus:ring-2 focus:ring-[#047857]/20 focus:border-[#047857] transition-all ${errors.country ? 'border-red-400' : 'border-gray-200'}`}
+            onChange={(country) => {
+              setFormData((prev) => ({ ...prev, country: country.name }));
+              if (errors.country) {
+                setErrors((prev) => ({ ...prev, country: "" }));
+              }
+            }}
+            placeholder="Select Country"
+            error={errors.country}
           />
           {errors.country && <p className="text-[11px] text-red-500 mt-1">{errors.country}</p>}
         </div>
