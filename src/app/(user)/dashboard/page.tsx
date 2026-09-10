@@ -447,6 +447,7 @@ export default function DashboardPage() {
     BTC: metrics?.fiatRates?.BTC ?? metrics?.cadRates?.BTC ?? 95000,
     ETH: metrics?.fiatRates?.ETH ?? metrics?.cadRates?.ETH ?? 3500,
     USDT: metrics?.fiatRates?.USDT ?? metrics?.cadRates?.USDT ?? 1,
+    ...(metrics?.fiatRates || {}),
   }), [metrics?.fiatRates, metrics?.cadRates]);
   const wallets = useMemo(() => metrics?.wallets ?? [], [metrics?.wallets]);
   const visibleWallets = useMemo(() => {

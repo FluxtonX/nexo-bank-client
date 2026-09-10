@@ -73,7 +73,7 @@ export function useDashboardMetrics() {
         .from("kyc_submissions")
         .select("country")
         .eq("user_id", user.id)
-        .order("created_at", { ascending: false })
+        .order("submitted_at", { ascending: false })
         .limit(1)
         .maybeSingle();
 
@@ -285,7 +285,7 @@ export function useClientTransactions() {
         .from("kyc_submissions")
         .select("country")
         .eq("user_id", user.id)
-        .order("created_at", { ascending: false })
+        .order("submitted_at", { ascending: false })
         .limit(1)
         .maybeSingle();
 
@@ -409,7 +409,7 @@ export function useClientWallets() {
         .from("kyc_submissions")
         .select("country")
         .eq("user_id", user.id)
-        .order("created_at", { ascending: false })
+        .order("submitted_at", { ascending: false })
         .limit(1)
         .maybeSingle();
 
