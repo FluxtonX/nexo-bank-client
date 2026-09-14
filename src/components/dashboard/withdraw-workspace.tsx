@@ -13,6 +13,7 @@ import {
   Check,
   ShieldCheck,
   CheckCircle2,
+  HelpCircle,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { createClient } from "@/lib/supabase/client";
@@ -1467,6 +1468,24 @@ export function WithdrawWorkspace({ initialMethod, initialAsset }: WithdrawWorks
             )}
           </>
         )}
+      </div>
+
+      {/* Persistent Help & Contact Support Footer */}
+      <div className="mt-6 flex items-center justify-between gap-4 rounded-xl border border-gray-200/80 bg-white px-5 py-3.5 shadow-sm text-sm">
+        <div className="flex items-center gap-3">
+          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-emerald-50 text-[#047857]">
+            <HelpCircle className="h-4 w-4" strokeWidth={2.2} />
+          </div>
+          <span className="text-[#4A5568] font-medium text-[13px]">
+            Need assistance with this transfer?
+          </span>
+        </div>
+        <Link
+          href="/support"
+          className="font-bold text-[13px] text-[#047857] hover:text-[#022c22] hover:underline flex items-center gap-1"
+        >
+          Contact Support &rarr;
+        </Link>
       </div>
     </div>
   );
