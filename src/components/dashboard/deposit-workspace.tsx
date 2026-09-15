@@ -29,7 +29,7 @@ const assetOptions = Array.from(
 
 function formatAmount(value: number, symbol: string) {
   return `${value.toLocaleString(undefined, {
-    maximumFractionDigits: symbol === "USDT" ? 2 : 8,
+    maximumFractionDigits: symbol === "USDT" || symbol === "USDC" ? 2 : 8,
   })} ${symbol}`;
 }
 

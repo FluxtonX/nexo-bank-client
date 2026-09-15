@@ -62,6 +62,7 @@ export function UserShell({ children }: { children: React.ReactNode }) {
 
   const formatTime = (dateStr: string) => {
     const diffMs = Date.now() - new Date(dateStr).getTime();
+    if (diffMs < 60000) return "just now";
     const diffMin = Math.floor(diffMs / 1000 / 60);
     const diffHr = Math.floor(diffMin / 60);
     const diffDays = Math.floor(diffHr / 24);
@@ -372,8 +373,34 @@ export function UserShell({ children }: { children: React.ReactNode }) {
             })}
           </nav>
           
+          {/* Help Center / Contact Support */}
+          <div className="px-4 mb-2">
+            <Link
+              href={isFrozen ? FREEZE_SUPPORT_PATH : "/support"}
+              onClick={(e) => handleFrozenNav("/support", e)}
+              className={cn(
+                "group flex items-center justify-between gap-3 rounded-xl border border-emerald-200/80 bg-white/90 p-3 shadow-sm transition-all hover:border-emerald-300 hover:bg-white hover:shadow-md",
+                frozenNavClass(isFrozen ? FREEZE_SUPPORT_PATH : "/support")
+              )}
+            >
+              <div className="flex items-center gap-2.5 min-w-0">
+                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-emerald-100 text-[#047857] transition-transform group-hover:scale-110">
+                  <HelpCircle className="h-4 w-4" strokeWidth={2.2} />
+                </div>
+                <div className="min-w-0">
+                  <p className="text-[13px] font-bold text-[#0A0F2C] leading-tight group-hover:text-[#047857] transition-colors truncate">
+                    Help Center
+                  </p>
+                  <p className="text-[11px] font-semibold text-[#047857] mt-0.5 flex items-center gap-1">
+                    Contact Support &rarr;
+                  </p>
+                </div>
+              </div>
+            </Link>
+          </div>
+
           {/* Sign Out */}
-          <div className="p-4 mb-4">
+          <div className="px-4 mb-4">
             <button 
               suppressHydrationWarning
               onClick={handleSignOut}
@@ -527,6 +554,23 @@ export function UserShell({ children }: { children: React.ReactNode }) {
               )}
             </div>
             
+            {/* Header Help Center Circular Icon (Matching Design Reference) */}
+            <Link
+              href={isFrozen ? FREEZE_SUPPORT_PATH : "/support"}
+              onClick={(e) => handleFrozenNav("/support", e)}
+              className={cn(
+                "relative text-[#4A5568] hover:text-[#047857] transition-colors p-2 rounded-lg border flex items-center justify-center",
+                (pathname === "/support" || pathname === FREEZE_SUPPORT_PATH)
+                  ? "bg-emerald-50 border-emerald-100 text-[#047857]"
+                  : "border-transparent hover:bg-gray-50 hover:border-gray-100",
+                isFrozen && !isFreezeSupportPath(pathname) && "pointer-events-none opacity-40 cursor-not-allowed"
+              )}
+              title="Help Center & Contact Support"
+              aria-label="Help Center"
+            >
+              <HelpCircle className="h-5 w-5" strokeWidth={2} />
+            </Link>
+
             <div className="h-6 w-px bg-gray-200" />
             
             <div className="relative" ref={dropdownRef}>

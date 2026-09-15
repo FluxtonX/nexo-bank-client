@@ -11,6 +11,8 @@ import {
   TrendingUp,
   Info,
   X,
+  Banknote,
+  Coins,
 } from "lucide-react";
 import {
   AreaChart,
@@ -35,12 +37,13 @@ import {
 } from "@/hooks/useClientQueries";
 import { CoinLogo } from "@/components/market/CoinLogo";
 import { getCoinBySymbol } from "@/config/coins";
-import { cn, COIN_COLORS } from "@/lib/utils";
+import { cn, COIN_COLORS, formatTorontoDateTime } from "@/lib/utils";
 import { createClient } from "@/lib/supabase/client";
 
 function formatRelativeTime(date: Date): string {
   const now = new Date();
   const diffMs = now.getTime() - date.getTime();
+  if (diffMs < 60000) return "just now";
   const diffSec = Math.floor(diffMs / 1000);
   const diffMin = Math.floor(diffSec / 60);
   const diffHr = Math.floor(diffMin / 60);
@@ -331,6 +334,7 @@ export default function DashboardPage() {
   
   // Dashboard content from CMS
   const [portfolioLabel, setPortfolioLabel] = useState("Total Portfolio Value");
+  const [cryptoBalanceLabel, setCryptoBalanceLabel] = useState("Crypto Balance");
   const [timeframeLabel, setTimeframeLabel] = useState("this month");
   const [cadBalanceLabel, setCadBalanceLabel] = useState("CAD Balance");
   const [depositBtn, setDepositBtn] = useState("Deposit");
@@ -368,6 +372,9 @@ export default function DashboardPage() {
             switch (row.key) {
               case "dashboard.top_header.portfolio_label":
                 setPortfolioLabel(row.value);
+                break;
+              case "dashboard.top_header.crypto_balance_label":
+                setCryptoBalanceLabel(row.value);
                 break;
               case "dashboard.top_header.timeframe_label":
                 setTimeframeLabel(row.value);
@@ -432,23 +439,39 @@ export default function DashboardPage() {
     loadDashboardContent();
   }, [supabase]);
 
+  const currencyCode = metrics?.userCurrency?.code || "CAD";
+  const currencySymbol = metrics?.userCurrency?.symbol || "$";
+  const currencyName = metrics?.userCurrency?.name || "Canadian Dollar";
+
   const cadRates = useMemo((): Record<string, number> => ({
-    BTC: metrics?.cadRates?.BTC ?? 95000,
-    ETH: metrics?.cadRates?.ETH ?? 3500,
-    USDT: metrics?.cadRates?.USDT ?? 1.36,
-  }), [metrics?.cadRates]);
+    BTC: metrics?.fiatRates?.BTC ?? metrics?.cadRates?.BTC ?? 95000,
+    ETH: metrics?.fiatRates?.ETH ?? metrics?.cadRates?.ETH ?? 3500,
+    USDT: metrics?.fiatRates?.USDT ?? metrics?.cadRates?.USDT ?? 1,
+    ...(metrics?.fiatRates || {}),
+  }), [metrics?.fiatRates, metrics?.cadRates]);
   const wallets = useMemo(() => metrics?.wallets ?? [], [metrics?.wallets]);
   const visibleWallets = useMemo(() => {
     return wallets.filter((w) => {
-      const isCAD = w.currency === 'CAD';
-      const value = isCAD ? w.balance : w.balance * (cadRates[w.currency] || cadRates.USDT || 1.36);
+      const isFiat = w.currency === 'CAD' || w.currency === currencyCode;
+      const value = isFiat ? w.balance : w.balance * (cadRates[w.currency] || cadRates.USDT || 1);
       return value >= 0.005;
     });
-  }, [wallets, cadRates]);
+  }, [wallets, cadRates, currencyCode]);
   const portfolioValue = metrics?.portfolioValue ?? 0;
   const cadBalance = metrics?.cadBalance ?? 0;
+  const fiatBalance = metrics?.fiatBalance ?? metrics?.cadBalance ?? 0;
   const thisMonthDeposits = metrics?.thisMonthDeposits ?? 0;
   const percentChange = metrics?.percentChange ?? 0;
+
+  const cryptoBalance = useMemo(() => {
+    const sum = visibleWallets
+      .filter((w) => w.currency.toUpperCase() !== "CAD" && w.currency.toUpperCase() !== currencyCode)
+      .reduce((acc, w) => {
+        const rate = cadRates[w.currency] || cadRates.USDT || 1;
+        return acc + w.balance * rate;
+      }, 0);
+    return sum > 0 ? sum : Math.max(0, portfolioValue - fiatBalance);
+  }, [visibleWallets, cadRates, portfolioValue, fiatBalance, currencyCode]);
 
   const allocationData = useMemo(() => {
     const buildItem = (symbol: string, value: number) => {
@@ -467,12 +490,11 @@ export default function DashboardPage() {
     }
 
     return visibleWallets.map((w) => {
-      // If CAD, use balance directly (no conversion needed)
-      const isCAD = w.currency === 'CAD';
-      const value = isCAD ? w.balance : w.balance * (cadRates[w.currency] || cadRates.USDT || 1.36);
+      const isFiat = w.currency === 'CAD' || w.currency === currencyCode;
+      const value = isFiat ? w.balance : w.balance * (cadRates[w.currency] || cadRates.USDT || 1);
       return buildItem(w.currency, value);
     }).filter((item) => item.value > 0);
-  }, [visibleWallets, cadRates, portfolioValue]);
+  }, [visibleWallets, cadRates, portfolioValue, currencyCode]);
 
   const allocationTotal = useMemo(
     () => allocationData.reduce((sum, item) => sum + item.value, 0),
@@ -557,77 +579,135 @@ export default function DashboardPage() {
 
   return (
     <div className="space-y-6">
-      <div className="bg-[#064E3B] rounded-2xl p-8 text-white shadow-lg">
-        <div className="flex flex-col md:flex-row justify-between items-start gap-6">
-          <div>
-            <div className="flex items-center gap-2 mb-1">
-              <span className="text-[13px] text-emerald-100/90 font-medium">{portfolioLabel}</span>
-              <button
-                onClick={() => setHideBalance(!hideBalance)}
-                className="hover:text-white text-emerald-100/80 transition-colors"
-              >
-                <Eye className="w-4 h-4" />
-              </button>
-            </div>
-            <h1 className="text-4xl md:text-[44px] font-bold tracking-tight mb-2">
-              {hideBalance ? (
-                "$••,•••.••"
-              ) : loadingBalance ? (
-                <div className="h-8 w-48 bg-gray-200 animate-pulse rounded" />
-              ) : (
-                `$${portfolioValue.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
-              )}
-            </h1>
-            <div className="flex items-center gap-1.5 text-[14px]">
-              <TrendingUp
-                className={cn("w-4 h-4", percentChange >= 0 ? "text-[#FFD166]" : "text-red-400")}
-              />
-              <span
-                className={cn(
-                  "font-semibold",
-                  percentChange >= 0 ? "text-[#FFD166]" : "text-red-400",
+      {/* ─── DUAL GREEN BALANCE CARDS (CRYPTO & CAD) ─── */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+        {/* CARD 1: CRYPTO BALANCE */}
+        <div className="bg-[#064E3B] rounded-2xl p-7 text-white shadow-lg flex flex-col justify-between relative overflow-hidden">
+          <div className="flex items-start justify-between gap-4">
+            <div>
+              <div className="flex items-center gap-2 mb-1">
+                <Coins className="w-4 h-4 text-[#FFD166]" />
+                <span className="text-[13px] text-emerald-100/90 font-medium">{cryptoBalanceLabel}</span>
+                <button
+                  type="button"
+                  onClick={() => setHideBalance(!hideBalance)}
+                  className="hover:text-white text-emerald-100/80 transition-colors cursor-pointer"
+                  title="Toggle balance visibility"
+                >
+                  <Eye className="w-4 h-4" />
+                </button>
+              </div>
+              <h1 className="text-3xl sm:text-4xl font-bold tracking-tight mb-2">
+                {hideBalance ? (
+                  `${currencySymbol}••,•••.••`
+                ) : loadingBalance ? (
+                  <div className="h-8 w-40 bg-white/20 animate-pulse rounded" />
+                ) : (
+                  `${currencySymbol}${cryptoBalance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ${currencyCode}`
                 )}
-              >
-                {percentChange >= 0 ? "+" : "-"}$
-                {Math.abs(thisMonthDeposits).toLocaleString(undefined, {
-                  minimumFractionDigits: 2,
-                  maximumFractionDigits: 2,
-                })}{" "}
-                ({percentChange >= 0 ? "+" : ""}
-                {percentChange.toFixed(1)}%)
+              </h1>
+              <div className="flex items-center gap-1.5 text-[13px]">
+                <TrendingUp
+                  className={cn("w-4 h-4", percentChange >= 0 ? "text-[#FFD166]" : "text-red-400")}
+                />
+                <span
+                  className={cn(
+                    "font-semibold",
+                    percentChange >= 0 ? "text-[#FFD166]" : "text-red-400",
+                  )}
+                >
+                  {percentChange >= 0 ? "+" : "-"}{currencySymbol}
+                  {Math.abs(thisMonthDeposits).toLocaleString(undefined, {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                  })}{" "}
+                  ({percentChange >= 0 ? "+" : ""}
+                  {percentChange.toFixed(1)}%)
+                </span>
+                <span className="text-emerald-200/80">{timeframeLabel}</span>
+              </div>
+            </div>
+            <div className="hidden sm:flex flex-col items-end">
+              <span className="text-[11px] font-semibold uppercase tracking-wider text-emerald-200/80 font-mono">
+                Total Crypto
               </span>
-              <span className="text-emerald-200/80">{timeframeLabel}</span>
+              <span className="text-xs text-emerald-100/90 font-mono">BTC • ETH • USDT • USDC</span>
             </div>
           </div>
-          <div className="md:text-right">
-            <span className="text-[13px] text-emerald-100/90 font-medium">{cadBalanceLabel}</span>
-            <div className="text-xl md:text-2xl font-bold mt-1">
-              {hideBalance ? (
-                "$•,•••.••"
-              ) : loadingBalance ? (
-                <div className="h-8 w-48 bg-gray-200 animate-pulse rounded" />
-              ) : (
-                `$${cadBalance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
-              )}
-            </div>
+
+          <div className="grid grid-cols-2 gap-3 mt-6">
+            <Link
+              href="/deposit"
+              className="flex items-center justify-center gap-2 bg-[#FFC107] hover:bg-[#FFD166] text-[#0A0F2C] rounded-xl py-3 font-bold text-[13px] transition-colors shadow-sm"
+            >
+              <ArrowDownLeft className="w-4 h-4" strokeWidth={2.5} />
+              Deposit Crypto
+            </Link>
+            <Link
+              href="/withdraw?method=crypto"
+              className="flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 text-white rounded-xl py-3 font-bold text-[13px] transition-colors shadow-sm"
+            >
+              <ArrowUpRight className="w-4 h-4" strokeWidth={2.5} />
+              Withdraw Crypto
+            </Link>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-8">
-          <Link
-            href="/deposit"
-            className="flex items-center justify-center gap-2 bg-[#FFC107] hover:bg-[#FFD166] text-[#0A0F2C] rounded-xl py-3.5 font-bold text-[14px] transition-colors shadow-sm"
-          >
-            <ArrowDownLeft className="w-4 h-4" strokeWidth={2.5} />
-            {depositBtn}
-          </Link>
-          <Link
-            href="/withdraw"
-            className="flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 text-white rounded-xl py-3.5 font-bold text-[14px] transition-colors shadow-sm"
-          >
-            <ArrowUpRight className="w-4 h-4" strokeWidth={2.5} />
-            {withdrawBtn}
-          </Link>
+        {/* CARD 2: FIAT BALANCE */}
+        <div className="bg-[#064E3B] rounded-2xl p-7 text-white shadow-lg flex flex-col justify-between relative overflow-hidden">
+          <div className="flex items-start justify-between gap-4">
+            <div>
+              <div className="flex items-center gap-2 mb-1">
+                <Banknote className="w-4 h-4 text-emerald-300" />
+                <span className="text-[13px] text-emerald-100/90 font-medium">
+                  {cadBalanceLabel === "CAD Balance" ? `${currencyCode} Balance` : cadBalanceLabel}
+                </span>
+                <button
+                  type="button"
+                  onClick={() => setHideBalance(!hideBalance)}
+                  className="hover:text-white text-emerald-100/80 transition-colors cursor-pointer"
+                  title="Toggle balance visibility"
+                >
+                  <Eye className="w-4 h-4" />
+                </button>
+              </div>
+              <h2 className="text-3xl sm:text-4xl font-bold tracking-tight mb-2">
+                {hideBalance ? (
+                  `${currencySymbol}•,•••.••`
+                ) : loadingBalance ? (
+                  <div className="h-8 w-40 bg-white/20 animate-pulse rounded" />
+                ) : (
+                  `${currencySymbol}${fiatBalance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ${currencyCode}`
+                )}
+              </h2>
+              <div className="flex items-center gap-1.5 text-[13px] text-emerald-200/90">
+                <span>{currencyCode === "CAD" ? "Available for instant Interac e-Transfer" : `Available in ${currencyName}`}</span>
+              </div>
+            </div>
+            <div className="hidden sm:flex flex-col items-end">
+              <span className="text-[11px] font-semibold uppercase tracking-wider text-emerald-200/80 font-mono">
+                Fiat Cash
+              </span>
+              <span className="text-xs text-emerald-100/90 font-mono">{currencyName}</span>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-3 mt-6">
+            <Link
+              href="/deposit?asset=fiat"
+              className="flex items-center justify-center gap-2 bg-[#FFC107] hover:bg-[#FFD166] text-[#0A0F2C] rounded-xl py-3 font-bold text-[13px] transition-colors shadow-sm"
+            >
+              <ArrowDownLeft className="w-4 h-4" strokeWidth={2.5} />
+              Deposit {currencyCode}
+            </Link>
+            <Link
+              href="/withdraw?method=cash"
+              className="flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 text-white rounded-xl py-3 font-bold text-[13px] transition-colors shadow-sm"
+            >
+              <ArrowUpRight className="w-4 h-4" strokeWidth={2.5} />
+              Withdraw {currencyCode}
+            </Link>
+          </div>
         </div>
       </div>
 
@@ -795,7 +875,7 @@ export default function DashboardPage() {
                         </span>
                       </div>
                       <span className="text-[13px] font-bold text-[#111827]">
-                        ${item.value.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                        {currencySymbol}{item.value.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                       </span>
                     </div>
                   </div>
@@ -808,22 +888,21 @@ export default function DashboardPage() {
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {visibleWallets.length > 0 ? visibleWallets.map((w) => {
-          // If CAD, use balance directly (no conversion needed)
-          const isCAD = w.currency === 'CAD';
-          const value = isCAD ? w.balance : w.balance * (cadRates[w.currency] || cadRates.USDT || 1.36);
-          const decimals = w.currency === "USDT" || w.currency === "USDC" || isCAD ? 2 : 8;
-          const isStable = w.currency === "USDT" || w.currency === "USDC" || isCAD;
+          const isFiat = w.currency === 'CAD' || w.currency === currencyCode;
+          const value = isFiat ? w.balance : w.balance * (cadRates[w.currency] || cadRates.USDT || 1);
+          const decimals = w.currency === "USDT" || w.currency === "USDC" || isFiat ? 2 : 8;
+          const isStable = w.currency === "USDT" || w.currency === "USDC" || isFiat;
           return (
             <div key={w.currency} className="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm flex flex-col">
               <div className="flex items-start justify-between mb-4">
                 <CoinLogo src={getCoinBySymbol(`${w.currency}USDT`)?.logoUrl} symbol={w.currency} className="h-10 w-10 p-1.5" />
                 <div className={isStable ? "bg-gray-100 text-[#718096] px-2 py-0.5 rounded text-[11px] font-bold" : "bg-green-50 text-[#10B981] px-2 py-0.5 rounded text-[11px] font-bold border border-green-100"}>
-                  {isStable ? (isCAD ? "Fiat" : "Stable") : "Live"}
+                  {isStable ? (isFiat ? "Fiat" : "Stable") : "Live"}
                 </div>
               </div>
               <h3 className="text-[15px] font-bold text-[#0A0F2C] mb-1">{w.currency}</h3>
               <div className="text-[20px] font-bold text-[#0A0F2C] mb-0.5">
-                ${value.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                {currencySymbol}{value.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
               </div>
               <div className="text-[11px] text-[#A0AEC0] font-medium">
                 {w.balance.toLocaleString(undefined, { maximumFractionDigits: decimals })} {w.currency}
@@ -938,8 +1017,8 @@ export default function DashboardPage() {
               <div>
                 <p className="text-[12px] font-semibold uppercase tracking-wide text-[#718096]">Amount</p>
                 <p className="mt-1 text-[14px] font-bold text-[#0A0F2C]">
-                  {selectedTxDetails.asset !== "CAD" && selectedTxDetails.asset !== "USD"
-                    ? `${Number(selectedTxDetails.amount).toFixed(6)} ${selectedTxDetails.asset} ($${(Number(selectedTxDetails.amount) * (metrics?.cadRates?.[selectedTxDetails.asset] || 1)).toFixed(2)} CAD)`
+                  {selectedTxDetails.asset !== "CAD" && selectedTxDetails.asset !== "USD" && selectedTxDetails.asset !== currencyCode
+                    ? `${Number(selectedTxDetails.amount).toFixed(6)} ${selectedTxDetails.asset} (${currencySymbol}${(Number(selectedTxDetails.amount) * (cadRates[selectedTxDetails.asset] || 1)).toFixed(2)} ${currencyCode})`
                     : `${selectedTxDetails.amount} ${selectedTxDetails.asset}`}
                 </p>
               </div>
@@ -949,13 +1028,13 @@ export default function DashboardPage() {
                   Total Balance Before {selectedTxDetails.type}
                 </p>
                 <p className="mt-1 text-[14px] font-bold text-[#0A0F2C]">
-                  ${(
-                    (metrics?.cadBalance || 0) +
+                  {currencySymbol}{(
+                    (fiatBalance || 0) +
                     (selectedTxDetails.type.toLowerCase() === "withdrawal"
                       ? (selectedTxDetails.status === "approved" || selectedTxDetails.status === "completed" ? Number(selectedTxDetails.amount) : 0)
                       : (selectedTxDetails.status === "approved" || selectedTxDetails.status === "completed" ? -Number(selectedTxDetails.amount) : 0)
                     )
-                  ).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} CAD
+                  ).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} {currencyCode}
                 </p>
               </div>
 
@@ -964,13 +1043,13 @@ export default function DashboardPage() {
                   {selectedTxDetails.type.toLowerCase() === "withdrawal" ? "Remaining" : "New"} Available Balance
                 </p>
                 <p className="mt-1 text-[14px] font-bold text-[#0A0F2C]">
-                  ${(
-                    (metrics?.cadBalance || 0) +
+                  {currencySymbol}{(
+                    (fiatBalance || 0) +
                     (selectedTxDetails.type.toLowerCase() === "withdrawal"
                       ? (selectedTxDetails.status === "pending" || selectedTxDetails.status === "rejected" ? -Number(selectedTxDetails.amount) : 0)
                       : (selectedTxDetails.status === "pending" || selectedTxDetails.status === "rejected" ? Number(selectedTxDetails.amount) : 0)
                     )
-                  ).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} CAD
+                  ).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} {currencyCode}
                 </p>
               </div>
               <div>
@@ -985,6 +1064,12 @@ export default function DashboardPage() {
                     {selectedTxDetails.status}
                   </span>
                 </div>
+              </div>
+              <div>
+                <p className="text-[12px] font-semibold uppercase tracking-wide text-[#718096]">Date (Toronto Time)</p>
+                <p className="mt-1 text-[14px] font-bold text-[#0A0F2C]">
+                  {formatTorontoDateTime(selectedTxDetails.date)}
+                </p>
               </div>
 
               {selectedTxDetails.status === "rejected" && (selectedTxDetails.rejectionReason || selectedTxDetails.adminNote) && (

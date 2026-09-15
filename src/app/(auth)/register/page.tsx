@@ -8,6 +8,8 @@ import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { validatePasswordRules } from "@/lib/utils";
 import { NexoBankLogoWhite } from "@/components/ui/NexoBankLogoWhite";
+import { CountrySelect } from "@/components/ui/country-select";
+import { SUPPORTED_COUNTRIES } from "@/lib/constants/countries";
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -17,6 +19,7 @@ export default function RegisterPage() {
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
+  const [selectedCountry, setSelectedCountry] = useState(SUPPORTED_COUNTRIES[0]);
   
   // States for step 2
   const [password, setPassword] = useState("");
@@ -60,13 +63,16 @@ export default function RegisterPage() {
       return;
     }
     
+    const fullPhone = phone.trim() ? `${selectedCountry.code} ${phone.trim()}` : "";
+
     const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
       email: normalizedEmail,
       password,
       options: {
         data: {
           full_name: fullName,
-          phone: phone,
+          phone: fullPhone,
+          country: selectedCountry.name,
         },
         emailRedirectTo: `${window.location.origin}/auth/callback`,
       },
@@ -86,7 +92,8 @@ export default function RegisterPage() {
             purpose: "email-verification",
             userId: signUpData?.user?.id,
             fullName: fullName,
-            phone: phone
+            phone: fullPhone,
+            country: selectedCountry.name,
           }),
         });
       } catch (err) {
@@ -174,14 +181,23 @@ export default function RegisterPage() {
 
               <div className="space-y-1.5">
                 <label className="block text-[13px] font-bold text-[#0A0F2C]">Phone Number</label>
-                <input 
-                  type="tel" 
-                  placeholder="+1 (555) 000-0000" 
-                  value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
-                  className="w-full px-4 py-3 rounded-xl border border-gray-200 text-[15px] focus:outline-none focus:ring-2 focus:ring-[#064e3b] focus:border-transparent transition-all placeholder:text-gray-400"
-                  required
-                />
+                <div className="flex gap-2">
+                  <div className="w-[110px] flex-shrink-0">
+                    <CountrySelect
+                      mode="dialCode"
+                      value={selectedCountry.code}
+                      onChange={(c) => setSelectedCountry(c)}
+                    />
+                  </div>
+                  <input 
+                    type="tel" 
+                    placeholder="(555) 000-0000" 
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                    className="flex-1 min-w-0 px-4 py-3 rounded-xl border border-gray-200 text-[15px] focus:outline-none focus:ring-2 focus:ring-[#064e3b] focus:border-transparent transition-all placeholder:text-gray-400"
+                    required
+                  />
+                </div>
               </div>
 
               <button 

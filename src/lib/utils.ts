@@ -82,14 +82,30 @@ export const COIN_COLORS: Record<string, string> = {
 };
 
 export function calculateCADBalance(wallets: any[], rates: Record<string, number>) {
+  return calculateFiatBalance(wallets, rates, "CAD");
+}
+
+export function calculateFiatBalance(wallets: any[], rates: Record<string, number>, fiatCurrency = "CAD") {
+  const fiat = fiatCurrency.toUpperCase();
   return wallets.reduce((total: number, w: any) => {
-    const rate = rates[w.currency?.toUpperCase()] || rates.USDT || 1.36;
+    const curr = w.currency?.toUpperCase();
+    if (curr === fiat) {
+      return total + Number(w.balance || 0);
+    }
+    const rate = rates[curr] || rates.USDT || 1;
     return total + (Number(w.balance || 0) * rate);
   }, 0);
 }
 
-let cachedRates: Record<string, number> | null = null;
-let lastFetchTime = 0;
+export function formatCurrencyAmount(amount: number, symbol = "$", code?: string): string {
+  const formatted = amount.toLocaleString(undefined, {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
+  return code ? `${symbol}${formatted} ${code}` : `${symbol}${formatted}`;
+}
+
+const cachedRatesByFiat: Record<string, { rates: Record<string, number>; timestamp: number }> = {};
 
 /** Fetch live USDT→CAD rate without hardcoded fallbacks (for order pricing). */
 export async function fetchLiveUSDTtoCAD(): Promise<number | null> {
@@ -107,9 +123,15 @@ export async function fetchLiveUSDTtoCAD(): Promise<number | null> {
 }
 
 export async function fetchLiveCADRates(symbols?: string[]): Promise<Record<string, number>> {
+  return fetchLiveFiatRates(symbols, "CAD");
+}
+
+export async function fetchLiveFiatRates(symbols?: string[], fiatCurrency = "CAD"): Promise<Record<string, number>> {
+  const fiat = (fiatCurrency || "CAD").toLowerCase();
   const now = Date.now();
-  if (cachedRates && now - lastFetchTime < 60000 && !symbols) {
-    return cachedRates;
+  const cached = cachedRatesByFiat[fiat];
+  if (cached && now - cached.timestamp < 60000 && !symbols) {
+    return cached.rates;
   }
 
   try {
@@ -120,7 +142,7 @@ export async function fetchLiveCADRates(symbols?: string[]): Promise<Record<stri
     const uniqueIds = [...new Set(coinIds)].join(",");
     
     const coinGeckoRes = await fetch(
-      `https://api.coingecko.com/api/v3/simple/price?ids=${uniqueIds}&vs_currencies=cad`,
+      `https://api.coingecko.com/api/v3/simple/price?ids=${uniqueIds}&vs_currencies=${fiat}`,
       { cache: "no-store" }
     );
     
@@ -130,57 +152,111 @@ export async function fetchLiveCADRates(symbols?: string[]): Promise<Record<stri
     
     const coinGeckoData = await coinGeckoRes.json();
 
-    // Handle case where API returns unexpected data structure
     if (!coinGeckoData || typeof coinGeckoData !== 'object') {
       throw new Error('Invalid data structure from CoinGecko API');
     }
 
-    cachedRates = {};
+    const rates: Record<string, number> = {};
     
     Object.entries(SYMBOL_TO_COIN_ID).forEach(([symbol, coinId]) => {
-      if (coinGeckoData[coinId]?.cad) {
-        cachedRates![symbol] = coinGeckoData[coinId].cad;
+      if (coinGeckoData[coinId]?.[fiat]) {
+        rates[symbol] = coinGeckoData[coinId][fiat];
       }
     });
 
-    const defaultRates: Record<string, number> = {
-      BTC: 95000,
-      ETH: 3500,
-      USDT: 1.36,
-      USDC: 1.36,
+    // Baseline multipliers relative to USD to provide solid fallbacks per fiat
+    const fiatMultiplier: Record<string, number> = {
+      cad: 1.36,
+      gbp: 0.78,
+      eur: 0.92,
+      usd: 1.0,
+      sek: 10.4,
+      nok: 10.6,
+      chf: 0.88,
+      aud: 1.52,
+      pkr: 278.0,
+      inr: 83.5,
+      zar: 18.2,
+      jpy: 155.0,
+      sgd: 1.35,
+      aed: 3.67,
+    };
+    const mult = fiatMultiplier[fiat] || (fiat === "cad" ? 1.36 : 1.0);
+
+    const baseUSDRates: Record<string, number> = {
+      BTC: 68000,
+      ETH: 2600,
+      USDT: 1.0,
+      USDC: 1.0,
       SOL: 150,
-      BNB: 600,
-      XRP: 1.5,
-      DOGE: 0.15,
-      ADA: 0.5,
-      CAD: 1,
+      BNB: 580,
+      XRP: 0.55,
+      DOGE: 0.12,
+      ADA: 0.40,
     };
 
-    Object.entries(defaultRates).forEach(([symbol, rate]) => {
-      if (!cachedRates![symbol]) {
-        cachedRates![symbol] = rate;
+    Object.entries(baseUSDRates).forEach(([symbol, usdPrice]) => {
+      if (!rates[symbol]) {
+        rates[symbol] = Number((usdPrice * mult).toFixed(2));
       }
     });
+    rates[fiat.toUpperCase()] = 1;
 
-    lastFetchTime = now;
+    cachedRatesByFiat[fiat] = { rates, timestamp: now };
+    return rates;
   } catch (error) {
-    console.error("Failed to fetch live CAD rates, using defaults", error);
-    // Always provide fallback rates to prevent UI breakage
-    if (!cachedRates) {
-      cachedRates = {
-        BTC: 95000,
-        ETH: 3500,
-        USDT: 1.36,
-        USDC: 1.36,
-        SOL: 150,
-        BNB: 600,
-        XRP: 1.5,
-        DOGE: 0.15,
-        ADA: 0.5,
-        CAD: 1,
+    console.error(`Failed to fetch live ${fiat.toUpperCase()} rates, using defaults`, error);
+    if (!cachedRatesByFiat[fiat]) {
+      const mult = fiat === "gbp" ? 0.78 : fiat === "eur" ? 0.92 : fiat === "sek" ? 10.4 : fiat === "nok" ? 10.6 : 1.36;
+      cachedRatesByFiat[fiat] = {
+        rates: {
+          BTC: 68000 * mult,
+          ETH: 2600 * mult,
+          USDT: 1.0 * mult,
+          USDC: 1.0 * mult,
+          SOL: 150 * mult,
+          BNB: 580 * mult,
+          XRP: 0.55 * mult,
+          [fiat.toUpperCase()]: 1,
+        },
+        timestamp: now,
       };
     }
+    return cachedRatesByFiat[fiat].rates;
   }
+}
 
-  return cachedRates!;
+export const TORONTO_TIMEZONE = "America/Toronto";
+
+export function formatTorontoDate(
+  date: Date | string,
+  options: Intl.DateTimeFormatOptions = {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  }
+): string {
+  const d = typeof date === "string" ? new Date(date) : date;
+  return new Intl.DateTimeFormat("en-US", {
+    timeZone: TORONTO_TIMEZONE,
+    ...options,
+  }).format(d);
+}
+
+export function formatTorontoDateTime(
+  date: Date | string,
+  options: Intl.DateTimeFormatOptions = {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true,
+  }
+): string {
+  const d = typeof date === "string" ? new Date(date) : date;
+  return new Intl.DateTimeFormat("en-US", {
+    timeZone: TORONTO_TIMEZONE,
+    ...options,
+  }).format(d);
 }

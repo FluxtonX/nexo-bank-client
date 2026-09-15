@@ -142,9 +142,9 @@ export default function WalletsPage() {
                     }`}
                 >
                   <div className="flex justify-between items-start mb-6">
-                    {wallet.symbol === "CAD" ? (
+                    {wallet.change === "Fiat" ? (
                       <div className="w-10 h-10 rounded-full bg-[#DCFCE7] flex items-center justify-center">
-                        <span className="text-[#16A34A] font-bold text-lg">$</span>
+                        <span className="text-[#16A34A] font-bold text-lg">{wallet.value.charAt(0) || "$"}</span>
                       </div>
                     ) : (
                       <CoinLogo src={wallet.image} symbol={wallet.symbol} className="h-10 w-10 p-1.5" />
@@ -170,11 +170,11 @@ export default function WalletsPage() {
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
             <div className="lg:col-span-2 bg-white rounded-2xl border border-gray-200 p-6 shadow-sm">
-              {selectedWallet?.symbol === "CAD" ? (
-                // CAD-specific view
+              {selectedWallet?.change === "Fiat" ? (
+                // Fiat-specific view
                 <>
                   <div className="flex justify-between items-center mb-6">
-                    <h2 className="text-lg font-semibold text-gray-900">CAD Wallet</h2>
+                    <h2 className="text-lg font-semibold text-gray-900">{selectedWallet?.name} Wallet</h2>
                     <div className="px-3 py-1 bg-[#E0E7FF] text-primary-blue rounded-full text-xs font-medium">
                       Fiat
                     </div>
@@ -192,11 +192,11 @@ export default function WalletsPage() {
 
                   <div className="mt-6">
                     <Link
-                      href="/withdraw"
+                      href="/withdraw?method=cash"
                       className="w-full bg-primary-blue hover:bg-emerald-800 text-white font-semibold rounded-xl py-3.5 flex items-center justify-center gap-2 transition-colors text-center"
                     >
                       <ArrowUpRight className="w-5 h-5" />
-                      Withdraw CAD
+                      Withdraw {selectedWallet?.symbol}
                     </Link>
                   </div>
                 </>
@@ -287,7 +287,7 @@ export default function WalletsPage() {
                       Deposit {selectedWallet?.symbol}
                     </Link>
                     <Link
-                      href="/withdraw"
+                      href={`/withdraw?method=crypto&asset=${selectedWallet?.symbol}`}
                       className="flex-1 bg-white border border-gray-200 hover:bg-gray-50 text-gray-900 font-semibold rounded-xl py-3.5 flex items-center justify-center gap-2 transition-colors text-center"
                     >
                       <ArrowUpRight className="w-5 h-5" />
@@ -318,7 +318,7 @@ export default function WalletsPage() {
                   <p className="text-sm font-semibold text-gray-900">{Number(selectedWallet?.balance).toLocaleString(undefined, { maximumFractionDigits: 8 })} {selectedWallet?.symbol}</p>
                 </div>
                 <div>
-                  <p className="text-xs text-gray-500 mb-1">CAD Value</p>
+                  <p className="text-xs text-gray-500 mb-1">Estimated Value</p>
                   <p className="text-sm font-semibold text-gray-900">{selectedWallet?.value}</p>
                 </div>
               </div>

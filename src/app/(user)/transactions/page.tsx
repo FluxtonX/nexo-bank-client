@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from "react";
 import { Download, Search, Loader2, X } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { cn, formatTorontoDateTime } from "@/lib/utils";
 import { TransactionTable } from "@/components/dashboard/blocks";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { useClientTransactions, useDashboardMetrics, type TransactionRow } from "@/hooks/useClientQueries";
@@ -32,10 +32,14 @@ export default function TransactionsPage() {
     });
   }, [activeFilter, searchQuery, transactions]);
 
+  const currencyCode = metrics?.userCurrency?.code || "CAD";
+  const currencySymbol = metrics?.userCurrency?.symbol || "$";
+  const fiatBalance = metrics?.fiatBalance ?? metrics?.cadBalance ?? 0;
+
   const handleExportCSV = () => {
     if (filteredTransactions.length === 0) return;
 
-    const headers = ["Date", "Description", "Type", "Asset", "Crypto Amount", "CAD Value", "Status"];
+    const headers = ["Date", "Description", "Type", "Asset", "Crypto Amount", `${currencyCode} Value`, "Status"];
     const csvContent = [
       headers.join(","),
       ...filteredTransactions.map(row =>
@@ -152,8 +156,8 @@ export default function TransactionsPage() {
               <div>
                 <p className="text-[12px] font-semibold uppercase tracking-wide text-[#718096]">Amount</p>
                 <p className="mt-1 text-[14px] font-bold text-[#0A0F2C]">
-                  {selectedTransaction.asset !== "CAD" && selectedTransaction.asset !== "USD"
-                    ? `${Number(selectedTransaction.amount).toFixed(6)} ${selectedTransaction.asset} ($${(Number(selectedTransaction.amount) * (metrics?.cadRates?.[selectedTransaction.asset] || 1)).toFixed(2)} CAD)`
+                  {selectedTransaction.asset !== "CAD" && selectedTransaction.asset !== "USD" && selectedTransaction.asset !== currencyCode
+                    ? `${Number(selectedTransaction.amount).toFixed(6)} ${selectedTransaction.asset} (${currencySymbol}${(Number(selectedTransaction.amount) * (metrics?.fiatRates?.[selectedTransaction.asset] || metrics?.cadRates?.[selectedTransaction.asset] || 1)).toFixed(2)} ${currencyCode})`
                     : `${selectedTransaction.amount} ${selectedTransaction.asset}`}
                 </p>
               </div>
@@ -163,13 +167,13 @@ export default function TransactionsPage() {
                   Total Balance Before {selectedTransaction.type}
                 </p>
                 <p className="mt-1 text-[14px] font-bold text-[#0A0F2C]">
-                  ${(
-                    (metrics?.cadBalance || 0) + 
+                  {currencySymbol}{(
+                    (fiatBalance || 0) + 
                     (selectedTransaction.type.toLowerCase() === "withdrawal" 
                       ? (selectedTransaction.status === "approved" || selectedTransaction.status === "completed" ? Number(selectedTransaction.amount) : 0)
                       : (selectedTransaction.status === "approved" || selectedTransaction.status === "completed" ? -Number(selectedTransaction.amount) : 0)
                     )
-                  ).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} CAD
+                  ).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} {currencyCode}
                 </p>
               </div>
               
@@ -178,13 +182,13 @@ export default function TransactionsPage() {
                   {selectedTransaction.type.toLowerCase() === "withdrawal" ? "Remaining" : "New"} Available Balance
                 </p>
                 <p className="mt-1 text-[14px] font-bold text-[#0A0F2C]">
-                  ${(
-                    (metrics?.cadBalance || 0) + 
+                  {currencySymbol}{(
+                    (fiatBalance || 0) + 
                     (selectedTransaction.type.toLowerCase() === "withdrawal"
                       ? (selectedTransaction.status === "pending" || selectedTransaction.status === "rejected" ? -Number(selectedTransaction.amount) : 0)
                       : (selectedTransaction.status === "pending" || selectedTransaction.status === "rejected" ? Number(selectedTransaction.amount) : 0)
                     )
-                  ).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} CAD
+                  ).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} {currencyCode}
                 </p>
               </div>
               <div>
@@ -194,9 +198,9 @@ export default function TransactionsPage() {
                 </div>
               </div>
               <div>
-                <p className="text-[12px] font-semibold uppercase tracking-wide text-[#718096]">Date</p>
+                <p className="text-[12px] font-semibold uppercase tracking-wide text-[#718096]">Date (Toronto Time)</p>
                 <p className="mt-1 text-[14px] font-bold text-[#0A0F2C]">
-                  {selectedTransaction.rawDate.toLocaleString()}
+                  {formatTorontoDateTime(selectedTransaction.rawDate)}
                 </p>
               </div>
               <div>
