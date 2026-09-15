@@ -25,12 +25,6 @@ export default function ContactSection() {
             <p className="text-xs uppercase tracking-widest font-bold text-gray-400 mb-2">
               General Support
             </p>
-            <a
-              href="tel:+12498881077"
-              className="text-2xl md:text-3xl font-bold text-white hover:text-accent-gold transition-colors"
-            >
-              +1 (249) 888-1077
-            </a>
             <p className="mt-3 text-sm text-gray-500">
               For account help, onboarding & general inquiries
             </p>
@@ -44,12 +38,6 @@ export default function ContactSection() {
             <p className="text-xs uppercase tracking-widest font-bold text-gray-400 mb-2">
               Fraud Department
             </p>
-            <a
-              href="tel:+14378889050"
-              className="text-2xl md:text-3xl font-bold text-white hover:text-red-400 transition-colors"
-            >
-              +1 (437) 888-9050
-            </a>
             <p className="mt-3 text-sm text-gray-500">
               Report fraud or suspicious activity on your account
             </p>
