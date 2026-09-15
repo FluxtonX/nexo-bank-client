@@ -77,7 +77,7 @@ export default function AppPreviewSection({ content }: { content: LandingAppCont
             >
               <Image
                 src="/assets/phone-dark.png"
-                alt="CDNT Crypto Portfolio Interface"
+                alt="NDNT Crypto Portfolio Interface"
                 width={300}
                 height={600}
                 className="w-full h-auto drop-shadow-2xl rounded-[2.5rem]"

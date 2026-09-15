@@ -32,7 +32,7 @@ export const accountPages: Record<string, AccountDetail> = {
       },
       {
         title: "Digital-first service",
-        body: "CDNT keeps routine banking fast while still making advisor help available when decisions get complex.",
+        body: "NDNT keeps routine banking fast while still making advisor help available when decisions get complex.",
         bullets: ["Mobile cheque deposit", "Secure document upload", "Advisor appointment support"],
       },
       {
@@ -46,7 +46,7 @@ export const accountPages: Record<string, AccountDetail> = {
         bullets: ["2FA prompts", "Known-device review", "Fraud monitoring"],
       },
     ],
-    fees: [["Monthly fee", "$0-$16.95 depending on plan"], ["Interac e-Transfer", "Included on eligible plans"], ["ATM access", "CDNT network included"], ["Overdraft", "Subject to approval"]],
+    fees: [["Monthly fee", "$0-$16.95 depending on plan"], ["Interac e-Transfer", "Included on eligible plans"], ["ATM access", "NDNT network included"], ["Overdraft", "Subject to approval"]],
     eligibility: ["Canadian resident or eligible applicant profile.", "Verified email, phone, and identity documents.", "KYC approval before sensitive money movement."],
     bestFor: ["Paycheques and recurring bills.", "Clients who want one primary daily account.", "Users connecting banking with portfolio activity."],
   },
@@ -86,14 +86,14 @@ export const accountPages: Record<string, AccountDetail> = {
       },
     ],
     fees: [["Monthly fee", "$0"], ["Minimum balance", "$0"], ["Transfers to Nexo Bank", "Included"], ["External transfer timing", "Varies by network"]],
-    eligibility: ["Verified CDNT profile.", "Linked chequing account recommended.", "Subject to account review and platform limits."],
+    eligibility: ["Verified NDNT profile.", "Linked chequing account recommended.", "Subject to account review and platform limits."],
     bestFor: ["Emergency funds.", "Short-term goals.", "Clients who want cash discipline before investing."],
   },
   international: {
     eyebrow: "International Banking",
     title: "Bank across borders with clearer control.",
     description:
-      "Support international transfers, travel needs, foreign payments, and global advisory conversations from one CDNT relationship.",
+      "Support international transfers, travel needs, foreign payments, and global advisory conversations from one NDNT relationship.",
     image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=2200",
     icon: Globe2,
     highlights: [
@@ -203,7 +203,7 @@ export const accountPages: Record<string, AccountDetail> = {
       },
     ],
     fees: [["Support ticket", "Included"], ["Statement download", "Included"], ["Card replacement", "Plan-dependent"], ["Investigation request", "May apply"]],
-    eligibility: ["Active or pending CDNT profile.", "Secure authentication may be required.", "Sensitive changes require additional verification."],
+    eligibility: ["Active or pending NDNT profile.", "Secure authentication may be required.", "Sensitive changes require additional verification."],
     bestFor: ["Clients who need account support.", "Users troubleshooting transfers.", "Anyone reviewing security settings."],
     cta: "Open support options",
   },
@@ -243,8 +243,8 @@ export const accountPages: Record<string, AccountDetail> = {
       },
     ],
     fees: [["Monthly fee", "$16.95 sample tier"], ["Advisor review", "Included"], ["Premium support", "Included"], ["Partner benefits", "Tier-dependent"]],
-    eligibility: ["Approved CDNT profile.", "Eligible account relationship.", "Good standing and completed security setup."],
-    bestFor: ["Clients with multiple CDNT products.", "Users who want portfolio and crypto visibility.", "Premium banking clients who value service access."],
+    eligibility: ["Approved NDNT profile.", "Eligible account relationship.", "Good standing and completed security setup."],
+    bestFor: ["Clients with multiple NDNT products.", "Users who want portfolio and crypto visibility.", "Premium banking clients who value service access."],
     cta: "Join Vantage",
   },
   rates: {
@@ -323,7 +323,7 @@ export const accountPages: Record<string, AccountDetail> = {
     ],
     fees: [["Application fee", "$0"], ["Identity verification", "Included"], ["Account activation", "After approval"], ["Funding", "Based on method"]],
     eligibility: ["Valid identity information.", "Verifiable contact details.", "Acceptance of account terms and risk disclosures."],
-    bestFor: ["New CDNT clients.", "Existing users adding accounts.", "Clients preparing for digital asset workflows."],
+    bestFor: ["New NDNT clients.", "Existing users adding accounts.", "Clients preparing for digital asset workflows."],
     cta: "Start secure application",
   },
   faq: {

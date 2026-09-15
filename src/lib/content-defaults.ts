@@ -125,7 +125,7 @@ export const DEFAULT_LANDING_CONTENT: LandingContent = {
       { title: "Portfolio Tracking", description: "Monitor your entire net worth with beautiful, real-time exotic curves." },
     ],
     ctaCardTitle: "And much more",
-    ctaCardDesc: "Discover the full power of CDNT.",
+    ctaCardDesc: "Discover the full power of NDNT.",
     ctaCardBtn: "Get Started",
   },
   assets: {
@@ -578,7 +578,7 @@ export const DEFAULT_HELP_CONTENT: HelpContent = {
       "How long does KYC verification take?",
       "What are the withdrawal fees?",
       "Is my cryptocurrency insured?",
-      "Can I withdraw to any Canadian bank?",
+      "Can I withdraw to any Nexo-supported bank?",
       "What cryptocurrencies are supported?",
       "How do I enable two-factor authentication?",
     ],

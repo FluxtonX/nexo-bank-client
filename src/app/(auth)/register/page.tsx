@@ -306,7 +306,7 @@ export default function RegisterPage() {
                 <div>
                   <h3 className="text-[13px] font-bold text-[#0A0F2C] mb-1.5">Terms of Service</h3>
                   <p className="text-[12px] text-gray-500 leading-relaxed">
-                    By creating an account with CDNT Bank, you agree to our terms of service and privacy policy. Your funds are protected under Canadian financial regulations.
+                    By creating an account with NDNT Bank, you agree to our terms of service and privacy policy. Your funds are protected under Canadian financial regulations.
                   </p>
                 </div>
                 <div>
