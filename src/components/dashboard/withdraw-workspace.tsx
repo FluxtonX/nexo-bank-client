@@ -105,13 +105,20 @@ export function WithdrawWorkspace({ initialMethod, initialAsset }: WithdrawWorks
   const createWithdrawal = useCreateWithdrawalRequest();
 
   // ----------------------------------------------------
-  // CASH (INTERAC CAD) WITHDRAWAL STATE & LOGIC
+  // FIAT WITHDRAWAL (INTERAC / SEPA BANK WIRE) STATE & LOGIC
   // ----------------------------------------------------
   const [step, setStep] = useState(1);
   const [amount, setAmount] = useState("");
+  // Interac CAD fields
   const [email, setEmail] = useState("");
   const [question, setQuestion] = useState("");
   const [answer, setAnswer] = useState("");
+  // SEPA / European / International Bank Wire fields
+  const [recipientName, setRecipientName] = useState("");
+  const [iban, setIban] = useState("");
+  const [bicSwift, setBicSwift] = useState("");
+  const [bankName, setBankName] = useState("");
+
   const [twoFa, setTwoFa] = useState("");
   const [otpDigits, setOtpDigits] = useState(["", "", "", "", "", ""]);
   const [submitting, setSubmitting] = useState(false);
@@ -119,24 +126,42 @@ export function WithdrawWorkspace({ initialMethod, initialAsset }: WithdrawWorks
   const [otpResendTimer, setOtpResendTimer] = useState(0);
   const otpTimerRef = useRef<NodeJS.Timeout | null>(null);
 
-  // CMS content for CAD withdraw
+  // Dynamic user currency & region
+  const userCurrency = metrics?.userCurrency || {
+    code: "CAD",
+    symbol: "$",
+    name: "Canadian Dollar",
+    countryName: "Canada",
+  };
+  const isCanada =
+    userCurrency.code === "CAD" ||
+    (userCurrency.countryName && userCurrency.countryName.toLowerCase() === "canada");
+
+  // CMS content for withdraw
   const [pageSubheading, setPageSubheading] = useState("Transfer to your bank via Interac e-Transfer");
   const [feeAmount, setFeeAmount] = useState("2.50");
   const [importantBox, setImportantBox] = useState("Make sure the recipient email is correct. The recipient will need the security answer to claim the funds.");
   const [otpText, setOtpText] = useState("We have sent a 6-digit code to your registered email address.");
 
-  const cadWallet = useMemo(
-    () => wallets.find((w) => w.currency.toUpperCase() === "CAD") || { currency: "CAD", balance: 0 },
-    [wallets]
-  );
-  const availableBalanceCAD = cadWallet.balance;
-  const numAmount = parseFloat(amount || "0");
-  const FEE_CAD = parseFloat(feeAmount) || 2.5;
+  // Identify fiat wallet: prefer userCurrency, then CAD, fallback 0
+  const fiatWallet = useMemo(() => {
+    const matched = wallets.find((w) => w.currency.toUpperCase() === userCurrency.code.toUpperCase());
+    if (matched) return matched;
+    const cad = wallets.find((w) => w.currency.toUpperCase() === "CAD");
+    if (cad) return cad;
+    return { currency: userCurrency.code, balance: 0 };
+  }, [wallets, userCurrency]);
 
-  const youReceiveDisplay = `$${Math.max(0, numAmount - FEE_CAD).toLocaleString(undefined, {
+  const activeFiatCurrency = fiatWallet.currency || userCurrency.code;
+  const activeFiatSymbol = userCurrency.code === activeFiatCurrency ? userCurrency.symbol : "$";
+  const availableBalanceFiat = fiatWallet.balance;
+  const numAmount = parseFloat(amount || "0");
+  const FEE_AMOUNT = parseFloat(feeAmount) || 2.5;
+
+  const youReceiveDisplay = `${activeFiatSymbol}${Math.max(0, numAmount - FEE_AMOUNT).toLocaleString(undefined, {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
-  })} CAD`;
+  })} ${activeFiatCurrency}`;
 
   // ----------------------------------------------------
   // CRYPTO WITHDRAWAL STATE & LOGIC
@@ -298,6 +323,32 @@ export function WithdrawWorkspace({ initialMethod, initialAsset }: WithdrawWorks
 
   const handleNextStep2 = async () => {
     setErrorMsg(null);
+    if (isCanada) {
+      if (!email.trim()) {
+        setErrorMsg("Please enter a valid recipient email.");
+        return;
+      }
+      if (!question.trim() || !answer.trim()) {
+        setErrorMsg("Please enter both security question and answer.");
+        return;
+      }
+    } else {
+      if (!recipientName.trim()) {
+        setErrorMsg("Please enter the recipient's full name.");
+        return;
+      }
+      const cleanIban = iban.trim().replace(/\s+/g, "").toUpperCase();
+      if (cleanIban.length < 15 || cleanIban.length > 34) {
+        setErrorMsg("Please enter a valid IBAN (between 15 and 34 characters).");
+        return;
+      }
+      const cleanBic = bicSwift.trim().toUpperCase();
+      if (cleanBic.length < 8 || cleanBic.length > 11) {
+        setErrorMsg("Please enter a valid BIC / SWIFT code (8 or 11 characters).");
+        return;
+      }
+    }
+
     setSendingOtp(true);
     try {
       if (!userEmail) throw new Error("Could not determine your registered email.");
@@ -383,12 +434,16 @@ export function WithdrawWorkspace({ initialMethod, initialAsset }: WithdrawWorks
       if (!verifyRes.ok) throw new Error(verifyData.error || "Invalid 2FA code.");
 
       await createWithdrawal.mutateAsync({
-        asset: "CAD",
+        asset: activeFiatCurrency,
         amount: numAmount,
-        method: "interac",
-        interacEmail: email,
-        securityQuestion: question,
-        securityAnswer: answer,
+        method: isCanada ? "interac" : "sepa",
+        interacEmail: isCanada ? email.trim() : undefined,
+        securityQuestion: isCanada ? question.trim() : undefined,
+        securityAnswer: isCanada ? answer.trim() : undefined,
+        recipientName: isCanada ? undefined : recipientName.trim(),
+        iban: isCanada ? undefined : iban.trim().replace(/\s+/g, "").toUpperCase(),
+        bicSwift: isCanada ? undefined : bicSwift.trim().toUpperCase(),
+        bankName: isCanada ? undefined : bankName.trim(),
       });
 
       notify({
@@ -567,7 +622,7 @@ export function WithdrawWorkspace({ initialMethod, initialAsset }: WithdrawWorks
           </h1>
           <p className="text-[14px] text-[#718096]">
             {methodTab === "cash"
-              ? pageSubheading
+              ? (isCanada ? pageSubheading : "Transfer to your bank account via SEPA / Bank Wire")
               : "Transfer cryptocurrency to an external wallet address"}
           </p>
         </div>
@@ -586,7 +641,7 @@ export function WithdrawWorkspace({ initialMethod, initialAsset }: WithdrawWorks
           )}
         >
           <Banknote className={cn("h-4 w-4", methodTab === "cash" ? "text-emerald-600" : "text-gray-400")} />
-          <span>Cash Withdrawal (CAD)</span>
+          <span>{isCanada ? "Cash Withdrawal (CAD)" : `Bank Transfer (${activeFiatCurrency})`}</span>
         </button>
         <button
           type="button"
@@ -652,10 +707,13 @@ export function WithdrawWorkspace({ initialMethod, initialAsset }: WithdrawWorks
             </div>
 
             {/* Step 1: CAD Amount & Asset */}
+            {/* Step 1: Fiat Amount & Asset */}
             {step === 1 && (
               <div className="animate-in fade-in slide-in-from-bottom-4 duration-300">
                 <h2 className="mb-6 text-center text-[18px] font-bold text-[#0A0F2C]">
-                  Withdraw Canadian Dollars (CAD)
+                  {isCanada
+                    ? "Withdraw Canadian Dollars (CAD)"
+                    : `Withdraw ${userCurrency.name || activeFiatCurrency} (${activeFiatCurrency})`}
                 </h2>
 
                 <div className="mb-6">
@@ -663,12 +721,12 @@ export function WithdrawWorkspace({ initialMethod, initialAsset }: WithdrawWorks
                   <div className="w-full rounded-[14px] border border-gray-200 bg-gray-50 px-5 py-4 text-[16px] font-bold text-[#0A0F2C] flex justify-between items-center">
                     <div className="flex items-center gap-2.5">
                       <span className="flex h-7 w-7 items-center justify-center rounded-full bg-emerald-100 text-xs font-bold text-emerald-800">
-                        CAD
+                        {activeFiatCurrency}
                       </span>
-                      <span>Canadian Dollar</span>
+                      <span>{isCanada ? "Canadian Dollar" : userCurrency.name || `${activeFiatCurrency} Fiat`}</span>
                     </div>
                     <span className="text-[#718096]">
-                      ${cadWallet.balance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} CAD
+                      {activeFiatSymbol}{availableBalanceFiat.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} {activeFiatCurrency}
                     </span>
                   </div>
                 </div>
@@ -680,7 +738,7 @@ export function WithdrawWorkspace({ initialMethod, initialAsset }: WithdrawWorks
                     <div className="flex items-center justify-between">
                       <span className="text-[13px] font-medium text-[#718096]">Available balance</span>
                       <span className="text-[14px] font-bold text-[#047857]">
-                        ${cadWallet.balance.toFixed(2)} CAD
+                        {activeFiatSymbol}{availableBalanceFiat.toFixed(2)} {activeFiatCurrency}
                       </span>
                     </div>
                   )}
@@ -688,7 +746,7 @@ export function WithdrawWorkspace({ initialMethod, initialAsset }: WithdrawWorks
 
                 <div className="mb-6">
                   <label className="mb-2 block text-[14px] font-bold text-[#0A0F2C]">
-                    Enter amount in CAD
+                    Enter amount in {activeFiatCurrency}
                   </label>
                   <div className="relative">
                     <input
@@ -701,7 +759,7 @@ export function WithdrawWorkspace({ initialMethod, initialAsset }: WithdrawWorks
                       className="w-full rounded-[14px] border border-gray-200 bg-white px-5 py-4 pr-16 text-[16px] font-medium text-[#0A0F2C] placeholder-[#A0AEC0] outline-none transition-all focus:border-[#047857] focus:ring-1 focus:ring-[#047857]"
                     />
                     <span className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-[13px] font-bold text-[#718096]">
-                      CAD
+                      {activeFiatCurrency}
                     </span>
                   </div>
                 </div>
@@ -715,12 +773,12 @@ export function WithdrawWorkspace({ initialMethod, initialAsset }: WithdrawWorks
                       onClick={() => handleCryptoChange(preset)}
                       className="flex-1 rounded-[12px] border border-gray-200 bg-white py-3 text-[14px] font-bold text-[#0A0F2C] hover:bg-gray-50 transition-colors outline-none cursor-pointer"
                     >
-                      ${preset}
+                      {activeFiatSymbol}{preset}
                     </button>
                   ))}
                   <button
                     type="button"
-                    onClick={() => handleCryptoChange(availableBalanceCAD.toString())}
+                    onClick={() => handleCryptoChange(availableBalanceFiat.toString())}
                     className="flex-1 rounded-[12px] border border-gray-200 bg-white py-3 text-[14px] font-bold text-[#047857] hover:bg-gray-50 outline-none cursor-pointer"
                   >
                     Max
@@ -731,7 +789,7 @@ export function WithdrawWorkspace({ initialMethod, initialAsset }: WithdrawWorks
                 <div className="mb-8 rounded-[16px] bg-[#F8F9FA] p-5 border border-gray-100">
                   <div className="mb-3 flex justify-between">
                     <span className="text-[14px] font-medium text-[#718096]">Transaction Fee</span>
-                    <span className="text-[14px] font-bold text-[#0A0F2C]">${FEE_CAD.toFixed(2)} CAD</span>
+                    <span className="text-[14px] font-bold text-[#0A0F2C]">{activeFiatSymbol}{FEE_AMOUNT.toFixed(2)} {activeFiatCurrency}</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-[16px] font-bold text-[#0A0F2C]">You will receive</span>
@@ -752,14 +810,14 @@ export function WithdrawWorkspace({ initialMethod, initialAsset }: WithdrawWorks
                       setErrorMsg("Please enter a valid amount.");
                       return;
                     }
-                    if (numAmount > availableBalanceCAD) {
-                      setErrorMsg("Amount exceeds your available CAD balance.");
+                    if (numAmount > availableBalanceFiat) {
+                      setErrorMsg(`Amount exceeds your available ${activeFiatCurrency} balance.`);
                       return;
                     }
                     setErrorMsg(null);
                     setStep(2);
                   }}
-                  disabled={!amount || numAmount <= 0 || numAmount > availableBalanceCAD || metricsLoading}
+                  disabled={!amount || numAmount <= 0 || numAmount > availableBalanceFiat || metricsLoading}
                   className="w-full rounded-[14px] bg-[#047857] py-4 text-[15px] font-bold text-white transition-colors hover:bg-[#022c22] disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
                 >
                   Continue
@@ -770,51 +828,121 @@ export function WithdrawWorkspace({ initialMethod, initialAsset }: WithdrawWorks
             {/* Step 2: Recipient Details */}
             {step === 2 && (
               <div className="animate-in fade-in slide-in-from-bottom-4 duration-300">
-                <h2 className="mb-8 text-center text-[18px] font-bold text-[#0A0F2C]">Recipient Details</h2>
+                <h2 className="mb-8 text-center text-[18px] font-bold text-[#0A0F2C]">
+                  {isCanada ? "Recipient Details (Interac)" : "Bank Transfer Recipient Details"}
+                </h2>
 
-                <div className="space-y-6 mb-8">
-                  <div>
-                    <label className="mb-2 block text-[14px] font-bold text-[#0A0F2C]">
-                      Recipient Email (Interac e-Transfer)
-                    </label>
-                    <input
-                      type="email"
-                      placeholder="recipient@email.com"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      className="w-full rounded-[14px] border border-gray-200 bg-white px-5 py-4 text-[15px] text-[#0A0F2C] placeholder-[#A0AEC0] outline-none transition-all focus:border-[#047857] focus:ring-1 focus:ring-[#047857]"
-                    />
-                  </div>
+                {isCanada ? (
+                  /* Canada: Interac e-Transfer Form */
+                  <div className="space-y-6 mb-8">
+                    <div>
+                      <label className="mb-2 block text-[14px] font-bold text-[#0A0F2C]">
+                        Recipient Email (Interac e-Transfer)
+                      </label>
+                      <input
+                        type="email"
+                        placeholder="recipient@email.com"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        className="w-full rounded-[14px] border border-gray-200 bg-white px-5 py-4 text-[15px] text-[#0A0F2C] placeholder-[#A0AEC0] outline-none transition-all focus:border-[#047857] focus:ring-1 focus:ring-[#047857]"
+                      />
+                    </div>
 
-                  <div>
-                    <label className="mb-2 block text-[14px] font-bold text-[#0A0F2C]">Security Question</label>
-                    <input
-                      type="text"
-                      placeholder="What is your favorite color?"
-                      value={question}
-                      onChange={(e) => setQuestion(e.target.value)}
-                      className="w-full rounded-[14px] border border-gray-200 bg-white px-5 py-4 text-[15px] text-[#0A0F2C] placeholder-[#A0AEC0] outline-none transition-all focus:border-[#047857] focus:ring-1 focus:ring-[#047857]"
-                    />
-                  </div>
+                    <div>
+                      <label className="mb-2 block text-[14px] font-bold text-[#0A0F2C]">Security Question</label>
+                      <input
+                        type="text"
+                        placeholder="What is your favorite color?"
+                        value={question}
+                        onChange={(e) => setQuestion(e.target.value)}
+                        className="w-full rounded-[14px] border border-gray-200 bg-white px-5 py-4 text-[15px] text-[#0A0F2C] placeholder-[#A0AEC0] outline-none transition-all focus:border-[#047857] focus:ring-1 focus:ring-[#047857]"
+                      />
+                    </div>
 
-                  <div>
-                    <label className="mb-2 block text-[14px] font-bold text-[#0A0F2C]">Security Answer</label>
-                    <input
-                      type="text"
-                      placeholder="Answer"
-                      value={answer}
-                      onChange={(e) => setAnswer(e.target.value)}
-                      className="w-full rounded-[14px] border border-gray-200 bg-white px-5 py-4 text-[15px] text-[#0A0F2C] placeholder-[#A0AEC0] outline-none transition-all focus:border-[#047857] focus:ring-1 focus:ring-[#047857]"
-                    />
+                    <div>
+                      <label className="mb-2 block text-[14px] font-bold text-[#0A0F2C]">Security Answer</label>
+                      <input
+                        type="text"
+                        placeholder="Answer"
+                        value={answer}
+                        onChange={(e) => setAnswer(e.target.value)}
+                        className="w-full rounded-[14px] border border-gray-200 bg-white px-5 py-4 text-[15px] text-[#0A0F2C] placeholder-[#A0AEC0] outline-none transition-all focus:border-[#047857] focus:ring-1 focus:ring-[#047857]"
+                      />
+                    </div>
                   </div>
-                </div>
+                ) : (
+                  /* Europe / International: SEPA / Bank Wire Form */
+                  <div className="space-y-6 mb-8">
+                    <div>
+                      <label className="mb-2 block text-[14px] font-bold text-[#0A0F2C]">
+                        Recipient Full Name (Account Holder)
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="e.g. John Doe"
+                        value={recipientName}
+                        onChange={(e) => setRecipientName(e.target.value)}
+                        className="w-full rounded-[14px] border border-gray-200 bg-white px-5 py-4 text-[15px] text-[#0A0F2C] placeholder-[#A0AEC0] outline-none transition-all focus:border-[#047857] focus:ring-1 focus:ring-[#047857]"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="mb-2 block text-[14px] font-bold text-[#0A0F2C]">
+                        Recipient IBAN (International Bank Account Number)
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="e.g. DE89 3704 0044 0532 0130 00"
+                        value={iban}
+                        onChange={(e) => setIban(e.target.value.toUpperCase())}
+                        className="w-full rounded-[14px] border border-gray-200 bg-white px-5 py-4 text-[15px] font-mono font-medium text-[#0A0F2C] placeholder-[#A0AEC0] outline-none transition-all focus:border-[#047857] focus:ring-1 focus:ring-[#047857]"
+                      />
+                      <p className="mt-1 text-xs text-gray-500">
+                        Starts with a 2-letter country code (e.g. DE, FR, GB, ES, IT) followed by bank and account digits.
+                      </p>
+                    </div>
+
+                    <div>
+                      <label className="mb-2 block text-[14px] font-bold text-[#0A0F2C]">
+                        BIC / SWIFT Code
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="e.g. DBEUMM21XXX"
+                        value={bicSwift}
+                        onChange={(e) => setBicSwift(e.target.value.toUpperCase())}
+                        className="w-full rounded-[14px] border border-gray-200 bg-white px-5 py-4 text-[15px] font-mono font-medium text-[#0A0F2C] placeholder-[#A0AEC0] outline-none transition-all focus:border-[#047857] focus:ring-1 focus:ring-[#047857]"
+                      />
+                      <p className="mt-1 text-xs text-gray-500">
+                        8 or 11 character Bank Identifier Code for routing European / international transfers.
+                      </p>
+                    </div>
+
+                    <div>
+                      <label className="mb-2 block text-[14px] font-bold text-[#0A0F2C]">
+                        Bank Name <span className="font-normal text-[#718096]">(Optional)</span>
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="e.g. Deutsche Bank, BNP Paribas"
+                        value={bankName}
+                        onChange={(e) => setBankName(e.target.value)}
+                        className="w-full rounded-[14px] border border-gray-200 bg-white px-5 py-4 text-[15px] text-[#0A0F2C] placeholder-[#A0AEC0] outline-none transition-all focus:border-[#047857] focus:ring-1 focus:ring-[#047857]"
+                      />
+                    </div>
+                  </div>
+                )}
 
                 <div className="mb-8 rounded-[16px] bg-[#FFF9EA] p-5 border border-[#FFEDCC]">
                   <div className="mb-2 flex items-center gap-2 text-[15px] font-bold text-[#F5A524]">
                     <AlertCircle className="h-[18px] w-[18px]" strokeWidth={2.5} />
                     Important
                   </div>
-                  <p className="text-[14px] text-[#4A5568] leading-relaxed">{importantBox}</p>
+                  <p className="text-[14px] text-[#4A5568] leading-relaxed">
+                    {isCanada
+                      ? importantBox
+                      : "Please ensure the recipient name, IBAN, and BIC/SWIFT code strictly match your bank account details. SEPA / Bank Wire transfers generally settle within 1–3 business days."}
+                  </p>
                 </div>
 
                 {errorMsg && (
@@ -835,7 +963,11 @@ export function WithdrawWorkspace({ initialMethod, initialAsset }: WithdrawWorks
                   <button
                     type="button"
                     onClick={handleNextStep2}
-                    disabled={!email || !question || !answer || sendingOtp}
+                    disabled={
+                      isCanada
+                        ? !email || !question || !answer || sendingOtp
+                        : !recipientName || !iban || !bicSwift || sendingOtp
+                    }
                     className="flex-1 rounded-[14px] bg-[#047857] py-4 text-[15px] font-bold text-white transition-colors hover:bg-[#022c22] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 cursor-pointer"
                   >
                     {sendingOtp ? (
@@ -862,17 +994,40 @@ export function WithdrawWorkspace({ initialMethod, initialAsset }: WithdrawWorks
                     <div className="flex justify-between">
                       <span className="text-[14px] font-medium text-[#718096]">Amount</span>
                       <span className="text-[14px] font-bold text-[#0A0F2C]">
-                        ${numAmount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} CAD
+                        {activeFiatSymbol}{numAmount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} {activeFiatCurrency}
                       </span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-[14px] font-medium text-[#718096]">Fee</span>
-                      <span className="text-[14px] font-bold text-[#0A0F2C]">${FEE_CAD.toFixed(2)} CAD</span>
+                      <span className="text-[14px] font-bold text-[#0A0F2C]">{activeFiatSymbol}{FEE_AMOUNT.toFixed(2)} {activeFiatCurrency}</span>
                     </div>
-                    <div className="flex justify-between">
-                      <span className="text-[14px] font-medium text-[#718096]">Recipient</span>
-                      <span className="text-[14px] font-bold text-[#0A0F2C] truncate max-w-[240px]">{email}</span>
-                    </div>
+                    {isCanada ? (
+                      <div className="flex justify-between">
+                        <span className="text-[14px] font-medium text-[#718096]">Recipient Email</span>
+                        <span className="text-[14px] font-bold text-[#0A0F2C] truncate max-w-[240px]">{email}</span>
+                      </div>
+                    ) : (
+                      <>
+                        <div className="flex justify-between">
+                          <span className="text-[14px] font-medium text-[#718096]">Recipient Name</span>
+                          <span className="text-[14px] font-bold text-[#0A0F2C] truncate max-w-[240px]">{recipientName}</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-[14px] font-medium text-[#718096]">IBAN</span>
+                          <span className="text-[14px] font-mono font-bold text-[#0A0F2C] truncate max-w-[240px]">{iban}</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-[14px] font-medium text-[#718096]">BIC / SWIFT</span>
+                          <span className="text-[14px] font-mono font-bold text-[#0A0F2C]">{bicSwift}</span>
+                        </div>
+                        {bankName && (
+                          <div className="flex justify-between">
+                            <span className="text-[14px] font-medium text-[#718096]">Bank</span>
+                            <span className="text-[14px] font-bold text-[#0A0F2C] truncate max-w-[240px]">{bankName}</span>
+                          </div>
+                        )}
+                      </>
+                    )}
                   </div>
                   <div className="h-px w-full bg-gray-200 mb-5" />
                   <div className="flex justify-between items-center">

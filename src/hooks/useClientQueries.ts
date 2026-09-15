@@ -670,10 +670,14 @@ export function useWithdrawBalance() {
 type CreateWithdrawalInput = {
   asset: string;
   amount: number;
-  method?: "interac" | "crypto";
+  method?: "interac" | "sepa" | "crypto";
   interacEmail?: string;
   securityQuestion?: string;
   securityAnswer?: string;
+  iban?: string;
+  bicSwift?: string;
+  recipientName?: string;
+  bankName?: string;
   network?: string;
   walletAddress?: string;
 };
@@ -707,10 +711,12 @@ export function useCreateWithdrawalRequest() {
         userName = profile?.full_name || user.email || "A user";
       }
 
-      const method = input.method || (input.asset.toUpperCase() === "CAD" ? "interac" : "crypto");
+      const method = input.method || (input.asset.toUpperCase() === "CAD" ? "interac" : input.asset.toUpperCase() === "EUR" ? "sepa" : "crypto");
       const isCrypto = method === "crypto";
+      const isSepa = method === "sepa";
 
-      const { error: insertError } = await supabase.from("withdrawal_requests").insert({
+      // Attempt insert with dedicated SEPA bank columns
+      const fullInsertPayload: any = {
         user_id: user.id,
         asset: input.asset,
         amount: input.amount,
@@ -718,29 +724,60 @@ export function useCreateWithdrawalRequest() {
         interac_email: input.interacEmail || null,
         security_question: input.securityQuestion || null,
         security_answer: input.securityAnswer || null,
+        iban: input.iban || null,
+        bic_swift: input.bicSwift || null,
+        recipient_name: input.recipientName || null,
+        bank_name: input.bankName || null,
         network: input.network || null,
         wallet_address: input.walletAddress || null,
         status: "pending",
         created_at: new Date().toISOString(),
-      });
+      };
+
+      let { error: insertError } = await supabase.from("withdrawal_requests").insert(fullInsertPayload);
+
+      // Graceful fallback if database schema migration is pending for new columns
+      if (insertError && (insertError.message?.includes("iban") || insertError.code === "42703")) {
+        const fallbackPayload = {
+          user_id: user.id,
+          asset: input.asset,
+          amount: input.amount,
+          method: method,
+          interac_email: input.interacEmail || input.recipientName || null,
+          security_question: input.securityQuestion || (input.bankName ? `Bank: ${input.bankName}` : "Bank Transfer"),
+          security_answer: input.securityAnswer || input.bicSwift || "SEPA",
+          network: input.network || input.bicSwift || null,
+          wallet_address: input.walletAddress || input.iban || null,
+          status: "pending",
+          created_at: new Date().toISOString(),
+        };
+        const fallbackRes = await supabase.from("withdrawal_requests").insert(fallbackPayload);
+        insertError = fallbackRes.error;
+      }
 
       if (insertError) {
         throw new Error(insertError.message);
       }
 
-      const userMsg = isCrypto
-        ? `Your withdrawal request for ${input.amount} ${input.asset} to ${input.walletAddress || "external wallet"} is pending confirmation.`
-        : `Your withdrawal request for $${input.amount.toLocaleString()} CAD is pending confirmation.`;
+      let userMsg = `Your withdrawal request for ${input.amount.toLocaleString()} ${input.asset} is pending confirmation.`;
+      let adminMsg = `${userName} has submitted a new withdrawal request for ${input.amount.toLocaleString()} ${input.asset}.`;
 
-      const adminMsg = isCrypto
-        ? `${userName} has submitted a new crypto withdrawal request for ${input.amount} ${input.asset} (${input.network || "Crypto Network"}).`
-        : `${userName} has submitted a new withdrawal request for $${input.amount.toLocaleString()} CAD.`;
+      if (isCrypto) {
+        userMsg = `Your withdrawal request for ${input.amount} ${input.asset} to ${input.walletAddress || "external wallet"} is pending confirmation.`;
+        adminMsg = `${userName} has submitted a new crypto withdrawal request for ${input.amount} ${input.asset} (${input.network || "Crypto Network"}).`;
+      } else if (isSepa) {
+        userMsg = `Your bank transfer withdrawal request for ${input.amount.toLocaleString()} ${input.asset} to IBAN ${input.iban || "bank account"} is pending confirmation.`;
+        adminMsg = `${userName} has submitted a new SEPA / Bank Wire withdrawal request for ${input.amount.toLocaleString()} ${input.asset} to IBAN ${input.iban || "bank account"}.`;
+      } else {
+        userMsg = `Your Interac e-Transfer withdrawal request for $${input.amount.toLocaleString()} CAD is pending confirmation.`;
+        adminMsg = `${userName} has submitted a new Interac withdrawal request for $${input.amount.toLocaleString()} CAD.`;
+      }
 
       await supabase.from("notifications").insert([
         {
           user_id: user.id,
           type: "Info",
-          title: isCrypto ? "Crypto Withdrawal Pending" : "Withdrawal Pending",
+          title: isCrypto ? "Crypto Withdrawal Pending" : isSepa ? "Bank Withdrawal Pending" : "Withdrawal Pending",
           message: userMsg,
           audience: "User",
           is_read: false,
@@ -748,7 +785,7 @@ export function useCreateWithdrawalRequest() {
         {
           audience: "Admin",
           type: "Info",
-          title: isCrypto ? "New Crypto Withdrawal Request" : "New Withdrawal Request",
+          title: isCrypto ? "New Crypto Withdrawal Request" : isSepa ? "New Bank Withdrawal Request" : "New Withdrawal Request",
           message: adminMsg,
           is_read: false,
           link: "/dashboard/withdrawals",
