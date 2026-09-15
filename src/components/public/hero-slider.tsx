@@ -9,7 +9,7 @@ const slides = [
   {
     id: 1,
     title: "The New Standard in Digital Banking",
-    description: "Experience premium financial services with CDNT. Secure, fast, and designed for your modern lifestyle.",
+    description: "Experience premium financial services with NDNT. Secure, fast, and designed for your modern lifestyle.",
     image: "https://images.unsplash.com/photo-1501167786227-4cba60f6d58f?auto=format&fit=crop&q=80&w=2070",
     ctaPrimary: "Open an Account",
     ctaSecondary: "Learn More",

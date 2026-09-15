@@ -100,7 +100,7 @@ export default function AccountsOverviewPage() {
                 Accounts built around everyday banking and modern wealth movement.
               </h1>
               <p className="mt-6 max-w-2xl text-lg font-medium leading-8 text-white/76">
-                Compare CDNT chequing, savings, student, international,
+                Compare NDNT chequing, savings, student, international,
                 support, and Vantage account options in one place. Each account is
                 designed for secure onboarding, clear pricing, digital access, and
                 connected portfolio workflows including supported crypto assets.

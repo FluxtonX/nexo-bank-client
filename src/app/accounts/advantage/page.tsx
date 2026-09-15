@@ -87,7 +87,7 @@ export default function AdvantageBankingPage() {
               },
               {
                 title: "International Transfers",
-                description: "Send money globally with competitive rates and zero CDNT transfer fees.",
+                description: "Send money globally with competitive rates and zero NDNT transfer fees.",
                 icon: Globe
               },
               {
@@ -97,11 +97,11 @@ export default function AdvantageBankingPage() {
               },
               {
                 title: "Premium Security",
-                description: "Protected by the CDNT Security Guarantee and 24/7 fraud monitoring.",
+                description: "Protected by the NDNT Security Guarantee and 24/7 fraud monitoring.",
                 icon: ShieldCheck
               },
               {
-                title: "CDNT Vantage",
+                title: "NDNT Vantage",
                 description: "Access exclusive rewards, partner offers, and value-added services automatically.",
                 icon: Landmark
               }
@@ -147,7 +147,7 @@ export default function AdvantageBankingPage() {
                   <td className="px-6 py-4 text-sm text-banking-muted">Unlimited (Free)</td>
                 </tr>
                 <tr>
-                  <td className="px-6 py-4 text-sm font-semibold text-banking-text">Non-CDNT ATM</td>
+                  <td className="px-6 py-4 text-sm font-semibold text-banking-text">Non-NDNT ATM</td>
                   <td className="px-6 py-4 text-sm text-banking-muted">$2.00 in Canada, $5.00 International</td>
                 </tr>
                 <tr>

@@ -19,7 +19,7 @@ export default function KYCLayout({ children }: { children: React.ReactNode }) {
       {/* Footer (Requested by user) */}
       <footer className="mt-8 sm:mt-0 sm:absolute sm:bottom-6 w-full text-center flex flex-col items-center justify-center text-emerald-200 text-[12px] opacity-80">
         <NexoBankLogoWhite className="h-6 w-auto mb-3 opacity-60" />
-        <p>&copy; {new Date().getFullYear()} CDNT Bank. All rights reserved.</p>
+        <p>&copy; {new Date().getFullYear()} NDNT Bank. All rights reserved.</p>
       </footer>
     </div>
   );

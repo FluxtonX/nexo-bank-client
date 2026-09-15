@@ -56,7 +56,7 @@ export default function FeatureSection() {
               transition={{ duration: 0.5 }}
               className="text-xs font-bold uppercase tracking-widest text-[#047857] mb-3"
             >
-              Canadian Banking Experience
+              Nexo Banking Experience
             </motion.p>
             <motion.h2 
               initial={{ opacity: 0, y: 15 }}
