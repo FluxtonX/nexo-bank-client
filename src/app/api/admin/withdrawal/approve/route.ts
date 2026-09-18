@@ -54,6 +54,35 @@ export async function POST(req: Request) {
         const apiInstance = new TransactionalEmailsApi();
         apiInstance.setApiKey(TransactionalEmailsApiApiKeys.apiKey, process.env.BREVO_API_KEY);
 
+        const isCrypto = withdrawal.method === "crypto";
+        const isSepa = withdrawal.method === "sepa";
+        const assetName = (withdrawal.asset || "CAD").toUpperCase();
+
+        let detailsHtml = "";
+        if (isCrypto) {
+          detailsHtml = `
+            <p style="color: #4A5568; margin: 5px 0;"><strong>Amount:</strong> ${withdrawal.amount} ${assetName}</p>
+            <p style="color: #4A5568; margin: 5px 0;"><strong>Method:</strong> Cryptocurrency Withdrawal</p>
+            <p style="color: #4A5568; margin: 5px 0;"><strong>Network:</strong> ${withdrawal.network || assetName + " Network"}</p>
+            <p style="color: #4A5568; margin: 5px 0;"><strong>Destination Address:</strong> ${withdrawal.wallet_address || "N/A"}</p>
+          `;
+        } else if (isSepa) {
+          detailsHtml = `
+            <p style="color: #4A5568; margin: 5px 0;"><strong>Amount:</strong> ${Number(withdrawal.amount).toLocaleString()} ${assetName}</p>
+            <p style="color: #4A5568; margin: 5px 0;"><strong>Method:</strong> SEPA / Bank Wire Transfer</p>
+            <p style="color: #4A5568; margin: 5px 0;"><strong>IBAN:</strong> ${withdrawal.iban || withdrawal.wallet_address || "N/A"}</p>
+            <p style="color: #4A5568; margin: 5px 0;"><strong>Recipient:</strong> ${withdrawal.recipient_name || withdrawal.interac_email || "N/A"}</p>
+            ${withdrawal.bank_name ? `<p style="color: #4A5568; margin: 5px 0;"><strong>Bank Name:</strong> ${withdrawal.bank_name}</p>` : ""}
+          `;
+        } else {
+          detailsHtml = `
+            <p style="color: #4A5568; margin: 5px 0;"><strong>Amount:</strong> $${Number(withdrawal.amount).toLocaleString()} CAD</p>
+            <p style="color: #4A5568; margin: 5px 0;"><strong>Method:</strong> Interac e-Transfer</p>
+            <p style="color: #4A5568; margin: 5px 0;"><strong>Recipient Email:</strong> ${withdrawal.interac_email}</p>
+            ${withdrawal.security_question ? `<p style="color: #4A5568; margin: 5px 0;"><strong>Security Question:</strong> ${withdrawal.security_question}</p>` : ""}
+          `;
+        }
+
         const sendSmtpEmail = new SendSmtpEmail();
         sendSmtpEmail.sender = { email: 'noreply@ndntbank.com', name: 'Nexo Platform' };
         sendSmtpEmail.to = [{ email: profile.email }];
@@ -65,13 +94,10 @@ export async function POST(req: Request) {
             
             <div style="background-color: #F8F9FA; padding: 20px; border-radius: 8px; margin: 20px 0; text-align: left;">
               <h2 style="color: #0A0F2C; margin-top: 0;">Withdrawal Details</h2>
-              <p style="color: #4A5568; margin: 5px 0;"><strong>Amount:</strong> $${Number(withdrawal.amount).toLocaleString()} CAD</p>
-              <p style="color: #4A5568; margin: 5px 0;"><strong>Method:</strong> Interac e-Transfer</p>
-              <p style="color: #4A5568; margin: 5px 0;"><strong>Recipient Email:</strong> ${withdrawal.interac_email}</p>
-              <p style="color: #4A5568; margin: 5px 0;"><strong>Security Question:</strong> ${withdrawal.security_question}</p>
+              ${detailsHtml}
             </div>
             
-            <p style="color: #718096; font-size: 14px;">The funds will be transferred to your specified recipient. Please keep your security answer safe.</p>
+            <p style="color: #718096; font-size: 14px;">The funds will be transferred to your specified destination.</p>
             <p style="color: #718096; font-size: 14px;">If you have any questions, please contact our support team.</p>
             
             <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #E2E8F0;">

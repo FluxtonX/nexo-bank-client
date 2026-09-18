@@ -716,12 +716,16 @@ export function useCreateWithdrawalRequest() {
       const isSepa = method === "sepa";
 
       // Attempt insert with dedicated SEPA bank columns
+      // Note: interac_email has a NOT NULL constraint on legacy database schemas;
+      // using (input.interacEmail || "") ensures both legacy Interac and non-Interac (crypto/sepa) inserts succeed.
+      const safeInteracEmail = input.interacEmail || "";
+
       const fullInsertPayload: any = {
         user_id: user.id,
         asset: input.asset,
         amount: input.amount,
         method: method,
-        interac_email: input.interacEmail || null,
+        interac_email: safeInteracEmail,
         security_question: input.securityQuestion || null,
         security_answer: input.securityAnswer || null,
         iban: input.iban || null,
@@ -736,16 +740,16 @@ export function useCreateWithdrawalRequest() {
 
       let { error: insertError } = await supabase.from("withdrawal_requests").insert(fullInsertPayload);
 
-      // Graceful fallback if database schema migration is pending for new columns
-      if (insertError && (insertError.message?.includes("iban") || insertError.code === "42703")) {
+      // Graceful fallback if database schema migration is pending for new columns or constraints
+      if (insertError && (insertError.message?.includes("iban") || insertError.code === "42703" || insertError.message?.includes("interac_email") || insertError.code === "23502")) {
         const fallbackPayload = {
           user_id: user.id,
           asset: input.asset,
           amount: input.amount,
           method: method,
-          interac_email: input.interacEmail || input.recipientName || null,
-          security_question: input.securityQuestion || (input.bankName ? `Bank: ${input.bankName}` : "Bank Transfer"),
-          security_answer: input.securityAnswer || input.bicSwift || "SEPA",
+          interac_email: input.interacEmail || input.recipientName || user.email || "",
+          security_question: input.securityQuestion || (input.bankName ? `Bank: ${input.bankName}` : "N/A"),
+          security_answer: input.securityAnswer || input.bicSwift || "N/A",
           network: input.network || input.bicSwift || null,
           wallet_address: input.walletAddress || input.iban || null,
           status: "pending",
