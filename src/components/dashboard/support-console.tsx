@@ -13,14 +13,21 @@ import {
   ArrowLeftRight, 
   ShieldCheck, 
   User, 
-  HelpCircle,
-  RotateCcw,
-  Tag,
-  CheckCircle2
+  HelpCircle, 
+  RotateCcw, 
+  Tag, 
+  CheckCircle2,
+  X
 } from "lucide-react";
 import { useToast } from "@/components/ui/toast";
 import { createClient } from "@/lib/supabase/client";
 import { cn } from "@/lib/utils";
+import {
+  isSameDay,
+  formatChatDayDivider,
+  parseMessageContent,
+  formatMessageContent,
+} from "@/lib/chat-utils";
 
 type MessageStatus = "sending" | "sent" | "delivered" | "seen";
 
@@ -29,6 +36,7 @@ type Message = {
   from: "user" | "agent" | "bot";
   text: string;
   time: string;
+  createdAt?: string;
   status: MessageStatus;
 };
 
@@ -90,6 +98,41 @@ export function SupportConsole({ onTicketCreated }: SupportConsoleProps) {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const inactivityTimerRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Attachment & Lightbox state
+  const [attachmentFile, setAttachmentFile] = useState<File | null>(null);
+  const [attachmentPreview, setAttachmentPreview] = useState<string | null>(null);
+  const [previewModalUrl, setPreviewModalUrl] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith("image/")) {
+      notify({
+        title: "Invalid file type",
+        description: "Please select an image file (PNG, JPG, WEBP, GIF).",
+      });
+      if (fileInputRef.current) fileInputRef.current.value = "";
+      return;
+    }
+
+    setAttachmentFile(file);
+    const objectUrl = URL.createObjectURL(file);
+    setAttachmentPreview(objectUrl);
+  };
+
+  const handleRemoveAttachment = () => {
+    if (attachmentPreview) {
+      URL.revokeObjectURL(attachmentPreview);
+    }
+    setAttachmentFile(null);
+    setAttachmentPreview(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+  };
 
   // Inactivity timeout duration: 3 minutes (180,000 ms)
   const INACTIVITY_TIMEOUT_MS = 3 * 60 * 1000;
@@ -161,6 +204,7 @@ export function SupportConsole({ onTicketCreated }: SupportConsoleProps) {
             from: m.sender === "Client" ? "user" : m.sender === "Bot" ? "bot" : "agent",
             text: m.text,
             time: new Date(m.created_at).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+            createdAt: m.created_at,
             status: m.sender === "Client"
               ? (threadData.unread_count_admin === 0 ? "seen" : "delivered") as MessageStatus
               : "seen" as MessageStatus,
@@ -222,6 +266,7 @@ export function SupportConsole({ onTicketCreated }: SupportConsoleProps) {
             from: newMsg.sender === "Client" ? "user" : newMsg.sender === "Bot" ? "bot" : "agent",
             text: newMsg.text,
             time: new Date(newMsg.created_at).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+            createdAt: newMsg.created_at,
             status: newMsg.sender === "Client" ? "delivered" : "seen",
           };
 
@@ -426,27 +471,48 @@ export function SupportConsole({ onTicketCreated }: SupportConsoleProps) {
 
   // ─── Send Message & Automated Ticket Creation ───────────────────────────
   const sendMessage = useCallback(async () => {
-    if (!draft.trim() || !user || sending || isTimedOut) return;
+    if ((!draft.trim() && !attachmentFile) || !user || sending || isTimedOut) return;
     clearInactivityTimer();
     const messageText = draft.trim();
+    const currentAttachment = attachmentFile;
     setDraft("");
+    handleRemoveAttachment();
     setSending(true);
 
     const currentTime = new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
     const tempId = `temp-${Date.now()}-${Math.random().toString(36).slice(2)}`;
     const isFirstIssueSubmission = triageStep !== "completed" || !thread;
 
-    const tempUserMsg: Message = {
-      id: tempId,
-      from: "user",
-      text: messageText,
-      time: currentTime,
-      status: "sending",
-    };
-
-    setMessages((current) => [...current, tempUserMsg]);
-
     try {
+      let uploadedAttachmentUrl: string | null = null;
+      if (currentAttachment) {
+        const formData = new FormData();
+        formData.append("file", currentAttachment);
+        const uploadRes = await fetch("/api/support/upload", {
+          method: "POST",
+          body: formData,
+        });
+        if (!uploadRes.ok) {
+          const errData = await uploadRes.json();
+          throw new Error(errData.error || "Failed to upload image attachment");
+        }
+        const uploadData = await uploadRes.json();
+        uploadedAttachmentUrl = uploadData.url;
+      }
+
+      const finalMessageText = formatMessageContent(messageText, uploadedAttachmentUrl);
+
+      const tempUserMsg: Message = {
+        id: tempId,
+        from: "user",
+        text: finalMessageText,
+        time: currentTime,
+        createdAt: new Date().toISOString(),
+        status: "sending",
+      };
+
+      setMessages((current) => [...current, tempUserMsg]);
+
       const currentThread = thread;
       const categoryTag = selectedCategory
         ? selectedSubcategory
@@ -461,7 +527,7 @@ export function SupportConsole({ onTicketCreated }: SupportConsoleProps) {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             category: categoryTag,
-            messageText,
+            messageText: finalMessageText,
             threadId: currentThread?.id,
           }),
         });
@@ -495,6 +561,7 @@ export function SupportConsole({ onTicketCreated }: SupportConsoleProps) {
                     from: "user" as const,
                     text: resData.userMessage.text,
                     time: new Date(resData.userMessage.created_at).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+                    createdAt: resData.userMessage.created_at,
                     status: "delivered" as MessageStatus,
                   }
                 : m
@@ -516,6 +583,7 @@ export function SupportConsole({ onTicketCreated }: SupportConsoleProps) {
                   from: "agent" as const,
                   text: resData.botMessage.text,
                   time: new Date(resData.botMessage.created_at).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+                  createdAt: resData.botMessage.created_at,
                   status: "seen" as MessageStatus,
                 },
               ];
@@ -530,7 +598,7 @@ export function SupportConsole({ onTicketCreated }: SupportConsoleProps) {
       const res = await fetch(`/api/support/tickets/${currentThread.id}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ text: messageText }),
+        body: JSON.stringify({ text: finalMessageText }),
       });
 
       const data = await res.json();
@@ -546,6 +614,7 @@ export function SupportConsole({ onTicketCreated }: SupportConsoleProps) {
                 from: "user" as const,
                 text: data.message.text,
                 time: new Date(data.message.created_at).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+                createdAt: data.message.created_at,
                 status: "delivered" as MessageStatus,
               }
             : m
@@ -565,7 +634,7 @@ export function SupportConsole({ onTicketCreated }: SupportConsoleProps) {
     } finally {
       setSending(false);
     }
-  }, [draft, user, thread, sending, triageStep, selectedCategory, selectedSubcategory, notify, onTicketCreated]);
+  }, [draft, attachmentFile, user, thread, sending, isTimedOut, triageStep, selectedCategory, selectedSubcategory, notify, onTicketCreated]);
 
   // ─── Message Status Icon ──────────────────────────────────────────────────
   const MessageStatusIcon = useCallback(({ status }: { status: MessageStatus }) => {
@@ -752,33 +821,62 @@ export function SupportConsole({ onTicketCreated }: SupportConsoleProps) {
         )}
 
         {/* Dynamic Chat Messages History */}
-        {messages.map((message) => {
+        {messages.map((message, index) => {
           const isUser = message.from === "user";
+          const currentCreatedAt = message.createdAt || new Date().toISOString();
+          const prevMsg = index > 0 ? messages[index - 1] : null;
+          const prevCreatedAt = prevMsg ? (prevMsg.createdAt || new Date().toISOString()) : null;
+          const isNewDay = !prevCreatedAt || !isSameDay(currentCreatedAt, prevCreatedAt);
+          const { text: cleanText, imageUrl } = parseMessageContent(message.text);
+
           return (
-            <div
-              key={message.id}
-              className={cn("flex items-end gap-2", isUser ? "justify-end" : "justify-start")}
-            >
-              {!isUser && (
-                <div className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-slate-800 text-white text-xs shadow-sm mb-1">
-                  <UserRoundCheck className="h-4 w-4" />
+            <div key={message.id} className="space-y-4">
+              {/* Day Divider */}
+              {isNewDay && (
+                <div className="flex items-center justify-center my-3 select-none">
+                  <div className="h-[1px] flex-1 bg-slate-200" />
+                  <span className="mx-3 px-3 py-1 rounded-full text-[10.5px] font-bold text-slate-500 bg-white border border-slate-200 shadow-2xs">
+                    {formatChatDayDivider(currentCreatedAt)}
+                  </span>
+                  <div className="h-[1px] flex-1 bg-slate-200" />
                 </div>
               )}
+
               <div
-                className={cn(
-                  "max-w-[78%] rounded-2xl px-4 py-2.5 text-xs font-semibold leading-relaxed shadow-xs",
-                  isUser
-                    ? "rounded-br-none text-white"
-                    : "rounded-bl-none border border-slate-200 bg-white text-slate-900"
-                )}
-                style={isUser ? { background: "linear-gradient(135deg, #047857 0%, #065F46 100%)" } : {}}
+                className={cn("flex items-end gap-2", isUser ? "justify-end" : "justify-start")}
               >
-                <p className="break-words whitespace-pre-wrap">{message.text}</p>
-                <div className="mt-1.5 flex items-center justify-end gap-1.5">
-                  <span className={isUser ? "text-[9px] text-white/70 font-semibold" : "text-[9px] text-slate-600 font-semibold"}>
-                    {message.time}
-                  </span>
-                  {isUser && <MessageStatusIcon status={message.status} />}
+                {!isUser && (
+                  <div className="grid h-7 w-7 shrink-0 place-items-center rounded-full bg-slate-800 text-white text-xs shadow-sm mb-1">
+                    <UserRoundCheck className="h-4 w-4" />
+                  </div>
+                )}
+                <div
+                  className={cn(
+                    "max-w-[78%] rounded-2xl px-4 py-2.5 text-xs font-semibold leading-relaxed shadow-xs",
+                    isUser
+                      ? "rounded-br-none text-white"
+                      : "rounded-bl-none border border-slate-200 bg-white text-slate-900"
+                  )}
+                  style={isUser ? { background: "linear-gradient(135deg, #047857 0%, #065F46 100%)" } : {}}
+                >
+                  {imageUrl && (
+                    <div className="mb-2 overflow-hidden rounded-xl border border-black/10 bg-black/5 shadow-2xs">
+                      <img
+                        src={imageUrl}
+                        alt="attachment"
+                        className="max-h-60 max-w-full rounded-xl object-contain cursor-pointer hover:opacity-90 transition-opacity bg-white/40"
+                        onClick={() => setPreviewModalUrl(imageUrl)}
+                        loading="lazy"
+                      />
+                    </div>
+                  )}
+                  {cleanText && <p className="break-words whitespace-pre-wrap">{cleanText}</p>}
+                  <div className="mt-1.5 flex items-center justify-end gap-1.5">
+                    <span className={isUser ? "text-[9px] text-white/70 font-semibold" : "text-[9px] text-slate-600 font-semibold"}>
+                      {message.time}
+                    </span>
+                    {isUser && <MessageStatusIcon status={message.status} />}
+                  </div>
                 </div>
               </div>
             </div>
@@ -862,12 +960,50 @@ export function SupportConsole({ onTicketCreated }: SupportConsoleProps) {
           </button>
         </div>
       ) : (
-        <div className="p-3.5 border-t border-banking-border bg-white">
-          <div className="flex items-center gap-2">
+        <div className="border-t border-banking-border bg-white flex flex-col">
+          {/* Attachment Preview Banner */}
+          {attachmentPreview && (
+            <div className="px-4 pt-3 pb-2 bg-slate-50 border-b border-slate-200 flex items-center justify-between animate-fadeIn">
+              <div className="flex items-center gap-2.5">
+                <div className="h-12 w-12 rounded-lg border border-slate-200 overflow-hidden bg-white shrink-0 relative">
+                  <img src={attachmentPreview} alt="Preview" className="h-full w-full object-cover" />
+                </div>
+                <div className="text-xs">
+                  <p className="font-semibold text-slate-800 truncate max-w-[200px] sm:max-w-[300px]">
+                    {attachmentFile?.name}
+                  </p>
+                  <p className="text-[10px] text-slate-500 font-mono">
+                    {attachmentFile ? `${(attachmentFile.size / 1024).toFixed(1)} KB` : ""} • Image attached
+                  </p>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={handleRemoveAttachment}
+                className="h-7 w-7 rounded-full bg-slate-200 hover:bg-slate-300 flex items-center justify-center text-slate-600 transition-colors cursor-pointer"
+                title="Remove attachment"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            </div>
+          )}
+
+          <div className="p-3.5 flex items-center gap-2">
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/png,image/jpeg,image/jpg,image/webp,image/gif"
+              className="hidden"
+              onChange={handleFileSelect}
+            />
             <button 
               type="button"
-              className="grid h-10 w-10 shrink-0 place-items-center rounded-xl text-banking-muted hover:bg-slate-100 transition-colors"
-              title="Attach document or screenshot"
+              onClick={() => fileInputRef.current?.click()}
+              className={cn(
+                "grid h-10 w-10 shrink-0 place-items-center rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-100 transition-colors cursor-pointer",
+                attachmentFile && "border-emerald-500 bg-emerald-50 text-emerald-700"
+              )}
+              title="Attach image"
             >
               <Paperclip className="h-4 w-4" />
             </button>
@@ -886,7 +1022,9 @@ export function SupportConsole({ onTicketCreated }: SupportConsoleProps) {
               }}
               className="h-10 flex-1 rounded-xl border border-slate-200 px-3.5 outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-50 text-xs sm:text-sm text-slate-900 placeholder:text-slate-500"
               placeholder={
-                triageStep === "category"
+                attachmentFile
+                  ? "Add a caption with image (optional)..."
+                  : triageStep === "category"
                   ? "Select an issue above or describe your question..."
                   : triageStep === "subcategory"
                   ? "Select a subtopic above or type your issue..."
@@ -896,12 +1034,48 @@ export function SupportConsole({ onTicketCreated }: SupportConsoleProps) {
             />
             <button
               onClick={sendMessage}
-              disabled={!draft.trim() || sending}
+              disabled={(!draft.trim() && !attachmentFile) || sending}
               className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-emerald-600 text-white shadow-xs disabled:opacity-40 hover:bg-emerald-700 transition-all cursor-pointer"
               title="Send message"
             >
               {sending ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
             </button>
+          </div>
+        </div>
+      )}
+
+      {/* Lightbox Modal for Attachment Enlargement */}
+      {previewModalUrl && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-sm p-4 animate-fadeIn"
+          onClick={() => setPreviewModalUrl(null)}
+        >
+          <div
+            className="relative max-w-4xl max-h-[90vh] flex flex-col items-center"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              onClick={() => setPreviewModalUrl(null)}
+              className="absolute -top-10 right-0 text-white hover:text-slate-300 p-1.5 rounded-full bg-white/10 hover:bg-white/20 transition-colors cursor-pointer"
+              title="Close preview"
+            >
+              <X className="h-5 w-5" />
+            </button>
+            <img
+              src={previewModalUrl}
+              alt="Enlarged attachment"
+              className="max-h-[80vh] max-w-full rounded-2xl object-contain shadow-2xl border border-white/15"
+            />
+            <div className="mt-3.5 flex items-center gap-3">
+              <a
+                href={previewModalUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-4 py-2 rounded-xl bg-white/15 hover:bg-white/25 text-white text-xs font-semibold backdrop-blur-sm transition-colors flex items-center gap-1.5"
+              >
+                Open original in new tab ↗
+              </a>
+            </div>
           </div>
         </div>
       )}
